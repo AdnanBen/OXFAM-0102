@@ -1,5 +1,5 @@
 import React from "react";
-import Forum from "./Forum";
+import { Outlet } from "react-router-dom";
 
 const App = () => {
   return (
@@ -8,7 +8,7 @@ const App = () => {
         <h1>OXFAM Project</h1>
       </nav>
       <main>
-        <Forum />
+        <Outlet />
       </main>
     </>
   );

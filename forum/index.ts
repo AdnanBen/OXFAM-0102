@@ -163,6 +163,7 @@ app.post(
         "The post you wish to comment on does not exist."
       );
 
+    // TODO this doesn't work for 2nd-level and beyond comments; something wrong with the array filter
     const comment = await getDb()
       .collection("posts")
       .updateOne(
