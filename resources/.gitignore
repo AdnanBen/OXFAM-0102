@@ -2,6 +2,8 @@ docker-volumes
 
 build
 
+.DS_Store
+
 # Logs
 logs
 *.log
