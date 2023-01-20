@@ -1,5 +1,3 @@
-set -e
-
 mongosh <<EOF
 use resources
 db.createUser({
