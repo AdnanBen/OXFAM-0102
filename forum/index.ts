@@ -3,9 +3,8 @@ import dotenv from "dotenv";
 import bodyParser from "body-parser";
 import cors from "cors";
 
-import { getDb } from "./db";
-import { APIError, getNextMongoSequenceValue } from "./helpers";
-import { ObjectId } from "mongodb";
+import prisma from "./db";
+import { APIError } from "./helpers";
 
 function catchErrors(fn) {
   return function (req, res, next) {
@@ -44,18 +43,11 @@ app.use((err: Error, req: Request, res: Response, next: any) => {
 app.post(
   "/posts",
   catchErrors(async (req: Request, res: Response) => {
-    const newId = await getNextMongoSequenceValue(getDb(), "posts");
-    if (newId == null) throw new Error("Unable to get new post ID");
-
-    const post = await getDb().collection("posts").insertOne({
-      _id: newId,
-      title: req.body.title,
-      body: req.body.body,
-      created: new Date().getTime(),
-      comments: [],
+    const post = await prisma.post.create({
+      data: { title: req.body.title, body: req.body.body },
     });
 
-    return res.status(200).json({ error: false, id: post.insertedId });
+    return res.status(200).json({ error: false, id: post.id });
   })
 );
 
@@ -66,16 +58,11 @@ app.get(
   "/posts",
   catchErrors(async (req: Request, res: Response) => {
     // Don't get the post body itself
-    const posts = getDb()
-      .collection("posts")
-      .find(
-        {},
-        {
-          projection: { _id: true, title: true, created: true, verified: true },
-        }
-      );
+    const posts = await prisma.post.findMany({
+      select: { id: true, title: true, created: true },
+    });
 
-    return res.status(200).json({ error: false, posts: await posts.toArray() });
+    return res.status(200).json({ error: false, posts });
   })
 );
 
@@ -86,10 +73,15 @@ app.get(
   "/posts/:postId",
   catchErrors(async (req: Request, res: Response) => {
     const { postId } = req.params;
-    const post = await getDb()
-      .collection("posts")
-      .findOne({ _id: { $eq: +[postId] } });
 
+    // Also fetch the parent comment, so we can have 'pairs' of most recent reply in the UI
+    // rather than unlimited nesting.
+    // Note: if needed, it is possible to extract the entire tree using a recursive query -- Prisma
+    // doesn't support that yet https://github.com/prisma/prisma/issues/3725, but PostgreSQL does.
+    const post = await prisma.post.findFirst({
+      where: { id: +postId },
+      include: { comments: { include: { parent_comment: true } } },
+    });
     if (!post) throw new APIError(404, "The requested post does not exist");
 
     return res.status(200).json({ error: false, post });
@@ -118,14 +110,13 @@ app.delete(
 
 /**
  * Make a new comment on the given top-level Post ID.
+ * Optionally pass the parentCommentId if replying to a comment.
  */
 app.post(
   "/posts/:postId/comments",
   catchErrors(async (req: Request, res: Response) => {
     const { postId } = req.params;
-    const post = await getDb()
-      .collection("posts")
-      .findOne({ _id: { $eq: +postId } });
+    const post = await prisma.post.findFirst({ where: { id: +postId } });
 
     if (!post) {
       throw new APIError(
@@ -134,64 +125,17 @@ app.post(
       );
     }
 
-    const comment = await getDb()
-      .collection("posts")
-      .updateOne(
-        { _id: +postId },
-        {
-          $push: {
-            comments: {
-              _id: new ObjectId(),
-              body: req.body.body,
-              created: new Date().getTime(),
-              replies: [],
-            },
-          },
-        }
-      );
+    const comment = await prisma.comment.create({
+      data: {
+        body: req.body.body,
+        post_id: +postId,
+        ...(req.body.parentCommentId != null && {
+          parent_comment_id: req.body.parentCommentId,
+        }),
+      },
+    });
 
-    return res.status(200).json({ error: false, id: comment.upsertedId });
-  })
-);
-
-/**
- * Reply to a comment
- */
-app.post(
-  "/posts/:postId/comments/:commentId",
-  catchErrors(async (req: Request, res: Response) => {
-    const { postId, commentId: parentCommentId } = req.params;
-    const post = await getDb()
-      .collection("posts")
-      .findOne({ _id: { $eq: +postId } });
-
-    if (!post)
-      throw new APIError(
-        404,
-        "The post you wish to comment on does not exist."
-      );
-
-    // TODO this doesn't work for 2nd-level and beyond comments; something wrong with the array filter
-    const comment = await getDb()
-      .collection("posts")
-      .updateOne(
-        { _id: +postId },
-        {
-          $push: {
-            "comments.$[comment].replies": {
-              _id: new ObjectId(),
-              body: req.body.body,
-              created: new Date().getTime(),
-              replies: [],
-            },
-          },
-        },
-        {
-          arrayFilters: [{ "comment._id": new ObjectId(parentCommentId) }],
-        }
-      );
-
-    return res.status(200).json({ error: false, id: comment.upsertedId });
+    return res.status(200).json({ error: false, id: comment.id });
   })
 );
 
