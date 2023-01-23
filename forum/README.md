@@ -12,7 +12,7 @@ Prerequisites: Node v18+; PNPM (or NPM etc.); Docker; Docker Compose.
 cp .env.example .env
 ```
 
-2. Start Mongo
+2. Start PostgreSQL
 
 ```bash
 docker-compose up -d
@@ -25,7 +25,14 @@ pnpm install
 # Or, npm install
 ```
 
-4. Start Express server (API)
+4. Run PostgreSQL migrations
+
+```bash
+pnpm prisma migrate deploy
+# Or, npm prisma migrate deploy
+```
+
+5. Start Express server (API)
 
 ```bash
 pnpm start

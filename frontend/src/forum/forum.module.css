@@ -18,15 +18,19 @@
   padding: 10px;
 }
 
-.comments {
+.parentComment {
   border-left: 1px solid black;
+  padding-left: 5px;
 }
 
-.comment {
-  margin: 15px 5px;
+.commentWrapper {
+  margin: 10px;
+  border: 1px solid lightgrey;
+  padding: 10px;
+  border-radius: 5px;
 }
 
-.comment .replyBtn {
+.replyBtn {
   cursor: pointer;
 }
 
