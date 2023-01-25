@@ -26,6 +26,25 @@ const options = {
     strategy: "jwt",
   },
   adapter: MongoDBAdapter(clientPromise),
+  callbacks: {
+    async jwt({ token, user, account, profile, isNewUser }) {
+      if (user) { // https://www.reddit.com/r/nextjs/comments/m3f3h5/custom_roles_with_nextauth_jwt/
+        // get user by email from mongo db
+        const user_db = await (await clientPromise).db("auth").collection("users").findOne({ "email": user.email })
+        token.roles = user_db.roles
+      }
+      return token
+    }, async signIn({ user, account, profile, email, credentials }) {
+      // get user by email from mongo db
+      const user_db = await (await clientPromise).db("auth").collection("users").findOne({ "email": user.email })
+      console.log("user_db", user_db)
+      if (user_db !== null) {
+        return true
+      } else {
+        return false
+      }
+    }
+  }
 };
 
 export default (req, res) => NextAuth(req, res, options);
