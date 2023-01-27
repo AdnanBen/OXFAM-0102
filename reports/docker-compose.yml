@@ -1,0 +1,25 @@
+version: "3.8"
+
+services:
+  mongo:
+    image: mongo:6
+    restart: unless-stopped
+    ports:
+      - ${DATABASE_PORT}:${DATABASE_PORT}
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_ROOT_USERNAME}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_ROOT_PASSWORD}
+      MONGO_USERNAME: ${MONGO_USERNAME}
+      MONGO_PASSWORD: ${MONGO_PASSWORD}
+      MONGO_INITDB_DATABASE: ${DATABASE_NAME}
+    command: --noscripting
+    volumes:
+      - ./docker-volumes/mongodb:/data/db
+      - ./resources-backend/mongo-init.sh:/docker-entrypoint-initdb.d/mongo-init.sh:ro
+  backend:
+    depends_on:
+      - mongo
+    build: ./resources-backend
+    env_file: ./.env
+    ports:
+      - 3000:3000
