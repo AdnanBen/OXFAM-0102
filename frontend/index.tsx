@@ -6,6 +6,8 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Feed from "./src/forum/Feed";
 import Post from "./src/forum/Post";
 import NewPost from "./src/forum/NewPost";
+import ModeratorDashboard from "./src/chat/ModeratorDashboard";
+import UserChat from "./src/chat/UserChat";
 
 const router = createBrowserRouter([
   {
@@ -35,6 +37,14 @@ const router = createBrowserRouter([
       {
         path: "forum/new",
         element: <NewPost />,
+      },
+      {
+        path: "moderator-dashboard",
+        element: <ModeratorDashboard />,
+      },
+      {
+        path: "chat",
+        element: <UserChat />,
       },
     ],
   },
