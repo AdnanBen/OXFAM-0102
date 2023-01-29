@@ -1,60 +1,78 @@
-import React, { useEffect, useState } from "react";
-import io from "socket.io-client";
+import React, { useEffect, useRef, useState } from "react";
+import { Button } from "rsuite";
+import io, { Socket } from "socket.io-client";
+import Chat from "./Chat";
 
 // TODO: when auth is working, as soon as moderator logs in, they should be 'listening'
 const ModeratorDashboard = () => {
-  const [socket, setSocket] = useState(null);
+  const socket = useRef<Socket | null>(null);
   const [chatRequests, setChatRequests] = useState({});
   const [isListening, setIsListening] = useState(false);
+  const [chattingWithUser, setChattingWithUser] = useState(null);
 
-  const listenToRequests = () => {
-    socket?.connect();
-    setIsListening(true);
+  const acceptChat = (userId) => {
+    socket.current?.emit("accept chat", { userId });
   };
 
   useEffect(() => {
-    const socket = io("http://localhost:8000", {
-      autoConnect: false,
+    socket.current = io("http://localhost:8000", {
       auth: { isAdmin: true },
     });
-    setSocket(socket);
 
-    socket.on("session", (payload) => {
-      socket.auth.sessionId = payload.sessionId;
-      // socket.connect();
+    socket.current.on("session", (payload) => {
+      socket.current?.auth.sessionId = payload.sessionId;
+      setIsListening(true);
     });
 
-    socket.on("request chat", (payload) => {
-      setChatRequests((old) => ({ ...old, [payload.userId]: true }));
+    socket.current.on("chat requests", (payload) => {
+      setChatRequests(payload.chatRequests);
     });
 
-    socket.on("disconnect", () => {
-      console.log("socket disconnected");
-      socket.removeAllListeners();
+    socket.current.on("chat started", (payload) => {
+      setChattingWithUser(payload.userId);
     });
 
-    return () => socket.disconnect();
+    socket.current.on("chat disconnected", () => {
+      setChattingWithUser(null);
+    });
+
+    socket.current.on("disconnect", () => {
+      socket.current?.removeAllListeners();
+    });
+
+    return () => socket.current?.disconnect();
   }, []);
-
-  console.log("pending chat requests", Object.keys(chatRequests));
 
   return (
     <div>
       <h2>Chat requests</h2>
 
-      {isListening ? (
-        <p>Listening to chat messages...</p>
-      ) : (
-        <button onClick={() => listenToRequests()}>
-          Listen to chat requests
-        </button>
+      {isListening && <p>Listening to chat requests...</p>}
+
+      {chattingWithUser && (
+        <>
+          <p>Chatting with user: {chattingWithUser}</p>
+          <Chat socket={socket.current} chatWithUserId={chattingWithUser} />
+        </>
       )}
 
-      <ul>
-        {Object.keys(chatRequests).map((userId) => (
-          <li key={`chat-request-${userId}`}>{userId}</li>
-        ))}
-      </ul>
+      {isListening && (
+        <ul>
+          {Object.keys(chatRequests).map((userId) => (
+            <li key={`chat-request-${userId}`}>
+              {userId}{" "}
+              <Button
+                size="xs"
+                appearance="ghost"
+                color="green"
+                onClick={() => acceptChat(userId)}
+              >
+                Accept chat
+              </Button>
+            </li>
+          ))}
+        </ul>
+      )}
     </div>
   );
 };

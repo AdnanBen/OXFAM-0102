@@ -1,24 +1,22 @@
-import React, { useEffect, useState } from "react";
-import io from "socket.io-client";
+import React, { useEffect, useRef, useState } from "react";
+import io, { Socket } from "socket.io-client";
+import Chat from "./Chat";
+//https://stackoverflow.com/questions/72238175/why-useeffect-running-twice-and-how-to-handle-it-well-in-react
 
-const Chat = () => {
-  const [socket, setSocket] = useState(null);
+const UserChat = ({ socket }: { socket: Socket }) => {
   const [requestSent, setRequestSent] = useState(false);
   const [moderatorsAvailable, setModeratorsAvailable] = useState(false);
+  const [chattingWithModerator, setChattingWithModerator] = useState(false);
 
   const requestChat = () => {
-    socket?.emit("request chat");
+    socket.emit("request chat");
     setRequestSent(true);
   };
 
   useEffect(() => {
-    const socket = io("http://localhost:8000");
-    setSocket(socket);
-
     socket.on("session", (payload) => {
       console.log("session event", payload);
       socket.auth = { sessionId: payload.sessionId };
-      // socket.connect();
     });
 
     socket.on("moderator availability", (payload) => {
@@ -26,13 +24,29 @@ const Chat = () => {
       setModeratorsAvailable(payload.areModeratorsAvailable);
     });
 
-    socket.on("disconnect", () => {
-      console.log("socket disconnected");
-      socket.removeAllListeners();
+    socket.on("chat started", (payload) => {
+      setChattingWithModerator(true);
     });
 
-    return () => socket.disconnect();
+    socket.on("chat disconnected", () => {
+      setRequestSent(false);
+      setChattingWithModerator(false);
+    });
+
+    socket.on("disconnect", () => {
+      socket?.removeAllListeners();
+    });
+
+    return () => {
+      console.log("disconnecting");
+
+      socket?.disconnect();
+    };
   }, []);
+
+  if (chattingWithModerator) {
+    return <Chat socket={socket} />;
+  }
 
   if (requestSent) {
     return <div>Request sent!</div>;
@@ -45,4 +59,9 @@ const Chat = () => {
   return <div>There are no moderators available to chat at the moment.</div>;
 };
 
-export default Chat;
+const UserChatWrapper = () => {
+  const s = io("http://localhost:8000");
+  return <UserChat socket={s} />;
+};
+
+export default UserChatWrapper;

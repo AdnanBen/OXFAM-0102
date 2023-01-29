@@ -16,24 +16,26 @@ const MODERATOR_ROOM_NAME = "moderators";
 const USER_ROOM_NAME = "users";
 
 const MODERATOR_AVAILABILITY_EVENT = "moderator availability";
+const USER_CHAT_REQUESTS_EVENT = "chat requests";
 const USER_REQUEST_CHAT_EVENT = "request chat";
 const NEW_SESSION_EVENT = "session";
 const MODERATOR_ACCEPT_CHAT_EVENT = "accept chat";
 const CHAT_MESSAGE_EVENT = "private message";
+const CHAT_DISCONNECT_EVENT = "chat disconnected";
+const CHAT_STARTED_EVENT = "chat started";
 
-const sessions = {};
+const sessions = {}; // Session ID => User ID
+const chatRequests = {}; // User ID => bool
 let numModeratorsConnected = 0;
 
 io.use((socket, next) => {
   const jwt = socket.handshake.auth.jwt;
-  // socket.request.
   // TODO remove isAdmin flag when JWT Auth is set up
   if (jwt || socket.handshake.auth.isAdmin) {
     // TODO: check if JWT is valid and for a moderator
     socket.isModerator = true;
   }
 
-  console.log("client thinks its session ID is ", socket.handshake.auth);
   const sessionUserId = sessions[socket.handshake.auth.sessionId];
   if (sessionUserId) {
     socket.sessionId = socket.handshake.auth.sessionId;
@@ -49,6 +51,30 @@ io.use((socket, next) => {
   next();
 });
 
+const sendLatestModeratorAvailability = () => {
+  // Update all users on moderator availability
+  io.to(USER_ROOM_NAME).emit(MODERATOR_AVAILABILITY_EVENT, {
+    areModeratorsAvailable: numModeratorsConnected > 0,
+  });
+};
+
+const sendLatestChatRequests = () => {
+  // Send all moderators latest list of chat requests
+  io.to(MODERATOR_ROOM_NAME).emit(USER_CHAT_REQUESTS_EVENT, {
+    chatRequests,
+  });
+};
+
+const addChatRequest = (userId) => {
+  chatRequests[userId] = true;
+  sendLatestChatRequests();
+};
+
+const deleteChatRequestAndSendUpdate = (userId) => {
+  delete chatRequests[userId];
+  sendLatestChatRequests();
+};
+
 io.on("connection", (socket) => {
   console.log(
     `user connected (${socket.isModerator ? "moderator" : "not moderator"})`,
@@ -60,8 +86,11 @@ io.on("connection", (socket) => {
   socket.emit(NEW_SESSION_EVENT, { sessionId: socket.sessionId });
 
   // When someone sends a chat message...
-  socket.on(CHAT_MESSAGE_EVENT, (payload, callback) => {
-    const { message, chatWithUserId } = payload;
+  socket.on(CHAT_MESSAGE_EVENT, (payload) => {
+    const { message, timestamp } = payload;
+    const chatWithUserId = socket.isModerator
+      ? payload.chatWithUserId
+      : socket.userId;
 
     // If user is not a moderator, they are only allowed to send messages to their own room
     if (!socket.isModerator && chatWithUserId !== socket.userId) {
@@ -71,38 +100,34 @@ io.on("connection", (socket) => {
     // Forward message to the room for the end-user
     socket.to(`chat-${chatWithUserId}`).emit(CHAT_MESSAGE_EVENT, {
       message,
-      from: socket.userId,
+      timestamp,
     });
-  });
-
-  socket.on("disconnect", () => {
-    console.log("disconnected  ", socket.userId);
   });
 
   if (socket.isModerator) {
     // A moderator has connected
     numModeratorsConnected++;
-
-    // Update all users on moderator availability
-    io.to(USER_ROOM_NAME).emit(MODERATOR_AVAILABILITY_EVENT, {
-      areModeratorsAvailable: numModeratorsConnected > 0,
-    });
+    sendLatestModeratorAvailability();
 
     // Join moderators-only room to receive chat request events from users
     socket.join(MODERATOR_ROOM_NAME);
 
     // When a moderator accepts a chat request, join them to the user's room
-    socket.on(MODERATOR_ACCEPT_CHAT_EVENT, (payload, callback) => {
+    socket.on(MODERATOR_ACCEPT_CHAT_EVENT, (payload) => {
       socket.join(`chat-${payload.userId}`);
+      io.to(`chat-${payload.userId}`).emit(CHAT_STARTED_EVENT, {
+        userId: payload.userId,
+      });
+      deleteChatRequestAndSendUpdate(payload.userId);
     });
 
     socket.on("disconnect", () => {
       numModeratorsConnected--;
+      sendLatestModeratorAvailability();
 
-      // Update all users on moderator availability
-      io.to(USER_ROOM_NAME).emit(MODERATOR_AVAILABILITY_EVENT, {
-        areModeratorsAvailable: numModeratorsConnected > 0,
-      });
+      // Inform of disconnection to all chat rooms that this moderator was in
+      const rooms = [...socket.rooms].filter((s) => s.startsWith("chat-"));
+      io.to(rooms).emit(CHAT_DISCONNECT_EVENT);
     });
   } else {
     // A user has connected
@@ -120,10 +145,14 @@ io.on("connection", (socket) => {
 
     socket.on(USER_REQUEST_CHAT_EVENT, () => {
       console.log("Sending chat request event to moderator room");
-      // Send a chat request to all moderators
-      io.to(MODERATOR_ROOM_NAME).emit(USER_REQUEST_CHAT_EVENT, {
-        userId: socket.userId,
-      });
+      addChatRequest(socket.userId);
+    });
+
+    socket.on("disconnect", () => {
+      deleteChatRequestAndSendUpdate(socket.userId);
+
+      // Inform of disconnection to all members (moderators) of this chat room
+      io.to(`chat-${socket.userId}`).emit(CHAT_DISCONNECT_EVENT);
     });
   }
 });
