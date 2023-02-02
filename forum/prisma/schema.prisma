@@ -8,15 +8,16 @@ datasource db {
 }
 
 model Post {
-  id       Int       @id @default(autoincrement())
-  created  DateTime  @default(now())
-  title    String    @db.VarChar(100)
+  id       Int        @id @default(autoincrement())
+  created  DateTime   @default(now())
+  title    String     @db.VarChar(100)
   body     String
   board_id Int
-  deleted  Boolean   @default(false)
-  board    Board     @relation(fields: [board_id], references: [id])
+  deleted  Boolean    @default(false)
+  board    Board      @relation(fields: [board_id], references: [id])
   comments Comment[]
   PostTag  PostTag[]
+  PostFlag PostFlag[]
 }
 
 model Board {
@@ -39,6 +40,14 @@ model PostTag {
   tag      Tag    @relation(fields: [tag_name], references: [name])
 
   @@id([post_id, tag_name])
+}
+
+model PostFlag {
+  id        Int      @id @default(autoincrement())
+  post_id   Int
+  timestamp DateTime @default(now())
+  handled   Boolean  @default(false)
+  post      Post     @relation(fields: [post_id], references: [id])
 }
 
 model Comment {

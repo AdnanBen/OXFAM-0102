@@ -75,6 +75,23 @@ app.get(
 );
 
 /**
+ * Flag a post for moderator attention.
+ * TODO: this should require a CAPTCHA (to avoid bots flooding site with spam flag requests).
+ */
+app.post(
+  "/posts/:postId/flag",
+  catchErrors(async (req: Request, res: Response) => {
+    const { postId } = req.params;
+
+    await prisma.postFlag.create({
+      data: { post_id: +postId, timestamp: new Date() },
+    });
+
+    return res.status(200).json({ error: false });
+  })
+);
+
+/**
  * Get a top-level post and all its comments.
  */
 app.get(
