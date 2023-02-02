@@ -12,7 +12,32 @@ model Post {
   created  DateTime  @default(now())
   title    String    @db.VarChar(100)
   body     String
+  board_id Int
+  board    Board     @relation(fields: [board_id], references: [id])
   comments Comment[]
+  PostTag  PostTag[]
+}
+
+model Board {
+  id          Int     @id @default(autoincrement())
+  name        String  @db.VarChar(50)
+  description String?
+  Post        Post[]
+}
+
+model Tag {
+  name        String    @id
+  description String?
+  PostTag     PostTag[]
+}
+
+model PostTag {
+  post_id  Int
+  tag_name String
+  post     Post   @relation(fields: [post_id], references: [id])
+  tag      Tag    @relation(fields: [tag_name], references: [name])
+
+  @@id([post_id, tag_name])
 }
 
 model Comment {

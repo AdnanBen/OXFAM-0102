@@ -44,7 +44,11 @@ app.post(
   "/posts",
   catchErrors(async (req: Request, res: Response) => {
     const post = await prisma.post.create({
-      data: { title: req.body.title, body: req.body.body },
+      data: {
+        title: req.body.title,
+        body: req.body.body,
+        board_id: req.body.board_id,
+      },
     });
 
     return res.status(200).json({ error: false, id: post.id });
@@ -53,13 +57,17 @@ app.post(
 
 /**
  * Get all the top-level post titles.
+ * Optionally filter by board with ?board_id=id query parameter.
  */
 app.get(
   "/posts",
   catchErrors(async (req: Request, res: Response) => {
+    const { board_id: boardId } = req.query;
+
     // Don't get the post body itself
     const posts = await prisma.post.findMany({
       select: { id: true, title: true, created: true },
+      ...(boardId != null && { where: { board_id: +boardId } }),
     });
 
     return res.status(200).json({ error: false, posts });
@@ -136,6 +144,33 @@ app.post(
     });
 
     return res.status(200).json({ error: false, id: comment.id });
+  })
+);
+
+/**
+ * Get list of all boards
+ */
+app.get(
+  "/boards",
+  catchErrors(async (req: Request, res: Response) => {
+    const boards = await prisma.board.findMany({
+      select: { id: true, name: true, description: true },
+    });
+    return res.status(200).json({ error: false, boards });
+  })
+);
+
+/**
+ * Get list of all tags
+ */
+app.get(
+  "/tags",
+  catchErrors(async (req: Request, res: Response) => {
+    const tags = await prisma.tag.findMany({
+      select: { name: true, description: true },
+    });
+
+    return res.status(200).json({ error: false, tags });
   })
 );
 
