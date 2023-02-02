@@ -104,17 +104,16 @@ app.delete(
   "/posts/:postId",
   catchErrors(async (req: Request, res: Response) => {
     const { postId } = req.params;
-    const soft_delete = { $set: { deleted: true } };
-    // TODO: mark the post as deleted; don't actually delete it (i.e., soft-delete)
-    getDb()
-    .collection("posts")
-    .updateOne({ _id: { $eq: +postId } }, soft_delete, (err, result) => {
-      if (err) {
-        throw new APIError(404, "Cannot delete post");
-      }
+
+    // Mark the post as deleted; don't actually delete it (i.e., soft-delete)
+    await prisma.post.update({
+      where: { id: +postId },
+      data: { deleted: true },
+    });
+
     return res.status(200).json({ error: false, postId });
   })
-}));
+);
 
 /**
  * Make a new comment on the given top-level Post ID.

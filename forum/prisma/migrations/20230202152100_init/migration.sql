@@ -1,11 +1,14 @@
-/*
-  Warnings:
+-- CreateTable
+CREATE TABLE "Post" (
+    "id" SERIAL NOT NULL,
+    "created" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "title" VARCHAR(100) NOT NULL,
+    "body" TEXT NOT NULL,
+    "board_id" INTEGER NOT NULL,
+    "deleted" BOOLEAN NOT NULL DEFAULT false,
 
-  - Added the required column `board_id` to the `Post` table without a default value. This is not possible if the table is not empty.
-
-*/
--- AlterTable
-ALTER TABLE "Post" ADD COLUMN     "board_id" INTEGER NOT NULL;
+    CONSTRAINT "Post_pkey" PRIMARY KEY ("id")
+);
 
 -- CreateTable
 CREATE TABLE "Board" (
@@ -32,6 +35,17 @@ CREATE TABLE "PostTag" (
     CONSTRAINT "PostTag_pkey" PRIMARY KEY ("post_id","tag_name")
 );
 
+-- CreateTable
+CREATE TABLE "Comment" (
+    "id" SERIAL NOT NULL,
+    "body" TEXT NOT NULL,
+    "created" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "parent_comment_id" INTEGER,
+    "post_id" INTEGER,
+
+    CONSTRAINT "Comment_pkey" PRIMARY KEY ("id")
+);
+
 -- AddForeignKey
 ALTER TABLE "Post" ADD CONSTRAINT "Post_board_id_fkey" FOREIGN KEY ("board_id") REFERENCES "Board"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
@@ -40,3 +54,9 @@ ALTER TABLE "PostTag" ADD CONSTRAINT "PostTag_post_id_fkey" FOREIGN KEY ("post_i
 
 -- AddForeignKey
 ALTER TABLE "PostTag" ADD CONSTRAINT "PostTag_tag_name_fkey" FOREIGN KEY ("tag_name") REFERENCES "Tag"("name") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Comment" ADD CONSTRAINT "Comment_parent_comment_id_fkey" FOREIGN KEY ("parent_comment_id") REFERENCES "Comment"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Comment" ADD CONSTRAINT "Comment_post_id_fkey" FOREIGN KEY ("post_id") REFERENCES "Post"("id") ON DELETE SET NULL ON UPDATE CASCADE;

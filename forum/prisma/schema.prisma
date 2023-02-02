@@ -13,6 +13,7 @@ model Post {
   title    String    @db.VarChar(100)
   body     String
   board_id Int
+  deleted  Boolean   @default(false)
   board    Board     @relation(fields: [board_id], references: [id])
   comments Comment[]
   PostTag  PostTag[]
