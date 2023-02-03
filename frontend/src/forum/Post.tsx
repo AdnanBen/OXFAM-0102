@@ -6,6 +6,7 @@ import { Modal } from "rsuite";
 type Props = {
   id: number;
   title: string;
+  tag: string;
   body: string;
   created: Date;
   comments: string[];
@@ -97,6 +98,7 @@ const Post = () => {
           {new Date(post.created).toLocaleString()}
         </i>
       </div>
+      <h3>{post.tag}</h3>
       <p>{post.body}</p>
 
       <div className={styles.commentsWrapper}>

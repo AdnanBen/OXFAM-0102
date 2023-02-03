@@ -2,7 +2,7 @@ import "rsuite/dist/rsuite.min.css";
 import React from "react";
 import ReactDOM from "react-dom/client";
 import App from "./src/App";
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { createBrowserRouter, RouterProvider} from "react-router-dom";
 import Feed from "./src/forum/Feed";
 import Post from "./src/forum/Post";
 import NewPost from "./src/forum/NewPost";
