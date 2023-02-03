@@ -36,8 +36,7 @@ const Chat = ({
       console.log("received message", payload);
       setMessages((old) => {
         old.message.push(payload);
-        payload.isThem = true;
-
+        payload.isUser = true;
         return { ...old };
       });
     });
@@ -48,20 +47,13 @@ const Chat = ({
 
   <>    
     <div className={styles.chat_container}>
-      
       <div className={styles.message_container}>
-        
         {messages.message.map((m) => (
-          
-              <div className={`${styles.message} ${m.isThem ? styles.them : styles.me}`} >
-                
-                {m.message} - {new Date(m.timestamp).toLocaleString()}
-                
-                
+              <div className={`${styles.message} ${m.isUser ? styles.them : styles.me}`} >
+                {m.isUser ? <div className={styles.sender}>Them:</div> : <div className={styles.sender}>You:</div>}
+                {m.message} - {new Date(m.timestamp).toLocaleTimeString()}
               </div> 
           ))}
-        
-
       </div>
       
       <div className={styles.input_container}>
@@ -69,19 +61,11 @@ const Chat = ({
           value={inputValue}
           onChange={(e) => setInputValue(e.target.value)}
         />
-
         <button className={styles.send_button} onClick={() => sendNewMessage(inputValue)}>Send message</button>
       </div>
-
-
     </div>
   </>
     
-
-          
-
-
-      
   );
 };
 
