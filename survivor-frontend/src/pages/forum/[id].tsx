@@ -1,7 +1,9 @@
-import React, { useState } from "react";
-import { useLoaderData } from "react-router-dom";
+import { useState } from "react";
 import styles from "./forum.module.css";
-import { Modal } from "rsuite";
+import { Loader, Message, Modal } from "rsuite";
+import { type NextPage } from "next";
+import { useRouter } from "next/router";
+import useSWR from "swr";
 
 type Props = {
   id: number;
@@ -12,8 +14,20 @@ type Props = {
   comments: string[];
 };
 
-const Post = () => {
-  const post = useLoaderData() as Props;
+const fetcher = (...args) => fetch(...args).then((res) => res.json());
+
+const Post: NextPage = () => {
+  const router = useRouter();
+  const { id } = router.query;
+
+  const {
+    data: post,
+    error,
+    isLoading,
+  } = useSWR(`http://localhost:8000/posts/${id}`, fetcher);
+
+  console.log(post, error);
+
   const [showCommentDialog, setShowCommentDialog] = useState(false);
   const [replyToComment, setReplyToComment] = useState(null);
 
@@ -92,20 +106,32 @@ const Post = () => {
         </Modal>
       )}
 
-      <div className={styles.postHeader}>
-        <h3>{post.title}</h3>
-        <i className={styles.timestamp}>
-          {new Date(post.created).toLocaleString()}
-        </i>
-      </div>
-      <h3>{post.tag}</h3>
-      <p>{post.body}</p>
+      {isLoading && <Loader />}
 
-      <div className={styles.commentsWrapper}>
-        <strong>Replies</strong>{" "}
-        <button onClick={() => setShowCommentDialog(true)}>add comment</button>
-        {renderComments(post.comments)}
-      </div>
+      {error && (
+        <Message type="error">There was an error loading the post.</Message>
+      )}
+
+      {!!post && (
+        <>
+          <div className={styles.postHeader}>
+            <h3>{post.post.title}</h3>
+            <i className={styles.timestamp}>
+              {new Date(post.post.created).toLocaleString()}
+            </i>
+          </div>
+          <h3>{post.post.tag}</h3>
+          <p>{post.post.body}</p>
+
+          <div className={styles.commentsWrapper}>
+            <strong>Replies</strong>{" "}
+            <button onClick={() => setShowCommentDialog(true)}>
+              add comment
+            </button>
+            {renderComments(post.post.comments)}
+          </div>
+        </>
+      )}
     </>
   );
 };

@@ -4,3 +4,4 @@ node_modules
 docker-volumes
 dist
 .parcel-cache
+.next

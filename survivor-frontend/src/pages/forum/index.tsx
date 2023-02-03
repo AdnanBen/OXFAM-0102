@@ -1,5 +1,8 @@
-import React from "react";
-import { useLoaderData, Link } from "react-router-dom";
+import { type NextPage } from "next";
+import Head from "next/head";
+import Link from "next/link";
+import useSWR from "swr";
+
 import styles from "./forum.module.css";
 
 type Post = {
@@ -25,15 +28,29 @@ const Post = ({ post }: { post: Post }) => {
   );
 };
 
-const Feed = () => {
-  const posts = useLoaderData() as Post[];
+const fetcher = (...args) => fetch(...args).then((res) => res.json());
+
+const Feed: NextPage = () => {
+  const {
+    data: posts,
+    error,
+    isLoading,
+  } = useSWR(`http://localhost:8000/posts`, fetcher);
 
   return (
     <>
-      {posts.map((p) => (
-        <Post post={p} />
-      ))}
-      <Link to="/forum/new">Add new forum</Link>
+      <Head>
+        <title>Forum</title>
+        <meta name="description" content="Forum" />
+      </Head>
+
+      <main>
+        <h2>Forum</h2>
+        {posts?.posts?.map((p) => (
+          <Post post={p} />
+        ))}
+        <Link href="/forum/new">Add new post</Link>
+      </main>
     </>
   );
 };
