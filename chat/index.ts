@@ -87,7 +87,7 @@ io.on("connection", (socket) => {
 
   // When someone sends a chat message...
   socket.on(CHAT_MESSAGE_EVENT, (payload) => {
-    const { message, timestamp } = payload;
+    const { message, timestamp} = payload;
     const chatWithUserId = socket.isModerator
       ? payload.chatWithUserId
       : socket.userId;
@@ -100,7 +100,7 @@ io.on("connection", (socket) => {
     // Forward message to the room for the end-user
     socket.to(`chat-${chatWithUserId}`).emit(CHAT_MESSAGE_EVENT, {
       message,
-      timestamp,
+      timestamp
     });
   });
 
