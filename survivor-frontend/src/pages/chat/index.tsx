@@ -1,8 +1,10 @@
-import React, { useEffect, useRef, useState } from "react";
+import { NextPage } from "next";
+import React, { useEffect, useState } from "react";
+import { Loader } from "rsuite";
 import io, { Socket } from "socket.io-client";
-import Chat from "./Chat";
-//https://stackoverflow.com/questions/72238175/why-useeffect-running-twice-and-how-to-handle-it-well-in-react
+import Chat from "../../components/Chat";
 
+//https://stackoverflow.com/questions/72238175/why-useeffect-running-twice-and-how-to-handle-it-well-in-react
 const UserChat = ({ socket }: { socket: Socket }) => {
   const [requestSent, setRequestSent] = useState(false);
   const [moderatorsAvailable, setModeratorsAvailable] = useState(false);
@@ -14,8 +16,10 @@ const UserChat = ({ socket }: { socket: Socket }) => {
   };
 
   useEffect(() => {
+    console.log("effect", socket);
     socket.on("session", (payload) => {
       console.log("session event", payload);
+      window.sessionStorage.setItem("sessionId", payload.sessionId);
       socket.auth = { sessionId: payload.sessionId };
     });
 
@@ -39,7 +43,6 @@ const UserChat = ({ socket }: { socket: Socket }) => {
 
     return () => {
       console.log("disconnecting");
-
       socket?.disconnect();
     };
   }, []);
@@ -59,9 +62,18 @@ const UserChat = ({ socket }: { socket: Socket }) => {
   return <div>There are no moderators available to chat at the moment.</div>;
 };
 
-const UserChatWrapper = () => {
-  const s = io("http://localhost:8000");
-  return <UserChat socket={s} />;
+const ChatPage: NextPage = () => {
+  const [socket, setSocket] = useState<Socket | null>(null);
+  useEffect(() => {
+    const id = window?.sessionStorage.getItem("sessionId");
+    setSocket(io("http://localhost:8000", { auth: { sessionId: id } }));
+
+    return () => {
+      socket?.close();
+    };
+  }, []);
+
+  return socket ? <UserChat socket={socket} /> : <Loader center backdrop />;
 };
 
-export default UserChatWrapper;
+export default ChatPage;

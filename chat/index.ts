@@ -10,7 +10,7 @@ const app = express();
 const server = http.createServer(app);
 
 // TODO get rid of CORS config when deployed with reverse proxy on same URL
-const io = new Server(server, { cors: { origin: "http://localhost:1234" } });
+const io = new Server(server, { cors: { origin: "http://localhost:3000" } });
 
 const MODERATOR_ROOM_NAME = "moderators";
 const USER_ROOM_NAME = "users";

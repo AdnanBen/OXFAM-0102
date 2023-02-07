@@ -1,11 +1,11 @@
-import { SocketAddress } from "net";
+import { NextPage } from "next";
 import React, { useEffect, useRef, useState } from "react";
 import { Button } from "rsuite";
 import io, { Socket } from "socket.io-client";
-import Chat from "./Chat";
+import Chat from "../../components/Chat";
 
 // TODO: when auth is working, as soon as moderator logs in, they should be 'listening'
-const ModeratorDashboard = () => {
+const ModeratorDashboard: NextPage = () => {
   const socket = useRef<Socket | null>(null);
   const [chatRequests, setChatRequests] = useState({});
   const [isListening, setIsListening] = useState(false);
@@ -21,7 +21,7 @@ const ModeratorDashboard = () => {
     });
 
     socket.current.on("session", (payload) => {
-      socket.current?.auth.sessionId = payload.sessionId;
+      socket.current.auth.sessionId = payload.sessionId;
       setIsListening(true);
     });
 
