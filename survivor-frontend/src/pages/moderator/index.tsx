@@ -1,47 +1,40 @@
 import { NextPage } from "next";
 import React, { useEffect, useRef, useState } from "react";
-import { Button } from "rsuite";
+import { Loader, Button } from "rsuite";
 import io, { Socket } from "socket.io-client";
 import Chat from "../../components/Chat";
 
 // TODO: when auth is working, as soon as moderator logs in, they should be 'listening'
-const ModeratorDashboard: NextPage = () => {
-  const socket = useRef<Socket | null>(null);
+const ModeratorChat = ({ socket }: { socket: Socket }) => {
   const [chatRequests, setChatRequests] = useState({});
   const [isListening, setIsListening] = useState(false);
   const [chattingWithUser, setChattingWithUser] = useState(null);
 
   const acceptChat = (userId) => {
-    socket.current?.emit("accept chat", { userId });
+    socket.emit("accept chat", { userId });
   };
 
   useEffect(() => {
-    socket.current = io("http://localhost:8000", {
-      auth: { isAdmin: true },
-    });
-
-    socket.current.on("session", (payload) => {
-      socket.current.auth.sessionId = payload.sessionId;
+    socket.on("session", (payload) => {
+      socket.auth.sessionId = payload.sessionId;
       setIsListening(true);
     });
 
-    socket.current.on("chat requests", (payload) => {
+    socket.on("chat requests", (payload) => {
       setChatRequests(payload.chatRequests);
     });
 
-    socket.current.on("chat started", (payload) => {
+    socket.on("chat started", (payload) => {
       setChattingWithUser(payload.userId);
     });
 
-    socket.current.on("chat disconnected", () => {
+    socket.on("chat disconnected", () => {
       setChattingWithUser(null);
     });
 
-    socket.current.on("disconnect", () => {
-      socket.current?.removeAllListeners();
+    socket.on("disconnect", () => {
+      socket.removeAllListeners();
     });
-
-    return () => socket.current?.disconnect();
   }, []);
 
   return (
@@ -53,7 +46,7 @@ const ModeratorDashboard: NextPage = () => {
       {chattingWithUser && (
         <>
           <p>Chatting with user: {chattingWithUser}</p>
-          <Chat socket={socket.current} chatWithUserId={chattingWithUser} />
+          <Chat socket={socket} chatWithUserId={chattingWithUser} />
         </>
       )}
 
@@ -75,6 +68,30 @@ const ModeratorDashboard: NextPage = () => {
         </ul>
       )}
     </div>
+  );
+};
+
+const ModeratorDashboard: NextPage = () => {
+  const [socket, setSocket] = useState<Socket | null>(null);
+  useEffect(() => {
+    const sessionId = window?.sessionStorage.getItem("sessionId");
+
+    setSocket(
+      io("http://localhost", {
+        auth: { isAdmin: true, sessionId },
+        path: "/api/chat",
+      })
+    );
+
+    return () => {
+      socket?.close();
+    };
+  }, []);
+
+  return socket ? (
+    <ModeratorChat socket={socket} />
+  ) : (
+    <Loader center backdrop />
   );
 };
 

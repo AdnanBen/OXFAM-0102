@@ -11,3 +11,5 @@ services:
       JWT_SECRET: ${JWT_SECRET}
     volumes:
       - ./haproxy.cfg:/usr/local/etc/haproxy/haproxy.cfg:ro
+    extra_hosts:
+      - "host.docker.internal:host-gateway"

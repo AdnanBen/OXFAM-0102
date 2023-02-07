@@ -33,18 +33,13 @@ const UserChat = ({ socket }: { socket: Socket }) => {
     });
 
     socket.on("chat disconnected", () => {
-      setRequestSent(false);
-      setChattingWithModerator(false);
+      // setRequestSent(false);
+      // setChattingWithModerator(false);
     });
 
     socket.on("disconnect", () => {
       socket?.removeAllListeners();
     });
-
-    return () => {
-      console.log("disconnecting");
-      socket?.disconnect();
-    };
   }, []);
 
   if (chattingWithModerator) {
@@ -65,8 +60,10 @@ const UserChat = ({ socket }: { socket: Socket }) => {
 const ChatPage: NextPage = () => {
   const [socket, setSocket] = useState<Socket | null>(null);
   useEffect(() => {
-    const id = window?.sessionStorage.getItem("sessionId");
-    setSocket(io("http://localhost:8000", { auth: { sessionId: id } }));
+    const sessionId = window?.sessionStorage.getItem("sessionId");
+    setSocket(
+      io("http://localhost", { auth: { sessionId }, path: "/api/chat" })
+    );
 
     return () => {
       socket?.close();

@@ -10,7 +10,10 @@ const app = express();
 const server = http.createServer(app);
 
 // TODO get rid of CORS config when deployed with reverse proxy on same URL
-const io = new Server(server, { cors: { origin: "http://localhost:3000" } });
+const io = new Server(server, {
+  cors: { origin: "http://localhost:3000" },
+  path: "/api/chat",
+});
 
 const MODERATOR_ROOM_NAME = "moderators";
 const USER_ROOM_NAME = "users";
@@ -87,7 +90,7 @@ io.on("connection", (socket) => {
 
   // When someone sends a chat message...
   socket.on(CHAT_MESSAGE_EVENT, (payload) => {
-    const { message, timestamp} = payload;
+    const { message, timestamp } = payload;
     const chatWithUserId = socket.isModerator
       ? payload.chatWithUserId
       : socket.userId;
@@ -100,7 +103,7 @@ io.on("connection", (socket) => {
     // Forward message to the room for the end-user
     socket.to(`chat-${chatWithUserId}`).emit(CHAT_MESSAGE_EVENT, {
       message,
-      timestamp
+      timestamp,
     });
   });
 
@@ -158,6 +161,6 @@ io.on("connection", (socket) => {
 });
 
 const port = process.env.PORT;
-server.listen(port, () => {
+server.listen(port, "0.0.0.0", () => {
   console.log(`⚡️[chat]: Server is running at http://localhost:${port}`);
 });
