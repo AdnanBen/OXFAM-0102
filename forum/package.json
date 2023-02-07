@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "ts-node -T index.ts",
+    "start:migrate": "prisma migrate deploy && npm run db:seed && npm run start",
     "db:seed": "ts-node prisma/seed.ts",
     "db:createmigrations": "prisma migrate dev",
     "postinstall": "primsa generate"
