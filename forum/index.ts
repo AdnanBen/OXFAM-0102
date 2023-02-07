@@ -191,6 +191,6 @@ app.get(
 );
 
 const port = process.env.PORT;
-app.listen(port, () => {
+app.listen(port, "0.0.0.0", () => {
   console.log(`⚡️[forum]: Server is running at http://localhost:${port}`);
 });
