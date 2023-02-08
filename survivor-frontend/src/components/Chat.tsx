@@ -10,7 +10,7 @@ const Chat = ({
   chatWithUserId: string | null;
 }) => {
   const [inputValue, setInputValue] = useState("");
-  const [messages, setMessages] = useState({ message: [] });
+  const [messages, setMessages] = useState({ messages: [] });
 
   const sendNewMessage = (message: string) => {
     const payload = {
@@ -20,27 +20,26 @@ const Chat = ({
     };
     socket.emit("private message", payload);
     setMessages((old) => {
-      old.message.push(payload);
-      return { ...old };
+      return { messages: [...old.messages, payload] };
     });
   };
 
   useEffect(() => {
     socket.on("private message", (payload) => {
-      console.log("received message", payload);
       setMessages((old) => {
-        old.message.push(payload);
         payload.isUser = true;
-        return { ...old };
+        return { messages: [...old.messages, payload] };
       });
     });
+
+    return () => socket.removeAllListeners();
   }, []);
 
   return (
     <>
       <div className={styles.chat_container}>
         <div className={styles.message_container}>
-          {messages.message.map((m) => (
+          {messages.messages.map((m) => (
             <div
               className={`${styles.message} ${
                 m.isUser ? styles.them : styles.me

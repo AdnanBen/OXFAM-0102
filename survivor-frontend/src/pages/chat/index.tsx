@@ -33,8 +33,8 @@ const UserChat = ({ socket }: { socket: Socket }) => {
     });
 
     socket.on("chat disconnected", () => {
-      // setRequestSent(false);
-      // setChattingWithModerator(false);
+      setRequestSent(false);
+      setChattingWithModerator(false);
     });
 
     socket.on("disconnect", () => {
