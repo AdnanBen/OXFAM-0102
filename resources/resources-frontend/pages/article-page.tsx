@@ -2,6 +2,7 @@ import { useRouter } from "next/router";
 import { useState, useEffect } from "react";
 import styles from "../styles/Article-page.module.css";
 import { fetchArticleById } from "../api/articles";
+import {Article} from '../interfaces'; 
 
 export default function ArticlePage() {
   const router = useRouter();
@@ -9,12 +10,12 @@ export default function ArticlePage() {
 
   const [values, setValues] = useState({
     error: "",
-    article: {},
+    article: {} as Article,
   });
 
   const { error, article } = values;
 
-  const loadArticleById = (id) => {
+  const loadArticleById = (id: string ) => {
     fetchArticleById(id).then((data) => {
       console.log("data", data);
       if (data.error) {
@@ -29,8 +30,10 @@ export default function ArticlePage() {
   };
 
   useEffect(() => {
-    loadArticleById(router.query.articleId);
+    const id = Array.isArray(router.query.articleId) ? router.query.articleId[0] :router.query.articleId
+    loadArticleById(id);
   }, []);
+  
   return (
     <>
       <div className={styles.articleContainer}>

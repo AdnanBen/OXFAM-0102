@@ -3,6 +3,7 @@ import { fetchAllArticleTitles, deleteArticleById } from "../api/articles";
 import Link from "next/link";
 
 import Router from "next/router";
+import { Article } from "../interfaces";
 
 function AdminDashboard() {
   const [values, setValues] = useState({
@@ -23,13 +24,13 @@ function AdminDashboard() {
     });
   };
 
-  const deleteArticle = (id) => {
+  const deleteArticle = (id: string) => {
     deleteArticleById(id).then((data) => {
       if (data.error) {
         setValues({ ...values, error: data.error });
       } else {
         console.log("article deleted");
-        Router.reload(window.location.pathname);
+        Router.reload();
       }
     });
   };
@@ -43,7 +44,7 @@ function AdminDashboard() {
       <Link href={`/article-submission-form`}>
         <div>Add New Article</div>
       </Link>
-      {values.articles.map((article) => {
+      {values.articles.map((article: Article) => {
         return (
           <>
             <div>

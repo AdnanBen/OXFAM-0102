@@ -1,7 +1,8 @@
 import dynamic from "next/dynamic";
-import { useEffect, useState } from "react";
-import { fetchArticleById, updateArticleById } from "../api/articles";
-import { useRouter } from "next/router";
+import { useState } from "react";
+import { postResourceForm } from "../api/articles";
+import Router from "next/router";
+import { NextResponse } from "next/server";
 
 import "react-quill/dist/quill.snow.css";
 
@@ -31,53 +32,41 @@ const modules = {
 };
 
 export default function ArticleSubmissionForm() {
-  const router = useRouter();
-  console.log("router.query.articleId", router.query.articleId);
-
-  const [error, setError] = useState("");
   const [title, setTitle] = useState("");
   const [category, setCategory] = useState("");
   const [content, setContent] = useState("");
 
-  console.log("content", content);
-
-  function submitHandler(event) {
+  const submitHandler = (event: React.FormEvent<EventTarget>): void =>   {
     event.preventDefault();
     const requestObj = {
       title: title,
       body: content,
       category: category,
     };
-    updateArticleById(router.query.articleId, requestObj);
-  }
-
-  function handleTitleChange(event) {
-    event.preventDefault();
-    setTitle(event.target.value);
-  }
-
-  function handleCategoryChange(event) {
-    event.preventDefault();
-    setCategory(event.target.value);
-  }
-
-  const loadArticle = (id) => {
-    fetchArticleById(id).then((data) => {
-      console.log("data", data);
-      if (data.error) {
-        setError(data.error);
+    postResourceForm(requestObj).then((data) => {
+      if (data?.error) {
+        console.log(data?.error);
+        // setValues({ ...values, error: data.error });
       } else {
-        console.lg;
-        setTitle(data.article.title);
-        setCategory(data.article.category);
-        setContent(data.article.body);
+        console.log("article created");
+        // Router.reload("/admin-dashboard");
+        // NextResponse.redirect("/admin-dashboard");
+        Router.push("/admin-dashboard");
       }
     });
-  };
+  }
 
-  useEffect(() => {
-    loadArticle(router.query.articleId);
-  }, []);
+  const handleTitleChange =(event: React.FormEvent<EventTarget>): void =>  {
+    event.preventDefault();
+    const target = event.target as HTMLButtonElement;
+    setTitle(target? target.value: '');
+  }
+
+  const handleCategoryChange = (event: React.FormEvent<EventTarget>): void => {
+    event.preventDefault();
+    const target = event.target as HTMLButtonElement;
+    setCategory(target? target.value: '');
+  }
 
   return (
     <form onSubmit={submitHandler}>
@@ -99,14 +88,9 @@ export default function ArticleSubmissionForm() {
         onChange={handleCategoryChange}
         required
       />
-      <QuillNoSSRWrapper
-        modules={modules}
-        onChange={(html) => setContent(html)}
-        // onChange={setContent}
-        theme="snow"
-        value={content}
-      />
+      <QuillNoSSRWrapper modules={modules} onChange={setContent} theme="snow" />
       <button>Save</button>
+      <p>{content}</p>
     </form>
   );
 }

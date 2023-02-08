@@ -3,9 +3,10 @@ import { useEffect, useState } from "react";
 import { fetchAllArticleTitles } from "../api/articles";
 import Link from "next/link";
 import styles from "../styles/Resource-home.module.css";
+import { Article } from "../interfaces";
 
 function ResourceHome() {
-  const categoryTypes = ["violence", "sexual_assault"];
+  const categoryTypes: string[] = ["violence", "sexual_assault"];
   const [values, setValues] = useState({
     error: "",
     articles: [],
@@ -29,16 +30,16 @@ function ResourceHome() {
 
   console.log("values.articles", values.articles);
 
-  const collapsibleHeader = (category) => {
+  const collapsibleHeader = (category: string) => {
     return <div>{category}</div>;
   };
 
-  const collapsibleContent = (category) => {
+  const collapsibleContent = (category: string ) => {
     const filteredArticles = values?.articles?.filter(
-      (article) => article.category === category
+      (article: Article) => article.category === category
     );
     console.log("filteredArticles", filteredArticles);
-    return filteredArticles.map((article) => {
+    return filteredArticles.map((article: Article) => {
       return (
         <Link href={`/article-page?articleId=${article._id}`} key={article._id}>
           <div className={styles.articleContainer}>{article.title}</div>
@@ -53,7 +54,7 @@ function ResourceHome() {
   return (
     <>
       <div className={styles.resourceTitle}>Resources</div>
-      {categoryTypes.map((category) => {
+      {categoryTypes.map((category: string) => {
         return (
           <CollapsibleTab
             headerComponent={collapsibleHeader(category)}
@@ -63,7 +64,6 @@ function ResourceHome() {
       })}
     </>
   );
-  return <h1>First Post</h1>;
 }
 
 export default ResourceHome;
