@@ -38,7 +38,7 @@ const getAll = (req: Request, res: Response, next: NextFunction) => {
 };
 
 const getAllTitles = (req: Request, res: Response, next: NextFunction) => {
-  return Article.find({}, "_id, title")
+  return Article.find({}).select("_id, title, category")
     .then((articles) => res.status(201).json({ articles }))
     .catch((error) => res.status(500).json({ error }));
 };
