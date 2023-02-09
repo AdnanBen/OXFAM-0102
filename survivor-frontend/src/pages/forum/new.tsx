@@ -3,21 +3,26 @@ import Link from "next/link";
 import styles from "./forum.module.css";
 import useSWR from "swr";
 
-import ReactQuill from 'react-quill';
-import 'react-quill/dist/quill.snow.css';
+import "react-quill/dist/quill.snow.css";
+import dynamic from "next/dynamic";
 
-const  modules  = {
+const QuillNoSSRWrapper = dynamic(import("react-quill"), {
+  ssr: false,
+  loading: () => <p>Loading ...</p>,
+});
+
+const modules = {
   toolbar: [
-      [{ font: [] }],
-      [{ header: [1, 2, 3, 4, 5, 6, false] }],
-      ["bold", "italic", "underline", "strike"],
-      [{ color: [] }, { background: [] }],
-      [{ script:  "sub" }, { script:  "super" }],
-      ["blockquote", "code-block"],
-      [{ list:  "ordered" }, { list:  "bullet" }],
-      [{ indent:  "-1" }, { indent:  "+1" }, { align: [] }],
-      ["link", "image", "video"],
-      ["clean"],
+    [{ font: [] }],
+    [{ header: [1, 2, 3, 4, 5, 6, false] }],
+    ["bold", "italic", "underline", "strike"],
+    [{ color: [] }, { background: [] }],
+    [{ script: "sub" }, { script: "super" }],
+    ["blockquote", "code-block"],
+    [{ list: "ordered" }, { list: "bullet" }],
+    [{ indent: "-1" }, { indent: "+1" }, { align: [] }],
+    ["link", "image", "video"],
+    ["clean"],
   ],
 };
 
@@ -71,7 +76,11 @@ const NewPost: NextPage = () => {
           {/*<textarea id="new_post_body" name="body" required></textarea>
           <br />*/}
         </label>
-        <ReactQuill modules={modules} theme="snow" placeholder="Content goes here..." />
+        <QuillNoSSRWrapper
+          modules={modules}
+          theme="snow"
+          placeholder="Content goes here..."
+        />
         <br />
         <input type="submit" value="Submit New Post" />
         <br />
