@@ -3,9 +3,23 @@ import Link from "next/link";
 import styles from "./forum.module.css";
 import useSWR from "swr";
 
-function refreshPage() {
-  window.location.reload();
-}
+import ReactQuill from 'react-quill';
+import 'react-quill/dist/quill.snow.css';
+
+const  modules  = {
+  toolbar: [
+      [{ font: [] }],
+      [{ header: [1, 2, 3, 4, 5, 6, false] }],
+      ["bold", "italic", "underline", "strike"],
+      [{ color: [] }, { background: [] }],
+      [{ script:  "sub" }, { script:  "super" }],
+      ["blockquote", "code-block"],
+      [{ list:  "ordered" }, { list:  "bullet" }],
+      [{ indent:  "-1" }, { indent:  "+1" }, { align: [] }],
+      ["link", "image", "video"],
+      ["clean"],
+  ],
+};
 
 const fetcher = (...args) => fetch(...args).then((res) => res.json());
 
@@ -54,9 +68,11 @@ const NewPost: NextPage = () => {
         <br />
         <label>
           Post Body:{" "}
-          <textarea id="new_post_body" name="body" required></textarea>
-          <br />
+          {/*<textarea id="new_post_body" name="body" required></textarea>
+          <br />*/}
         </label>
+        <ReactQuill modules={modules} theme="snow" placeholder="Content goes here..." />
+        <br />
         <input type="submit" value="Submit New Post" />
         <br />
         <br />
