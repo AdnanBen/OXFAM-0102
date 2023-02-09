@@ -15,7 +15,7 @@ services:
     command: --noscripting
     volumes:
       - ./docker-volumes/mongodb:/data/db
-      - ./reports-backend/mongo-init.sh:/docker-entrypoint-initdb.d/mongo-init.sh:ro
+      - ./mongo-init.sh:/docker-entrypoint-initdb.d/mongo-init.sh:ro
 
   api:
     build: .

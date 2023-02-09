@@ -4,7 +4,7 @@ import router, { useRouter } from "next/router";
 import { useEffect, useRef } from "react";
 import { FormikProps } from "formik";
 
-import styles from "../styles/FormPage.module.css";
+import styles from "../../styles/Report.module.css";
 
 interface Values {
   name: string;
@@ -28,7 +28,7 @@ function FormPage(data: Values) {
     };
 
     const response = await fetch(
-      "http://localhost:3004/reports/create",
+      "http://localhost/api/reports/create",
       requestOptions
     );
     await response.json();
@@ -53,7 +53,7 @@ function FormPage(data: Values) {
       };
 
       const response = fetch(
-        "http://localhost:3004/incompletereports/create",
+        "http://localhost/api/reports/incomplete/create",
         requestOptions
       );
     });

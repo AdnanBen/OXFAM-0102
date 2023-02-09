@@ -19,6 +19,9 @@ const ModeratorsHome: NextPage = () => {
           <li>
             <Link href="/moderator/chat">Chat with survivors</Link>
           </li>
+          <li>
+            <Link href="/moderator/reports">View reports</Link>
+          </li>
         </ul>
       </main>
     </>
