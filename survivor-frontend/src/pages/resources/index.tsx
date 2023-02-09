@@ -41,7 +41,7 @@ function ResourceHome() {
     console.log("filteredArticles", filteredArticles);
     return filteredArticles.map((article: Article) => {
       return (
-        <Link href={`/article-page?articleId=${article._id}`} key={article._id}>
+        <Link href={`/resources/${article._id}`} key={article._id}>
           <div className={styles.articleContainer}>{article.title}</div>
         </Link>
       );

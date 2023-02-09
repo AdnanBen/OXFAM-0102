@@ -50,7 +50,7 @@ export default function ArticleSubmissionForm() {
         console.log("article created");
         // Router.reload("/admin-dashboard");
         // NextResponse.redirect("/admin-dashboard");
-        Router.push("/admin-dashboard");
+        Router.push("/moderator/resources");
       }
     });
   };
