@@ -1,0 +1,1 @@
+docker-compose -f forum/docker-compose.yml -f gateway/docker-compose.yml -f moderator-frontend/docker-compose.yml -f reports/docker-compose.yml -f resources/docker-compose.yml -f survivor-frontend/docker-compose.yml up
