@@ -6,7 +6,7 @@ const ModeratorsHome: NextPage = () => {
   return (
     <>
       <Head>
-        <title>Oxfam Survivor's Community | Moderators</title>
+        <title>Oxfam Survivors Community | Moderators</title>
       </Head>
 
       <main>
