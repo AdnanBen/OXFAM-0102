@@ -9,18 +9,17 @@ const Header = () => {
     <nav className={styles.header}>
       <Link href="/">Oxfam Survivor's Community</Link>
       <div className={styles.links}>
-        <Link
-          href="/forum"
-          className={router.pathname === "/forum" ? styles.active : ""}
-        >
-          Forum
-        </Link>
-        <Link
-          href="/chat"
-          className={router.pathname === "/chat" ? styles.active : ""}
-        >
-          Chat
-        </Link>
+        {["Forum", "Chat", "Resources"].map((pagename) => {
+          const pathname = `/${pagename.toLowerCase()}`;
+          return (
+            <Link
+              href={pathname}
+              className={router.pathname === pathname ? styles.active : ""}
+            >
+              {pagename}
+            </Link>
+          );
+        })}
       </div>
     </nav>
   );

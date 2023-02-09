@@ -1,9 +1,9 @@
-import CollapsibleTab from "../components/collapsible-tab/collapsible-tab";
+import CollapsibleTab from "../../components/CollapsibleTab";
 import { useEffect, useState } from "react";
-import { fetchAllArticleTitles } from "../api/articles";
+import { fetchAllArticleTitles } from "../../articles-helpers";
 import Link from "next/link";
-import styles from "../styles/Resource-home.module.css";
-import { Article } from "../interfaces";
+import styles from "../../styles/Resources.module.css";
+import { Article } from "../../articles-interfaces";
 
 function ResourceHome() {
   const categoryTypes: string[] = ["violence", "sexual_assault"];
@@ -34,7 +34,7 @@ function ResourceHome() {
     return <div>{category}</div>;
   };
 
-  const collapsibleContent = (category: string ) => {
+  const collapsibleContent = (category: string) => {
     const filteredArticles = values?.articles?.filter(
       (article: Article) => article.category === category
     );

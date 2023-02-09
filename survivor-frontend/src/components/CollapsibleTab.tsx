@@ -1,6 +1,6 @@
 import React from "react";
-import { useState, useRef } from "react";
-import styles from "../../styles/Collapsible-tab.module.css";
+import { useState } from "react";
+import styles from "../styles/CollapsibleTab.module.css";
 
 function CollapsibleTab({ headerComponent, contentComponent }) {
   const [showTab, setShowTab] = useState(false);

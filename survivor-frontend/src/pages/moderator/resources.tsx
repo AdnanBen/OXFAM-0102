@@ -1,9 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { fetchAllArticleTitles, deleteArticleById } from "../api/articles";
+import {
+  fetchAllArticleTitles,
+  deleteArticleById,
+} from "../../articles-helpers";
 import Link from "next/link";
 
 import Router from "next/router";
-import { Article } from "../interfaces";
+import { Article } from "../../articles-interfaces";
 
 function AdminDashboard() {
   const [values, setValues] = useState({
@@ -41,7 +44,7 @@ function AdminDashboard() {
 
   return (
     <div>
-      <Link href={`/article-submission-form`}>
+      <Link href={`/moderator/article-submission-form`}>
         <div>Add New Article</div>
       </Link>
       {values.articles.map((article: Article) => {
@@ -49,7 +52,7 @@ function AdminDashboard() {
           <>
             <div>
               <Link
-                href={`/article-update-form?articleId=${article._id}`}
+                href={`/moderator/article-update-form?articleId=${article._id}`}
                 key={article._id}
               >
                 <div>{article.title}</div>

@@ -1,8 +1,7 @@
-// import fetch from "node-fetch";
+// import { Article } from "../interfaces";
 
-import { Article } from "../interfaces";
-
-export const fetchArticleTitlesByCategory = async (category: string) => {
+// export const fetchArticleTitlesByCategory = async (category: string) => {
+export const fetchArticleTitlesByCategory = async (category) => {
   return await fetch(
     `${process.env.RESOURCES_API_URL}/articles/getbycategory?category=${category}`,
     {
@@ -32,7 +31,8 @@ export const fetchAllArticleTitles = async () => {
     });
 };
 
-export const fetchArticleById = async (id: string) => {
+// export const fetchArticleById = async (id: string) => {
+export const fetchArticleById = async (id) => {
   return await fetch(
     `${process.env.NEXT_PUBLIC_RESOURCES_API_URL}/articles/get/${id}`,
     {
@@ -47,7 +47,8 @@ export const fetchArticleById = async (id: string) => {
     });
 };
 
-export const postResourceForm = async (requestObj: Article) => {
+// export const postResourceForm = async (requestObj: Article) => {
+export const postResourceForm = async (requestObj) => {
   return await fetch(
     `${process.env.NEXT_PUBLIC_RESOURCES_API_URL}/articles/create`,
     {
@@ -66,7 +67,8 @@ export const postResourceForm = async (requestObj: Article) => {
     });
 };
 
-export const updateArticleById = async (id : string, requestObj: Article) => {
+// export const updateArticleById = async (id : string, requestObj: Article) => {
+export const updateArticleById = async (id, requestObj) => {
   console.log(requestObj);
   return await fetch(
     `${process.env.NEXT_PUBLIC_RESOURCES_API_URL}/articles/update/${id}`,
@@ -86,7 +88,8 @@ export const updateArticleById = async (id : string, requestObj: Article) => {
     });
 };
 
-export const deleteArticleById = async (id: string) => {
+// export const deleteArticleById = async (id: string) => {
+export const deleteArticleById = async (id) => {
   return await fetch(
     `${process.env.NEXT_PUBLIC_RESOURCES_API_URL}/articles/delete/${id}`,
     {

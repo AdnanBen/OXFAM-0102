@@ -1,14 +1,14 @@
 import express, { Request, Response, Router } from "express";
 import http from "http";
 import mongoose from "mongoose";
-const cors = require('cors');
+const cors = require("cors");
 
 import { config } from "./config/config";
 
 import articleRoutes from "./routes/Article";
 
 const app = express();
-const port = 3000;
+const port = 3001;
 
 app.get("/", (req: Request, res: Response) => {
   res.send("Hello World!");
@@ -29,7 +29,9 @@ mongoose
   });
 
 app.use(express.json());
-app.use(cors({
-  origin: '*'
-}));
+app.use(
+  cors({
+    origin: "*",
+  })
+);
 app.use("/articles", articleRoutes);
