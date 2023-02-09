@@ -37,6 +37,8 @@ function FormPage(data: Values) {
   const formRef = useRef<FormikProps<any>>(null);
 
   function listener() {
+    console.log("useeffectdasdsad");
+
     console.log("Incomplete report detected:");
     console.log(formRef.current?.values);
     data = formRef.current?.values;
@@ -44,7 +46,7 @@ function FormPage(data: Values) {
     var myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
 
-    var raw = JSON.stringify(data);
+    var raw = JSON.stringify({ reportId: "test", info: "alsotest" });
 
     var requestOptions = {
       method: "POST",
@@ -59,9 +61,11 @@ function FormPage(data: Values) {
   }
 
   useEffect(() => {
+    console.log("useeffect");
     window.addEventListener("beforeunload", listener);
 
     return () => {
+      console.log("unload");
       window.removeEventListener("beforeunload", listener);
     };
   }, []);

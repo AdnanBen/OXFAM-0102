@@ -5,6 +5,7 @@ import useSWR from "swr";
 
 import "react-quill/dist/quill.snow.css";
 import dynamic from "next/dynamic";
+import { useState } from "react";
 
 const QuillNoSSRWrapper = dynamic(import("react-quill"), {
   ssr: false,
@@ -29,6 +30,8 @@ const modules = {
 const fetcher = (...args) => fetch(...args).then((res) => res.json());
 
 const NewPost: NextPage = () => {
+  const [content, setContent] = useState("");
+
   const {
     data: boards,
     error,
@@ -46,8 +49,9 @@ const NewPost: NextPage = () => {
           for (const [key, value] of formData.entries()) {
             data[key] = value;
           }
+          data.body = content;
           data.board_id = parseInt(data.board_id, 10);
-          fetch("http://localhost/api/forum/boards", {
+          fetch("http://localhost/api/forum/posts", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(data),
@@ -79,6 +83,7 @@ const NewPost: NextPage = () => {
         <QuillNoSSRWrapper
           modules={modules}
           theme="snow"
+          onChange={setContent}
           placeholder="Content goes here..."
         />
         <br />

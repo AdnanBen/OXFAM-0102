@@ -79,7 +79,7 @@ const Post: NextPage = () => {
                   if (replyToComment) data.parentCommentId = replyToComment;
 
                   const res = await fetch(
-                    `http://localhost/api/forum/posts/${post.id}/comments`,
+                    `http://localhost/api/forum/posts/${id}/comments`,
                     {
                       method: "POST",
                       headers: { "Content-Type": "application/json" },

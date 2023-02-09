@@ -47,7 +47,7 @@ app.post(
       data: {
         title: req.body.title,
         body: req.body.body,
-        board_id: req.body.board_id,
+        board: { connect: { id: req.body.board_id } },
       },
     });
 
