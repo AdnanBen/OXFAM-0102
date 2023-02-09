@@ -1,9 +1,9 @@
-import CollapsibleTab from "../../components/CollapsibleTab";
 import { useEffect, useState } from "react";
 import { fetchAllArticleTitles } from "../../articles-helpers";
 import Link from "next/link";
 import styles from "../../styles/Resources.module.css";
 import { Article } from "../../articles-interfaces";
+import { Panel } from "rsuite";
 
 function ResourceHome() {
   const categoryTypes: string[] = ["violence", "sexual_assault"];
@@ -51,15 +51,20 @@ function ResourceHome() {
   useEffect(() => {
     loadAllArticleTitles();
   }, []);
+
   return (
     <>
       <div className={styles.resourceTitle}>Resources</div>
       {categoryTypes.map((category: string) => {
         return (
-          <CollapsibleTab
-            headerComponent={collapsibleHeader(category)}
-            contentComponent={collapsibleContent(category)}
-          ></CollapsibleTab>
+          <Panel
+            collapsible
+            header={collapsibleHeader(category)}
+            bordered
+            className={styles.resourceCategory}
+          >
+            {collapsibleContent(category)}
+          </Panel>
         );
       })}
     </>

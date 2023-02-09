@@ -10,7 +10,10 @@
 }
 
 .articleContainer {
-  border-bottom: 1px solid black;
   height: 40px;
   padding: 10px;
+}
+
+.resourceCategory+.resourceCategory {
+  margin-top: 10px;
 }
