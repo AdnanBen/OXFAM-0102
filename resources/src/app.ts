@@ -8,7 +8,7 @@ import { config } from "./config/config";
 import articleRoutes from "./routes/Article";
 
 const app = express();
-const port = 3000;
+const port = config.server.port;
 
 app.get("/", (req: Request, res: Response) => {
   res.send("Hello World!");

@@ -34,5 +34,5 @@ mongoose
 
 app.use(express.json());
 
-app.use("/reports", reportRoutes);
-app.use("/reports/incomplete", incompleteReportRoutes);
+app.use("/reports/completereports", reportRoutes);
+app.use("/reports/incompletereports", incompleteReportRoutes);
