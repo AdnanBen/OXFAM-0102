@@ -7,7 +7,7 @@ const Header = () => {
 
   return (
     <nav className={styles.header}>
-      <Link href="/">Oxfam Survivor's Community</Link>
+      <Link href="/">Oxfam Survivors Community</Link>
       <div className={styles.links}>
         {["Forum", "Chat", "Resources", "Report"].map((pagename) => {
           const pathname = `/${pagename.toLowerCase()}`;
