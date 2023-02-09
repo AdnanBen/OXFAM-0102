@@ -4,11 +4,12 @@ import Report from "../models/Report";
 
 const createReport = (req: Request, res: Response, next: NextFunction) => {
   console.log(req.body);
-  const { name, body, category } = req.body;
+  const { name, gender, body, category } = req.body;
 
   const report = new Report({
     _id: new mongoose.Types.ObjectId(),
     name,
+    gender,
     body,
   });
 

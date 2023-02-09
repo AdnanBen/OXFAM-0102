@@ -2,9 +2,13 @@ import { NextFunction, Request, Response } from "express";
 import mongoose from "mongoose";
 import IncompleteReport from "../models/IncompleteReport";
 
-const createIncompleteReport = (req: Request, res: Response, next: NextFunction) => {
+const createIncompleteReport = (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   console.log(req.body);
-  const { reportId, info, category } = req.body;
+  const { reportId, info } = req.body;
 
   const incompleteReport = new IncompleteReport({
     _id: new mongoose.Types.ObjectId(),
@@ -18,7 +22,11 @@ const createIncompleteReport = (req: Request, res: Response, next: NextFunction)
     .catch((error) => res.status(500).json({ error }));
 };
 
-const getIncompleteReport = (req: Request, res: Response, next: NextFunction) => {
+const getIncompleteReport = (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   const incompleteReportId = req.params.incompleteReportId;
 
   return IncompleteReport.findById(incompleteReportId)
@@ -36,7 +44,11 @@ const getAll = (req: Request, res: Response, next: NextFunction) => {
     .catch((error) => res.status(500).json({ error }));
 };
 
-const deleteIncompleteReport = (req: Request, res: Response, next: NextFunction) => {
+const deleteIncompleteReport = (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   const incompleteReportId = req.params.incompleteReportId;
 
   return IncompleteReport.findByIdAndDelete(incompleteReportId)

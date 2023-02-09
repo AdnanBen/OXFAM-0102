@@ -1,5 +1,6 @@
 import express, { Request, Response, Router } from "express";
 import mongoose from "mongoose";
+import cors from "cors";
 
 import { config } from "./config/config";
 
@@ -7,7 +8,11 @@ import reportRoutes from "./routes/Report";
 import incompleteReportRoutes from "./routes/IncompleteReport";
 
 const app = express();
-const port = 3000;
+const port = 3004;
+
+app.use(express.json());
+
+app.use(cors());
 
 app.get("/", (req: Request, res: Response) => {
   res.send("Hello World!");
@@ -31,4 +36,3 @@ app.use(express.json());
 
 app.use("/reports", reportRoutes);
 app.use("/incompletereports", incompleteReportRoutes);
-
