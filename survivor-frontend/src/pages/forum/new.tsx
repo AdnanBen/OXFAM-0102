@@ -33,7 +33,7 @@ const NewPost: NextPage = () => {
     data: boards,
     error,
     isLoading,
-  } = useSWR(`http://localhost:8000/boards`, fetcher);
+  } = useSWR(`http://localhost/api/forum/boards`, fetcher);
 
   return (
     <>
@@ -47,7 +47,7 @@ const NewPost: NextPage = () => {
             data[key] = value;
           }
           data.board_id = parseInt(data.board_id, 10);
-          fetch("http://localhost:8000/posts", {
+          fetch("http://localhost/api/forum/boards", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(data),

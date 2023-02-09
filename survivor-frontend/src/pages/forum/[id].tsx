@@ -24,7 +24,7 @@ const Post: NextPage = () => {
     data: post,
     error,
     isLoading,
-  } = useSWR(`http://localhost:8000/posts/${id}`, fetcher);
+  } = useSWR(`http://localhost/api/forum/posts/${id}`, fetcher);
 
   console.log(post, error);
 
@@ -79,7 +79,7 @@ const Post: NextPage = () => {
                   if (replyToComment) data.parentCommentId = replyToComment;
 
                   const res = await fetch(
-                    `http://localhost:8000/posts/${post.id}/comments`,
+                    `http://localhost/api/forum/posts/${post.id}/comments`,
                     {
                       method: "POST",
                       headers: { "Content-Type": "application/json" },

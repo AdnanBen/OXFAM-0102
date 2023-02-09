@@ -4,8 +4,6 @@ services:
   mongo:
     image: mongo:6
     restart: unless-stopped
-    ports:
-      - ${DATABASE_PORT}:${DATABASE_PORT}
     environment:
       MONGO_INITDB_ROOT_USERNAME: ${MONGO_ROOT_USERNAME}
       MONGO_INITDB_ROOT_PASSWORD: ${MONGO_ROOT_PASSWORD}

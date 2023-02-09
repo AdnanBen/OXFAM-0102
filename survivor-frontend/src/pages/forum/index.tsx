@@ -35,7 +35,7 @@ const Feed: NextPage = () => {
     data: posts,
     error,
     isLoading,
-  } = useSWR(`http://localhost:8000/posts`, fetcher);
+  } = useSWR(`http://localhost/api/forum/posts`, fetcher);
 
   return (
     <>
