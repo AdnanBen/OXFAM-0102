@@ -14,7 +14,9 @@ const Header = () => {
           return (
             <Link
               href={pathname}
-              className={router.pathname === pathname ? styles.active : ""}
+              className={
+                router.pathname.startsWith(pathname) ? styles.active : ""
+              }
             >
               {pagename}
             </Link>
