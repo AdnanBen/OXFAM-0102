@@ -18,7 +18,7 @@ app.get("/", (req: Request, res: Response) => {
   res.send("Hello World!");
 });
 
-app.listen(+(port ?? 3000), "0.0.0.0", () => {
+app.listen(port, () => {
   return console.log(`Express is listening at http://localhost:${port}`);
 });
 

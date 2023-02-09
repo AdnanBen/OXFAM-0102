@@ -17,19 +17,10 @@ services:
       - ./docker-volumes/mongodb:/data/db
       - ./mongo-init.sh:/docker-entrypoint-initdb.d/mongo-init.sh:ro
 
-backend:
+  api:
     depends_on:
       - mongo
     build: .
     env_file: ./.env
     ports:
-      - 127.0.0.1:8003:3000
-
-
-  api:
-    build: .
-    depends_on:
-      - mongo
-    restart: unless-stopped
-    ports:
-      - 127.0.0.1:8003:${PORT}
+      - 127.0.0.1:${PROXY_PORT}:${PORT}
