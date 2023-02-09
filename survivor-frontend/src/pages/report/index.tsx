@@ -36,27 +36,34 @@ function FormPage(data: Values) {
 
   const formRef = useRef<FormikProps<any>>(null);
 
+  function listener() {
+    console.log("Incomplete report detected:");
+    console.log(formRef.current?.values);
+    data = formRef.current?.values;
+
+    var myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json");
+
+    var raw = JSON.stringify(data);
+
+    var requestOptions = {
+      method: "POST",
+      headers: myHeaders,
+      body: raw,
+    };
+
+    const response = fetch(
+      "http://localhost/api/reports/incompletereports/create",
+      requestOptions
+    );
+  }
+
   useEffect(() => {
-    window.addEventListener("beforeunload", () => {
-      console.log("Incomplete report detected:");
-      console.log(formRef.current?.values);
+    window.addEventListener("beforeunload", listener);
 
-      var myHeaders = new Headers();
-      myHeaders.append("Content-Type", "application/json");
-
-      var raw = JSON.stringify({ reportId: "test", info: "alsotest" });
-
-      var requestOptions = {
-        method: "POST",
-        headers: myHeaders,
-        body: raw,
-      };
-
-      const response = fetch(
-        "http://localhost/api/reports/incompletereports/create",
-        requestOptions
-      );
-    });
+    return () => {
+      window.removeEventListener("beforeunload", listener);
+    };
   }, []);
 
   return (
