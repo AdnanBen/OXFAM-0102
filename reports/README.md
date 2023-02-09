@@ -1,11 +1,9 @@
 # Resources
 
-## Deployment
-
+## Development
 
 In './resources', run:
 
 ```bash
-docker-compose up
+docker-compose up -d
 ```
-

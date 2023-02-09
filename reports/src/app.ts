@@ -8,7 +8,7 @@ import reportRoutes from "./routes/Report";
 import incompleteReportRoutes from "./routes/IncompleteReport";
 
 const app = express();
-const port = 3004;
+const port = config.mongo.port;
 
 app.use(express.json());
 
