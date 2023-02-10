@@ -4,10 +4,3 @@
   row-gap: 15px;
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
 }
-
-.group>div {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  height: 100%;
-}
