@@ -7,6 +7,10 @@ import Link from "next/link";
 
 import Router from "next/router";
 import { Article } from "../../articles-interfaces";
+import { Button, ButtonGroup, Panel } from "rsuite";
+import Head from "next/head";
+
+import styles from "../../styles/ModeratorResources.module.css";
 
 function AdminDashboard() {
   const [values, setValues] = useState({
@@ -43,26 +47,64 @@ function AdminDashboard() {
   }, []);
 
   return (
-    <div>
-      <Link href={`/moderator/article-submission-form`}>
-        <div>Add New Article</div>
-      </Link>
-      {values.articles.map((article: Article) => {
-        return (
-          <>
-            <div>
-              <Link
-                href={`/moderator/article-update-form?articleId=${article._id}`}
-                key={article._id}
+    <>
+      <Head>
+        <title>Oxfam Survivors Community | Moderators | Resources</title>
+      </Head>
+
+      <main>
+        <h2>Moderator Dashboard: Resources</h2>
+
+        <div className={styles.resources}>
+          {values.articles.map((article: Article) => {
+            return (
+              <Panel
+                header={
+                  <strong>
+                    <Link
+                      href={`/moderator/article-update-form?articleId=${article._id}`}
+                      key={article._id}
+                    >
+                      {article.title}
+                    </Link>
+                  </strong>
+                }
+                bordered
+                shaded
               >
-                <div>{article.title}</div>
-              </Link>
-              <button onClick={() => deleteArticle(article._id)}>Delete</button>
-            </div>
-          </>
-        );
-      })}
-    </div>
+                <p>Category: {article.category}</p>
+                <p className={styles.resourceBodyPreview}>
+                  Body: {article.body}
+                </p>
+
+                <div className={styles.resourceActions}>
+                  <Button
+                    size="sm"
+                    appearance="ghost"
+                    onClick={() => deleteArticle(article._id)}
+                  >
+                    Edit?
+                  </Button>
+
+                  <Button
+                    size="sm"
+                    appearance="ghost"
+                    color="red"
+                    onClick={() => deleteArticle(article._id)}
+                  >
+                    Delete?
+                  </Button>
+                </div>
+              </Panel>
+            );
+          })}
+        </div>
+
+        <Link href={`/moderator/article-submission-form`}>
+          <Button appearance="ghost">Add new resource?</Button>
+        </Link>
+      </main>
+    </>
   );
 }
 
