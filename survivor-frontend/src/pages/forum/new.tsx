@@ -5,6 +5,7 @@ import "react-quill/dist/quill.snow.css";
 import dynamic from "next/dynamic";
 import { useState } from "react";
 import { Button, Form, SelectPicker } from "rsuite";
+import { useRouter } from "next/router";
 
 const QuillNoSSRWrapper = dynamic(import("react-quill"), {
   ssr: false,
@@ -29,6 +30,7 @@ const modules = {
 const fetcher = (...args) => fetch(...args).then((res) => res.json());
 
 const NewPost: NextPage = () => {
+  const router = useRouter();
   const [formData, setFormData] = useState({
     title: "",
     board_id: null,
@@ -57,7 +59,12 @@ const NewPost: NextPage = () => {
             body: JSON.stringify(formData),
           })
             .then((res) => res.json())
-            .then((res) => console.log(res));
+            .then((res) => {
+              console.log(res);
+              if (!res.error) {
+                router.push("/forum");
+              }
+            });
         }}
       >
         <Form.Group>

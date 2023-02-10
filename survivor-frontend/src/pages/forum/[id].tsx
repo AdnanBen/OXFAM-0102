@@ -24,6 +24,7 @@ const Post: NextPage = () => {
     data: post,
     error,
     isLoading,
+    mutate,
   } = useSWR(`/api/forum/posts/${id}`, fetcher);
 
   console.log(post, error);
@@ -87,6 +88,7 @@ const Post: NextPage = () => {
                   if (!res.error) {
                     setShowCommentDialog(false);
                     setReplyToComment(null);
+                    mutate();
                   }
                 }}
               >
