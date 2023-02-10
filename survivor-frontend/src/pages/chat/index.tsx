@@ -1,4 +1,5 @@
 import { NextPage } from "next";
+import Head from "next/head";
 import React, { useEffect, useState } from "react";
 import { Loader } from "rsuite";
 import io, { Socket } from "socket.io-client";
@@ -61,16 +62,25 @@ const ChatPage: NextPage = () => {
   const [socket, setSocket] = useState<Socket | null>(null);
   useEffect(() => {
     const sessionId = window?.sessionStorage.getItem("sessionId");
-    setSocket(
-      io("/", { auth: { sessionId }, path: "/api/chat" })
-    );
+    setSocket(io("/", { auth: { sessionId }, path: "/api/chat" }));
 
     return () => {
       socket?.close();
     };
   }, []);
 
-  return socket ? <UserChat socket={socket} /> : <Loader center backdrop />;
+  return (
+    <>
+      <Head>
+        <title>OXFAM Survivors Community | Forum</title>
+      </Head>
+
+      <main>
+        <h2>Chat</h2>
+        {socket ? <UserChat socket={socket} /> : <Loader center backdrop />}
+      </main>
+    </>
+  );
 };
 
 export default ChatPage;
