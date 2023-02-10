@@ -5,11 +5,11 @@ export default function ReportsView() {
   const [incompleteReports, setIncompleteReports] = useState({});
 
   useEffect(() => {
-    fetch("http://localhost/api/moderators/reports/completereports/getall")
+    fetch("/api/moderators/reports/completereports/getall")
       .then((response) => response.json())
       .then((json) => setReports(json));
 
-    fetch("http://localhost/api/moderators/reports/incompletereports/getall")
+    fetch("/api/moderators/reports/incompletereports/getall")
       .then((response) => response.json())
       .then((json) => setIncompleteReports(json));
   }, []);

@@ -77,7 +77,7 @@ const ModeratorDashboard: NextPage = () => {
     const sessionId = window?.sessionStorage.getItem("sessionId");
 
     setSocket(
-      io("http://localhost", {
+      io("/", {
         auth: { isAdmin: true, sessionId },
         path: "/api/chat",
       })

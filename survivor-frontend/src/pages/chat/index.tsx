@@ -62,7 +62,7 @@ const ChatPage: NextPage = () => {
   useEffect(() => {
     const sessionId = window?.sessionStorage.getItem("sessionId");
     setSocket(
-      io("http://localhost", { auth: { sessionId }, path: "/api/chat" })
+      io("/", { auth: { sessionId }, path: "/api/chat" })
     );
 
     return () => {
