@@ -5,7 +5,7 @@ services:
     image: mongo:6
     restart: unless-stopped
     ports:
-      - ${DATABASE_PORT}:${DATABASE_PORT}
+      - 127.0.0.1:${DATABASE_PORT}:27017
     environment:
       MONGO_INITDB_ROOT_USERNAME: ${MONGO_ROOT_USERNAME}
       MONGO_INITDB_ROOT_PASSWORD: ${MONGO_ROOT_PASSWORD}
@@ -16,11 +16,3 @@ services:
     volumes:
       - ./docker-volumes/mongodb:/data/db
       - ./mongo-init.sh:/docker-entrypoint-initdb.d/mongo-init.sh:ro
-
-  api:
-    depends_on:
-      - mongo
-    build: .
-    env_file: ./.env
-    ports:
-      - 127.0.0.1:${PROXY_PORT}:${PORT}

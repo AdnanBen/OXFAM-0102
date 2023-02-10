@@ -1,29 +1,20 @@
 sudo rm -rf ./{resources,reports,forum}/docker-volumes
 
 echo 'Starting forum'
-cd forum && docker-compose -f docker-compose-prod.yml up --build -d --remove-orphans
-cd ..
+(export LOCAL_DB_PORT=5432; export DATABASE_URL="postgresql://forum:forum@localhost:$LOCAL_DB_PORT/forum"; cd forum; docker-compose -f docker-compose.yml up --build -d --remove-orphans)
 
 echo 'Starting chat'
-cd chat && docker-compose -f docker-compose-prod.yml up --build -d --remove-orphans
-cd ..
+(export LOCAL_DB_PORT=5433; cd chat; docker-compose -f docker-compose.yml up --build -d --remove-orphans)
 
 echo 'Starting reports'
-cd reports && docker-compose -f docker-compose-prod.yml up --build -d --remove-orphans
-cd ..
+(export LOCAL_DB_PORT=5434; export DATABASE_URL=localhost; cd reports; docker-compose -f docker-compose.yml up --build -d --remove-orphans)
 
 echo 'Starting resources'
-cd resources && docker-compose -f docker-compose-prod.yml up --build -d --remove-orphans
-cd ..
-
-echo 'Starting survivor frontend'
-cd survivor-frontend && docker-compose -f docker-compose-prod.yml up --build -d --remove-orphans
-cd ..
+(export LOCAL_DB_PORT=5435; export DATABASE_URL=localhost; cd resources; docker-compose -f docker-compose.yml up --build -d --remove-orphans)
 
 echo 'Starting HAProxy Gateway'
-cd gateway && docker-compose -f docker-compose.yml up -d --remove-orphans
-cd ..
+(cd gateway; docker-compose -f docker-compose.yml up -d --remove-orphans)
 
-
-  #\ -f gateway/docker-compose-prod.yml
-  #\ -f moderator-frontend/docker-compose.yml
+echo 'Starting survivor frontend locally'
+cd survivor-frontend
+pnpm install && pnpm dev

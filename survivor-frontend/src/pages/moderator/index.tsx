@@ -19,6 +19,9 @@ const ModeratorDashboard: NextPage = () => {
             <Link href="/moderator/article-submission-form">
               <Button appearance="ghost">Create new resource &rarr;</Button>
             </Link>
+            <Link href="/moderator/resources">
+              <Button appearance="ghost">View resources &rarr;</Button>
+            </Link>
           </Panel>
 
           <Panel header="Chat" bordered className={styles.group} shaded>
