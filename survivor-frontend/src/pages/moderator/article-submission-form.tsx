@@ -4,6 +4,7 @@ import { postResourceForm } from "../../articles-helpers";
 import Router from "next/router";
 
 import "react-quill/dist/quill.snow.css";
+import { Button, Form } from "rsuite";
 
 const QuillNoSSRWrapper = dynamic(import("react-quill"), {
   ssr: false,
@@ -31,72 +32,68 @@ const modules = {
 };
 
 export default function ArticleSubmissionForm() {
-  const [title, setTitle] = useState("");
-  const [category, setCategory] = useState("");
-  const [content, setContent] = useState("");
+  const [formData, setFormData] = useState({
+    title: "",
+    category: "",
+    body: "",
+  });
 
   const submitHandler = (event: React.FormEvent<EventTarget>): void => {
     event.preventDefault();
-    const requestObj = {
-      title: title,
-      body: content,
-      category: category,
-    };
-    postResourceForm(requestObj).then((data) => {
+    postResourceForm(formData).then((data) => {
       if (data?.error) {
         console.log(data?.error);
         // setValues({ ...values, error: data.error });
       } else {
         console.log("article created");
-        // Router.reload("/admin-dashboard");
-        // NextResponse.redirect("/admin-dashboard");
         Router.push("/moderator/resources");
       }
     });
   };
 
-  const handleTitleChange = (event: React.FormEvent<EventTarget>): void => {
-    event.preventDefault();
-    const target = event.target as HTMLButtonElement;
-    setTitle(target ? target.value : "");
-  };
-
-  const handleCategoryChange = (event: React.FormEvent<EventTarget>): void => {
-    event.preventDefault();
-    const target = event.target as HTMLButtonElement;
-    setCategory(target ? target.value : "");
-  };
-
   return (
-    <form onSubmit={submitHandler}>
-      <label htmlFor="title">Title</label>
+    <Form
+      formValue={formData}
+      onChange={setFormData}
+      onSubmit={(valid, e) => submitHandler(e)}
+    >
+      <Form.Group>
+        <Form.ControlLabel>Title</Form.ControlLabel>
+        <Form.Control
+          type="text"
+          name="title"
+          placeholder="Enter a title"
+          required
+        ></Form.Control>
+      </Form.Group>
+
+      <Form.Group>
+        <Form.ControlLabel>Category</Form.ControlLabel>
+        <Form.Control
+          type="text"
+          name="category"
+          placeholder="Enter a category"
+          required
+        ></Form.Control>
+      </Form.Group>
+
+      <Form.Group>
+        <Form.ControlLabel>Resource body</Form.ControlLabel>
+        <QuillNoSSRWrapper
+          modules={modules}
+          onChange={(v) => setFormData((old) => ({ ...old, body: v }))}
+          theme="snow"
+        />
+      </Form.Group>
+
+      <Form.Group>
+        <Button type="submit" appearance="primary">
+          Save new Resource
+        </Button>
+      </Form.Group>
+
       <br />
-      <input
-        type="text"
-        value={title}
-        name="title"
-        placeholder="Enter a title"
-        onChange={handleTitleChange}
-        required
-      />
-      <br />
-      <br />
-      <label htmlFor="title">Category</label>
-      <br />
-      <input
-        type="text"
-        value={category}
-        name="title"
-        placeholder="Enter a category"
-        onChange={handleCategoryChange}
-        required
-      />
-      <br />
-      <br />
-      <QuillNoSSRWrapper modules={modules} onChange={setContent} theme="snow" />
-      <button>Save</button>
-      <br />
-      <p>{content}</p>
-    </form>
+      <p>{formData.body}</p>
+    </Form>
   );
 }
