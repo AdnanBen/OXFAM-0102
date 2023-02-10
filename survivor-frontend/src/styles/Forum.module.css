@@ -4,7 +4,7 @@
   align-items: baseline;
 }
 
-.postHeader > h1 {
+.postHeader>h1 {
   margin: 0;
 }
 
@@ -45,7 +45,7 @@
   height: 50px;
 }
 
-.post + .post {
+.post_link+.post_link {
   margin-top: 10px;
 }
 
@@ -73,7 +73,13 @@
   margin-bottom: 20px;
 }
 
-.post_link a {
+.post_link {
   color: blue;
   text-decoration: none;
+  display: block;
+}
+
+.createPostBtn {
+  margin-top: 10px;
+  display: block;
 }
