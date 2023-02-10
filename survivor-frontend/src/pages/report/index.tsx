@@ -37,16 +37,23 @@ function FormPage(data: Values) {
   const formRef = useRef<FormikProps<any>>(null);
 
   function listener() {
-    console.log("useeffectdasdsad");
+    console.log("inside unload listener");
 
     console.log("Incomplete report detected:");
     console.log(formRef.current?.values);
     data = formRef.current?.values;
 
+    let incompleteStr = "";
+
+    for (const [key, value] of Object.entries(data)) {
+      console.log(`${key}: ${value}`);
+      incompleteStr += `${key}:${value ? "true" : "false"};`;
+    }
+
     var myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
 
-    var raw = JSON.stringify({ reportId: "test", info: "alsotest" });
+    var raw = JSON.stringify({ reportId: "test", info: incompleteStr });
 
     var requestOptions = {
       method: "POST",
@@ -63,22 +70,25 @@ function FormPage(data: Values) {
   useEffect(() => {
     console.log("useeffect");
     window.addEventListener("beforeunload", listener);
+    router.events.on("routeChangeStart", listener);
 
     return () => {
       console.log("unload");
       window.removeEventListener("beforeunload", listener);
+      router.events.off("routeChangeStart", listener);
+      console.log("unload done");
     };
   }, []);
 
   return (
     <div className={`${styles.body}`}>
       <div className={styles.form}>
-        <h1>Make a Report</h1>
+        <h3>Make a Report</h3>
         <Formik
           innerRef={formRef}
           initialValues={{
             name: "",
-            gender: "M",
+            gender: "",
             body: "",
           }}
           onSubmit={(
@@ -100,11 +110,13 @@ function FormPage(data: Values) {
             </p>
 
             <p>
-              <label htmlFor="email">Gender</label>
+              <label htmlFor="gender">Gender</label>
               <br />
               <Field as="select" name="gender">
-                <option value="male">M</option>
-                <option value="female">F</option>
+                <option value="" label="Select a gender" />
+                <option value="M">M</option>
+                <option value="F">F</option>
+                <option value="O">Other</option>
               </Field>
             </p>
 

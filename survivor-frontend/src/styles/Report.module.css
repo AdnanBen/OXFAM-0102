@@ -1,23 +1,25 @@
 .form {
-  display: flex;
-  flex-direction: column;
-  flex-wrap: nowrap;
-  justify-content: center;
-  align-content: stretch;
-  align-items: center;
 }
 
 .body {
   background: #f2f2f2;
   color: #333;
-  font-family: "Nunito";
-  height: 100vh;
+  height: calc(100vh - 70px);
 
   display: block;
   text-align: center;
+
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+
+  padding: 50px;
+
+  align-content: stretch;
+  align-items: center;
 }
 
-.testa {
-  color: #333;
-  text-decoration: none;
+.body button {
+  background-color: grey;
+  color: white;
 }

@@ -70,6 +70,7 @@ export default function ArticleSubmissionForm() {
   return (
     <form onSubmit={submitHandler}>
       <label htmlFor="title">Title</label>
+      <br />
       <input
         type="text"
         value={title}
@@ -78,7 +79,10 @@ export default function ArticleSubmissionForm() {
         onChange={handleTitleChange}
         required
       />
+      <br />
+      <br />
       <label htmlFor="title">Category</label>
+      <br />
       <input
         type="text"
         value={category}
@@ -87,8 +91,11 @@ export default function ArticleSubmissionForm() {
         onChange={handleCategoryChange}
         required
       />
+      <br />
+      <br />
       <QuillNoSSRWrapper modules={modules} onChange={setContent} theme="snow" />
       <button>Save</button>
+      <br />
       <p>{content}</p>
     </form>
   );

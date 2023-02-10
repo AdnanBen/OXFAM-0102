@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import styles from "../../styles/ReportModerator.module.css";
 
 export default function ReportsView() {
   const [reports, setReports] = useState({});
@@ -15,46 +16,67 @@ export default function ReportsView() {
   }, []);
 
   useEffect(() => {
+    console.log(reports);
+  }, [reports]);
+
+  useEffect(() => {
     console.log(incompleteReports);
   }, [incompleteReports]);
 
   return (
-    <>
-      <h2>Reports:</h2>
+    <div className={styles.reportsmodpage}>
+      <br />
+      <h3>Reports</h3>
 
-      {reports?.reports &&
-        reports.reports.map((x) => {
-          return (
-            <div>
-              <p>
-                Name: {x.name}
-                <br />
-                Gender: {x.gender}
-                <br />
-                Info: {x.body}
-              </p>
-              <br />
-            </div>
-          );
-        })}
+      <div>
+        <table className="table table-hover">
+          <thead>
+            <tr>
+              <th className="text-center">Report ID</th>
+              <th className="text-center">Name</th>
+              <th className="text-center">Situation</th>
+            </tr>
+          </thead>
+          <tbody>
+            {reports?.reports &&
+              reports.reports.map((x) => {
+                return (
+                  <tr>
+                    <td className="text-center">{x._id}</td>
+                    <td className="text-center">{x.name}</td>
+                    <td className="text-center">{x.body}</td>
+                  </tr>
+                );
+              })}
+          </tbody>
+        </table>
+      </div>
 
       <br />
 
-      <h2>Incomplete Reports:</h2>
+      <h3>Incomplete Reports</h3>
 
-      {incompleteReports?.incompleteReports &&
-        incompleteReports.incompleteReports.map((x) => {
-          return (
-            <div>
-              <p>
-                id: {x.reportId}
-                <br />
-                Info: {x.info}
-              </p>
-              <br />
-            </div>
-          );
-        })}
-    </>
+      <div>
+        <table className="table table-hover">
+          <thead>
+            <tr>
+              <th className="text-center">Report ID</th>
+              <th className="text-center">Info</th>
+            </tr>
+          </thead>
+          <tbody>
+            {incompleteReports?.incompleteReports &&
+              incompleteReports.incompleteReports.map((x) => {
+                return (
+                  <tr>
+                    <td className="text-center">{x._id}</td>
+                    <td className="text-center">{x.info}</td>
+                  </tr>
+                );
+              })}
+          </tbody>
+        </table>
+      </div>
+    </div>
   );
 }
