@@ -16,7 +16,7 @@ type Post = {
 
 const Post = ({ post }: { post: Post }) => {
   return (
-    <a href={`/forum/${post.id}`} className={styles.post_link}>
+    <Link href={`/forum/${post.id}`} className={styles.post_link}>
       <div className={styles.post}>
         <p className={styles.post_id}>{post.id}</p>
         <p className={styles.post_title}>{post.title}</p>
@@ -25,7 +25,7 @@ const Post = ({ post }: { post: Post }) => {
           {new Date(post.created).toLocaleString()}
         </p>
       </div>
-    </a>
+    </Link>
   );
 };
 
