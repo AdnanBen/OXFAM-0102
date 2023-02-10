@@ -1,9 +1,10 @@
 import { type NextPage } from "next";
 import Head from "next/head";
 import Link from "next/link";
+import { Button } from "rsuite";
 import useSWR from "swr";
 
-import styles from "./forum.module.css";
+import styles from "../../styles/Forum.module.css";
 
 type Post = {
   id: number;
@@ -31,11 +32,7 @@ const Post = ({ post }: { post: Post }) => {
 const fetcher = (...args) => fetch(...args).then((res) => res.json());
 
 const Feed: NextPage = () => {
-  const {
-    data: posts,
-    error,
-    isLoading,
-  } = useSWR(`/api/forum/posts`, fetcher);
+  const { data: posts, error, isLoading } = useSWR(`/api/forum/posts`, fetcher);
 
   return (
     <>
@@ -49,7 +46,10 @@ const Feed: NextPage = () => {
         {posts?.posts?.map((p) => (
           <Post post={p} />
         ))}
-        <Link href="/forum/new">Add new post</Link>
+        {!posts?.posts?.length && <div>There are no posts yet.</div>}
+        <Link href="/forum/new" className={styles.createPostBtn}>
+          <Button appearance="primary">Create new post?</Button>
+        </Link>
       </main>
     </>
   );
