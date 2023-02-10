@@ -1,8 +1,10 @@
 import { type NextPage } from "next";
 import Head from "next/head";
 import Link from "next/link";
+import { Button, Panel } from "rsuite";
+import styles from "../../styles/ModeratorDashboard.module.css";
 
-const ModeratorsHome: NextPage = () => {
+const ModeratorDashboard: NextPage = () => {
   return (
     <>
       <Head>
@@ -10,22 +12,34 @@ const ModeratorsHome: NextPage = () => {
       </Head>
 
       <main>
-        <ul>
-          <li>
+        <h2>Moderator Dashboard</h2>
+        <div className={styles.callToActions}>
+          <Panel title="Resources" bordered className={styles.group} shaded>
+            <p>Manage resources available to survivors.</p>
             <Link href="/moderator/article-submission-form">
-              Create new resource
+              <Button appearance="ghost">Create new resource &rarr;</Button>
             </Link>
-          </li>
-          <li>
-            <Link href="/moderator/chat">Chat with survivors</Link>
-          </li>
-          <li>
-            <Link href="/moderator/reports">View reports</Link>
-          </li>
-        </ul>
+          </Panel>
+
+          <Panel title="Chat" bordered className={styles.group} shaded>
+            <p>
+              Provide live, one-to-one, confidential support with survivors.
+            </p>
+            <Link href="/moderator/chat">
+              <Button appearance="ghost">Chat with survivors &rarr;</Button>
+            </Link>
+          </Panel>
+
+          <Panel title="Reports" bordered className={styles.group} shaded>
+            <p>Manage reports submitted by survivors.</p>
+            <Link href="/moderator/reports">
+              <Button appearance="ghost">View reports &rarr;</Button>
+            </Link>
+          </Panel>
+        </div>
       </main>
     </>
   );
 };
 
-export default ModeratorsHome;
+export default ModeratorDashboard;
