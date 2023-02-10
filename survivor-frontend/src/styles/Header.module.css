@@ -1,0 +1,16 @@
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 2em;
+}
+
+.links {
+  display: flex;
+  gap: 10px;
+  font-size: 0.8em;
+}
+
+.active {
+  text-decoration: underline;
+}

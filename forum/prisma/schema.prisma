@@ -1,0 +1,62 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Post {
+  id       Int        @id @default(autoincrement())
+  created  DateTime   @default(now())
+  title    String     @db.VarChar(100)
+  body     String
+  board_id Int
+  deleted  Boolean    @default(false)
+  board    Board      @relation(fields: [board_id], references: [id])
+  comments Comment[]
+  PostTag  PostTag[]
+  PostFlag PostFlag[]
+}
+
+model Board {
+  id          Int     @id @default(autoincrement())
+  name        String  @db.VarChar(50)
+  description String?
+  Post        Post[]
+}
+
+model Tag {
+  name        String    @id
+  description String?
+  PostTag     PostTag[]
+}
+
+model PostTag {
+  post_id  Int
+  tag_name String
+  post     Post   @relation(fields: [post_id], references: [id])
+  tag      Tag    @relation(fields: [tag_name], references: [name])
+
+  @@id([post_id, tag_name])
+}
+
+model PostFlag {
+  id        Int      @id @default(autoincrement())
+  post_id   Int
+  timestamp DateTime @default(now())
+  handled   Boolean  @default(false)
+  post      Post     @relation(fields: [post_id], references: [id])
+}
+
+model Comment {
+  id                Int       @id @default(autoincrement())
+  body              String
+  created           DateTime  @default(now())
+  parent_comment_id Int?
+  parent_comment    Comment?  @relation("Comment", fields: [parent_comment_id], references: [id])
+  replies           Comment[] @relation("Comment")
+  Post              Post?     @relation(fields: [post_id], references: [id])
+  post_id           Int?
+}

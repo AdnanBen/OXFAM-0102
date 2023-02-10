@@ -1,0 +1,19 @@
+.resourceTitle {
+  font-size: 2rem;
+  font-weight: 700;
+  margin: 20px 20px;
+}
+
+.articleAnchor {
+  text-decoration: none;
+  color: black;
+}
+
+.articleContainer {
+  height: 40px;
+  padding: 10px;
+}
+
+.resourceCategory+.resourceCategory {
+  margin-top: 10px;
+}
