@@ -5,3 +5,4 @@ docker-volumes
 build
 
 *icloud
+.env.local
