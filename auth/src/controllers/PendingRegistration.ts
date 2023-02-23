@@ -1,5 +1,6 @@
 import { randomBytes, createHash } from "crypto";
 import { NextFunction, Request, Response } from "express";
+import mongoose from "mongoose";
 import nodemailer from "nodemailer";
 import PendingRegistration from "../models/PendingRegistration";
 
@@ -69,6 +70,7 @@ const createPendingRegistration = async (
   res: Response,
   next: NextFunction
 ) => {
+  // https://learn.microsoft.com/en-us/azure/active-directory/external-identities/self-service-sign-up-secure-api-connector
   if (!validateAzureApiConnectorBasicAuth(req.header("authorization") ?? "")) {
     return res.status(401).json({
       error:
@@ -78,7 +80,7 @@ const createPendingRegistration = async (
 
   const token = randomBytes(64).toString("hex");
   const registration = new PendingRegistration({
-    _id: req.body.email,
+    _id: new mongoose.Types.ObjectId(),
     ...req.body,
     token: hash(token),
   });
