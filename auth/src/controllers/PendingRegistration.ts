@@ -8,7 +8,7 @@ const transporter = nodemailer.createTransport({
   host: "smtp.gmail.com",
   port: 465,
   secure: true,
-  auth: { user: "oxfam68@gmail.com", pass: "htdavwbbswkowvqg" },
+  auth: { user: process.env.SMTP_USERNAME, pass: process.env.SMTP_PASSWORD },
 });
 
 const hash = (str: string) => createHash("md5").update(str).digest("hex");
