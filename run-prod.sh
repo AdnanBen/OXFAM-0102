@@ -20,6 +20,10 @@ echo 'Starting survivor frontend'
 cd survivor-frontend && docker-compose -f docker-compose-prod.yml up --build -d --remove-orphans
 cd ..
 
+echo 'Starting moderator frontend'
+cd moderator-frontend && docker-compose -f docker-compose-prod.yml up --build -d --remove-orphans
+cd ..
+
 echo 'Starting HAProxy Gateway'
 cd gateway && docker-compose -f docker-compose.yml up -d --remove-orphans
 cd ..
