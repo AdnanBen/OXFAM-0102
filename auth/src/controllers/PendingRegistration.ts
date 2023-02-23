@@ -63,7 +63,21 @@ function validateAzureApiConnectorBasicAuth(authHeader: string) {
 }
 
 /**
- * API Connector from Azure AD B2B just before User Registration
+ * API Connector from Azure AD B2B just before User Registration.
+ *
+ * When a user tries to register (i.e., login for the first time) with
+ *  a social provider, we want to first manually verify they are allowed
+ *  to moderate the platform.
+ *
+ * We use Azure AD B2C API Connectors [1] to modify the sign-up experience by way of a User Flow.
+ * Azure AD B2C has been configured to call this API endpoint (POST) whenever a user register
+ *  and provide the user details as the request body.
+ * Then, we store the pending registration and email a central Oxfam contact who should verify the user.
+ *
+ * Note that in any case, a registration will always result in a 'block page' -- users
+ *  must be first manually verified to moderate the platform.
+ *
+ * [1] https://learn.microsoft.com/en-us/azure/active-directory-b2c/add-api-connector?pivots=b2c-user-flow
  */
 const createPendingRegistration = async (
   req: Request,
@@ -82,6 +96,7 @@ const createPendingRegistration = async (
   const registration = new PendingRegistration({
     _id: new mongoose.Types.ObjectId(),
     ...req.body,
+    // Store the hashed token so even we won't know the token
     token: hash(token),
   });
 
@@ -116,6 +131,13 @@ const createPendingRegistration = async (
   }
 };
 
+/**
+ * This is called when an Oxfam contact manually verifies a user's pending registration.
+ * It takes the pending registration record in our local DB and manually creates the
+ *  User object in Azure AD B2C.
+ * It also sends an email to the user informing them that their account is fully verified,
+ *  and deletes the local pending registration record.
+ */
 const acceptPendingRegistration = async (
   req: Request,
   res: Response,
