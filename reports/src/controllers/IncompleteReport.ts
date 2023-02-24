@@ -1,68 +1,44 @@
 import { NextFunction, Request, Response } from "express";
 import mongoose from "mongoose";
-import IncompleteReport from "../models/IncompleteReport";
+import amqplib from "amqplib";
+
+const sendMsg = async (msg: string) => {
+  const queueName = "testqueue";
+  const connection = await amqplib.connect("amqp://localhost");
+  const channel = await connection.createChannel();
+  await channel.assertQueue(queueName, { durable: false });
+  channel.sendToQueue(queueName, Buffer.from(msg));
+  console.log("sent test");
+  setTimeout(() => {
+    connection.close();
+  }, 500);
+};
 
 const createIncompleteReport = (
   req: Request,
   res: Response,
   next: NextFunction
 ) => {
-  console.log(req.body);
-  const { reportId, info } = req.body;
+  console.log("test");
+  // console.log(req.body);
+  // const { reportId, info } = req.body;
 
-  const incompleteReport = new IncompleteReport({
-    _id: new mongoose.Types.ObjectId(),
-    reportId,
-    info,
-  });
+  // const incompleteReport = new IncompleteReport({
+  //   _id: new mongoose.Types.ObjectId(),
+  //   reportId,
+  //   info,
+  // });
 
-  return incompleteReport
-    .save()
-    .then((incompleteReport) => res.status(201).json({ incompleteReport }))
-    .catch((error) => res.status(500).json({ error }));
-};
+  console.log("also here");
+  sendMsg(JSON.stringify(req.body));
+  return res.status(201).json({ Created: "Success" });
 
-const getIncompleteReport = (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
-  const incompleteReportId = req.params.incompleteReportId;
-
-  return IncompleteReport.findById(incompleteReportId)
-    .then((incompleteReport) =>
-      incompleteReport
-        ? res.status(200).json({ incompleteReport })
-        : res.status(404).json({ message: "IncompleteReport not found" })
-    )
-    .catch((error) => res.status(500).json({ error }));
-};
-
-const getAll = (req: Request, res: Response, next: NextFunction) => {
-  return IncompleteReport.find()
-    .then((incompleteReports) => res.status(201).json({ incompleteReports }))
-    .catch((error) => res.status(500).json({ error }));
-};
-
-const deleteIncompleteReport = (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
-  const incompleteReportId = req.params.incompleteReportId;
-
-  return IncompleteReport.findByIdAndDelete(incompleteReportId)
-    .then((incompleteReport) =>
-      incompleteReport
-        ? res.status(201).json({ message: "IncompleteReport Deleted" })
-        : res.status(404).json({ message: "IncompleteReport not found" })
-    )
-    .catch((error) => res.status(500).json({ error }));
+  // return incompleteReport
+  //   .save()
+  //   .then((incompleteReport) => res.status(201).json({ incompleteReport }))
+  //   .catch((error) => res.status(500).json({ error }));
 };
 
 export default {
   createIncompleteReport,
-  getIncompleteReport,
-  getAll,
-  deleteIncompleteReport,
 };
