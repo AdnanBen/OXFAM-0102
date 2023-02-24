@@ -110,7 +110,7 @@ const createPendingRegistration = async (
         html: `Please verify the following user:<br/>${req.body.displayName} (${req.body.email}). ${process.env.BASE_URL}/pendingRegistrations/approve/${token}`,
       });
     } else {
-      console.log("[Development] Would send email");
+      console.log("[Development] Would send email with token", token);
     }
 
     await registration.save();
