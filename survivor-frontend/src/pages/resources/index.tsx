@@ -4,6 +4,7 @@ import Link from "next/link";
 import styles from "../../styles/Resources.module.css";
 import { Article } from "../../articles-interfaces";
 import { Panel } from "rsuite";
+import Head from "next/head";
 
 function ResourceHome() {
   const categoryTypes: string[] = ["violence", "sexual_assault"];
@@ -54,19 +55,25 @@ function ResourceHome() {
 
   return (
     <>
-      <div className={styles.resourceTitle}>Resources</div>
-      {categoryTypes.map((category: string) => {
-        return (
-          <Panel
-            collapsible
-            header={collapsibleHeader(category)}
-            bordered
-            className={styles.resourceCategory}
-          >
-            {collapsibleContent(category)}
-          </Panel>
-        );
-      })}
+      <Head>
+        <title>OXFAM Survivors Community | Resources</title>
+      </Head>
+
+      <main>
+        <h2>Resources</h2>
+        {categoryTypes.map((category: string) => {
+          return (
+            <Panel
+              collapsible
+              header={collapsibleHeader(category)}
+              bordered
+              className={styles.resourceCategory}
+            >
+              {collapsibleContent(category)}
+            </Panel>
+          );
+        })}
+      </main>
     </>
   );
 }

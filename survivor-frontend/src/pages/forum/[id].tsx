@@ -1,5 +1,5 @@
 import { useState } from "react";
-import styles from "./forum.module.css";
+import styles from "../../styles/Forum.module.css";
 import { Loader, Message, Modal } from "rsuite";
 import { type NextPage } from "next";
 import { useRouter } from "next/router";
@@ -24,6 +24,7 @@ const Post: NextPage = () => {
     data: post,
     error,
     isLoading,
+    mutate,
   } = useSWR(`/api/forum/posts/${id}`, fetcher);
 
   console.log(post, error);
@@ -78,18 +79,16 @@ const Post: NextPage = () => {
                   const data = { body: formData.get("body") };
                   if (replyToComment) data.parentCommentId = replyToComment;
 
-                  const res = await fetch(
-                    `/api/forum/posts/${id}/comments`,
-                    {
-                      method: "POST",
-                      headers: { "Content-Type": "application/json" },
-                      body: JSON.stringify(data),
-                    }
-                  ).then((res) => res.json());
+                  const res = await fetch(`/api/forum/posts/${id}/comments`, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(data),
+                  }).then((res) => res.json());
 
                   if (!res.error) {
                     setShowCommentDialog(false);
                     setReplyToComment(null);
+                    mutate();
                   }
                 }}
               >

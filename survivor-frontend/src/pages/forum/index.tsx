@@ -1,9 +1,10 @@
 import { type NextPage } from "next";
 import Head from "next/head";
 import Link from "next/link";
+import { Button } from "rsuite";
 import useSWR from "swr";
 
-import styles from "./forum.module.css";
+import styles from "../../styles/Forum.module.css";
 
 type Post = {
   id: number;
@@ -15,7 +16,7 @@ type Post = {
 
 const Post = ({ post }: { post: Post }) => {
   return (
-    <a href={`/forum/${post.id}`} className={styles.post_link}>
+    <Link href={`/forum/${post.id}`} className={styles.post_link}>
       <div className={styles.post}>
         <p className={styles.post_id}>{post.id}</p>
         <p className={styles.post_title}>{post.title}</p>
@@ -24,18 +25,14 @@ const Post = ({ post }: { post: Post }) => {
           {new Date(post.created).toLocaleString()}
         </p>
       </div>
-    </a>
+    </Link>
   );
 };
 
 const fetcher = (...args) => fetch(...args).then((res) => res.json());
 
 const Feed: NextPage = () => {
-  const {
-    data: posts,
-    error,
-    isLoading,
-  } = useSWR(`/api/forum/posts`, fetcher);
+  const { data: posts, error, isLoading } = useSWR(`/api/forum/posts`, fetcher);
 
   return (
     <>
@@ -50,6 +47,7 @@ const Feed: NextPage = () => {
         {posts?.posts?.map((p) => (
           <Post post={p} />
         ))}
+<<<<<<< HEAD
         <Link href="/forum/new">Add new post</Link>
         <br />
         <h3>Boards</h3>
@@ -61,6 +59,12 @@ const Feed: NextPage = () => {
         <button className={styles.board_button}>Requests for advice</button>
         <button className={styles.board_button}>Tell me about yourself</button> 
         <button className={styles.board_button}>Political discussions</button>
+=======
+        {!posts?.posts?.length && <div>There are no posts yet.</div>}
+        <Link href="/forum/new" className={styles.createPostBtn}>
+          <Button appearance="primary">Create new post?</Button>
+        </Link>
+>>>>>>> 67b7e08197044c52b67aba972c3ad3ba00c776e2
       </main>
     </>
   );

@@ -1,11 +1,11 @@
 import { type NextPage } from "next";
-import Link from "next/link";
-import styles from "./forum.module.css";
 import useSWR from "swr";
 
 import "react-quill/dist/quill.snow.css";
 import dynamic from "next/dynamic";
 import { useState } from "react";
+import { Button, Form, SelectPicker } from "rsuite";
+import { useRouter } from "next/router";
 
 const QuillNoSSRWrapper = dynamic(import("react-quill"), {
   ssr: false,
@@ -30,7 +30,12 @@ const modules = {
 const fetcher = (...args) => fetch(...args).then((res) => res.json());
 
 const NewPost: NextPage = () => {
-  const [content, setContent] = useState("");
+  const router = useRouter();
+  const [formData, setFormData] = useState({
+    title: "",
+    board_id: null,
+    body: "",
+  });
 
   const {
     data: boards,
@@ -41,59 +46,72 @@ const NewPost: NextPage = () => {
   return (
     <>
       <h2>New Forum Post</h2>
-      <form
-        onSubmit={(e) => {
+
+      {/* TODO: Add something to show that the forum is submitted  */}
+      <Form
+        formValue={formData}
+        onChange={(v) => setFormData(v)}
+        onSubmit={(valid, e) => {
           e.preventDefault();
-          const formData = new FormData(e.currentTarget);
-          const data = {};
-          for (const [key, value] of formData.entries()) {
-            data[key] = value;
-          }
-          data.body = content;
-          data.board_id = parseInt(data.board_id, 10);
           fetch("/api/forum/posts", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(data),
+            body: JSON.stringify(formData),
           })
             .then((res) => res.json())
-            .then((res) => console.log(res));
+            .then((res) => {
+              console.log(res);
+              if (!res.error) {
+                router.push("/forum");
+              }
+            });
         }}
       >
-        {/* TODO: Add something to show that the forum is submitted  */}
-        <label>
-          Post Title:{" "}
-          <input type="text" id="new_post_title" name="title" required />
-        </label>
-        <br />
-        <label>
-          Board:{" "}
-          <select name="board_id" id="boards">
-            {boards?.boards?.map((b) => (
-              <option value={b.id}>{b.name}</option>
-            ))}
-          </select>
-        </label>
-        <br />
-        <label>
-          Post Body:{" "}
-          {/*<textarea id="new_post_body" name="body" required></textarea>
-          <br />*/}
-        </label>
-        <QuillNoSSRWrapper
-          modules={modules}
-          theme="snow"
-          onChange={setContent}
-          placeholder="Content goes here..."
-        />
-        <br />
-        <input type="submit" value="Submit New Post" />
-        <br />
-        <br />
-        <Link href="/forum">
-          <button>Back to Forum</button>
-        </Link>
-      </form>
+        <Form.Group>
+          <Form.ControlLabel>Post Title</Form.ControlLabel>
+          <Form.Control
+            name="title"
+            type="text"
+            required
+            block
+            placeholder="Please enter the title of your post"
+          />
+        </Form.Group>
+
+        <Form.Group>
+          <Form.ControlLabel>Board</Form.ControlLabel>
+          <Form.Control
+            block
+            placeholder="Please choose a category"
+            accepter={SelectPicker}
+            name="board_id"
+            labelKey="name"
+            valueKey="id"
+            data={boards?.boards}
+          />
+        </Form.Group>
+
+        <Form.Group>
+          <Form.ControlLabel>Post Body</Form.ControlLabel>
+          <QuillNoSSRWrapper
+            modules={modules}
+            theme="snow"
+            onChange={(v) => setFormData((old) => ({ ...old, body: v }))}
+            placeholder="Content goes here..."
+          />
+          <Form.HelpText>
+            Please <strong>do not</strong> reveal any personally-identifiable
+            information (e.g., your name, address, location) to protect your
+            safety.
+          </Form.HelpText>
+        </Form.Group>
+
+        <Form.Group>
+          <Button type="submit" appearance="primary">
+            Submit New Post
+          </Button>
+        </Form.Group>
+      </Form>
     </>
   );
 };
