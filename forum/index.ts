@@ -1,7 +1,7 @@
 import express, { Request, Response } from "express";
 import dotenv from "dotenv";
 import bodyParser from "body-parser";
-import cors from "cors";
+import sanitizeHTML from "sanitize-html";
 
 import prisma from "./db";
 import { APIError } from "./helpers";
@@ -16,9 +16,6 @@ dotenv.config();
 const app = express();
 
 app.use(bodyParser.json());
-
-// TODO: remove this once the API gateway is configured for dev environments
-app.use(cors());
 
 /**
  * Global error handler.
@@ -45,8 +42,8 @@ app.post(
   catchErrors(async (req: Request, res: Response) => {
     const post = await prisma.post.create({
       data: {
-        title: req.body.title,
-        body: req.body.body,
+        title: sanitizeHTML(req.body.title),
+        body: sanitizeHTML(req.body.body),
         board: { connect: { id: req.body.board_id } },
       },
     });
@@ -151,7 +148,7 @@ app.post(
 
     const comment = await prisma.comment.create({
       data: {
-        body: req.body.body,
+        body: sanitizeHTML(req.body.body),
         post_id: +postId,
         ...(req.body.parentCommentId != null && {
           parent_comment_id: req.body.parentCommentId,
