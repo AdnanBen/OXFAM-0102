@@ -1,5 +1,3 @@
-import { Db } from "mongodb";
-
 export class APIError extends Error {
   status: number;
 
