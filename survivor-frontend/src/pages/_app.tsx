@@ -22,7 +22,7 @@ const MyApp: AppType<{ session: Session | null }> = ({
   useEffect(() => {
     const activeLocale = locale ?? "en";
     import(`../locales/${activeLocale}/messages`)
-      .then((messages) => i18n.load(activeLocale, messages))
+      .then((messages) => i18n.load(activeLocale, messages.messages))
       .then(() => i18n.activate(activeLocale));
   }, [locale]);
 
