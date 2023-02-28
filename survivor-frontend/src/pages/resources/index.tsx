@@ -1,3 +1,4 @@
+import { Trans } from "@lingui/macro";
 import { GetServerSideProps } from "next";
 import Head from "next/head";
 import Link from "next/link";
@@ -45,7 +46,9 @@ function ResourceHome({ articles }) {
       </Head>
 
       <main>
-        <h2>Resources</h2>
+        <h2>
+          <Trans>Resources</Trans>
+        </h2>
         {categoryTypes ? (
           categoryTypes.map((category: string) => {
             return (
@@ -61,7 +64,9 @@ function ResourceHome({ articles }) {
           })
         ) : (
           <Message type="error">
-            There was an error loading the resources. Please try again later.
+            <Trans>
+              There was an error loading the resources. Please try again later.
+            </Trans>
           </Message>
         )}
       </main>

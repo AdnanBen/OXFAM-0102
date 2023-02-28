@@ -1,3 +1,4 @@
+import { Trans } from "@lingui/macro";
 import { GetServerSideProps } from "next";
 import { Message } from "rsuite";
 import sanitizeHTML from "sanitize-html";
@@ -24,15 +25,26 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 };
 
 export default function ArticlePage({ article }) {
-  return article ? (
-    <div className={styles.articleContainer}>
-      <div className={styles.articleTitle}>{article.title}</div>
-      <div>{article.category}</div>
-      <div dangerouslySetInnerHTML={{ __html: sanitizeHTML(article.body) }} />
-    </div>
-  ) : (
-    <Message type="error">
-      There was an error loading the resource. Please try again later
-    </Message>
+  if (article) {
+    return (
+      <main>
+        <div className={styles.articleContainer}>
+          <div className={styles.articleTitle}>{article.title}</div>
+          <div>{article.category}</div>
+          <div
+            dangerouslySetInnerHTML={{ __html: sanitizeHTML(article.body) }}
+          />
+        </div>
+      </main>
+    );
+  }
+  return (
+    <main>
+      <Message type="error">
+        <Trans>
+          There was an error loading the resource. Please try again later.
+        </Trans>
+      </Message>
+    </main>
   );
 }

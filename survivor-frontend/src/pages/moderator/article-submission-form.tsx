@@ -52,48 +52,50 @@ export default function ArticleSubmissionForm() {
   };
 
   return (
-    <Form
-      formValue={formData}
-      onChange={setFormData}
-      onSubmit={(valid, e) => submitHandler(e)}
-    >
-      <Form.Group>
-        <Form.ControlLabel>Title</Form.ControlLabel>
-        <Form.Control
-          type="text"
-          name="title"
-          placeholder="Enter a title"
-          required
-        ></Form.Control>
-      </Form.Group>
+    <main>
+      <Form
+        formValue={formData}
+        onChange={setFormData}
+        onSubmit={(valid, e) => submitHandler(e)}
+      >
+        <Form.Group>
+          <Form.ControlLabel>Title</Form.ControlLabel>
+          <Form.Control
+            type="text"
+            name="title"
+            placeholder="Enter a title"
+            required
+          ></Form.Control>
+        </Form.Group>
 
-      <Form.Group>
-        <Form.ControlLabel>Category</Form.ControlLabel>
-        <Form.Control
-          type="text"
-          name="category"
-          placeholder="Enter a category"
-          required
-        ></Form.Control>
-      </Form.Group>
+        <Form.Group>
+          <Form.ControlLabel>Category</Form.ControlLabel>
+          <Form.Control
+            type="text"
+            name="category"
+            placeholder="Enter a category"
+            required
+          ></Form.Control>
+        </Form.Group>
 
-      <Form.Group>
-        <Form.ControlLabel>Resource body</Form.ControlLabel>
-        <QuillNoSSRWrapper
-          modules={modules}
-          onChange={(v) => setFormData((old) => ({ ...old, body: v }))}
-          theme="snow"
-        />
-      </Form.Group>
+        <Form.Group>
+          <Form.ControlLabel>Resource body</Form.ControlLabel>
+          <QuillNoSSRWrapper
+            modules={modules}
+            onChange={(v) => setFormData((old) => ({ ...old, body: v }))}
+            theme="snow"
+          />
+        </Form.Group>
 
-      <Form.Group>
-        <Button type="submit" appearance="primary">
-          Save new Resource
-        </Button>
-      </Form.Group>
+        <Form.Group>
+          <Button type="submit" appearance="primary">
+            Save new Resource
+          </Button>
+        </Form.Group>
 
-      <br />
-      <p>{formData.body}</p>
-    </Form>
+        <br />
+        <p>{formData.body}</p>
+      </Form>
+    </main>
   );
 }

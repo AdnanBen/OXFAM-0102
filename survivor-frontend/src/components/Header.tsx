@@ -1,3 +1,4 @@
+import { t, Trans } from "@lingui/macro";
 import { GetServerSideProps } from "next";
 import { signIn, signOut, useSession } from "next-auth/react";
 import Link from "next/link";
@@ -13,27 +14,47 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   };
 };
 
+const HeaderLink = (props: {
+  text: string;
+  pathname: string;
+  active: boolean;
+}) => (
+  <Link href={props.pathname} className={props.active ? styles.active : ""}>
+    {props.text}
+  </Link>
+);
+
 const Header = () => {
   const router = useRouter();
   const { data: session } = useSession();
 
   return (
     <nav className={styles.header}>
-      <Link href="/">Oxfam Survivors Community</Link>
+      <Link href="/">
+        <Trans>Oxfam Survivors Community</Trans>
+      </Link>
       <div className={styles.links}>
-        {["Forum", "Chat", "Resources", "Report"].map((pagename) => {
-          const pathname = `/${pagename.toLowerCase()}`;
-          return (
-            <Link
-              href={pathname}
-              className={
-                router.pathname.startsWith(pathname) ? styles.active : ""
-              }
-            >
-              {pagename}
-            </Link>
-          );
-        })}
+        <HeaderLink
+          text={t`Forum`}
+          pathname="/forum"
+          active={router.pathname.startsWith("/forum")}
+        />
+        <HeaderLink
+          text={t`Chat`}
+          pathname="/chat"
+          active={router.pathname.startsWith("/chat")}
+        />
+        <HeaderLink
+          text={t`Resources`}
+          pathname="/resources"
+          active={router.pathname.startsWith("/resources")}
+        />
+        <HeaderLink
+          text={t`Report`}
+          pathname="/report"
+          active={router.pathname.startsWith("/report")}
+        />
+
         {session ? (
           <>
             <Link
@@ -42,15 +63,15 @@ const Header = () => {
                 router.pathname.startsWith("/moderator") ? styles.active : ""
               }
             >
-              Moderator
+              <Trans>Moderator</Trans>
             </Link>
             <a className={styles.authLink} onClick={() => signOut()}>
-              Sign out
+              <Trans>Sign out</Trans>
             </a>
           </>
         ) : (
           <a className={styles.authLink} onClick={() => signIn("azure-ad-b2c")}>
-            Login as moderator
+            <Trans>Login as moderator</Trans>
           </a>
         )}
       </div>

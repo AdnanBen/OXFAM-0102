@@ -1,3 +1,4 @@
+import { Trans } from "@lingui/macro";
 import React, { useEffect, useState } from "react";
 import { Socket } from "socket.io-client";
 import styles from "../styles/Chat.module.css";
@@ -46,9 +47,13 @@ const Chat = ({
               }`}
             >
               {m.isUser ? (
-                <div className={styles.sender}>Them:</div>
+                <div className={styles.sender}>
+                  <Trans>Them</Trans>:
+                </div>
               ) : (
-                <div className={styles.sender}>You:</div>
+                <div className={styles.sender}>
+                  <Trans>You</Trans>:
+                </div>
               )}
               {m.message} - {new Date(m.timestamp).toLocaleTimeString()}
             </div>
@@ -64,7 +69,7 @@ const Chat = ({
             className={styles.send_button}
             onClick={() => sendNewMessage(inputValue)}
           >
-            Send message
+            <Trans>Send message</Trans>
           </button>
         </div>
       </div>

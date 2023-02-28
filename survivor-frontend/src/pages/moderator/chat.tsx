@@ -88,10 +88,10 @@ const ModeratorDashboard: NextPage = () => {
     };
   }, []);
 
-  return socket ? (
-    <ModeratorChat socket={socket} />
-  ) : (
-    <Loader center backdrop />
+  return (
+    <main>
+      {socket ? <ModeratorChat socket={socket} /> : <Loader center backdrop />}
+    </main>
   );
 };
 

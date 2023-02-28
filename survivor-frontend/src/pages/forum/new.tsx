@@ -1,3 +1,4 @@
+import { Trans } from "@lingui/macro";
 import { GetServerSideProps, type NextPage } from "next";
 import dynamic from "next/dynamic";
 import { useRouter } from "next/router";
@@ -8,7 +9,11 @@ import { getServerAuthSession } from "../../server/auth";
 
 const QuillNoSSRWrapper = dynamic(import("react-quill"), {
   ssr: false,
-  loading: () => <p>Loading ...</p>,
+  loading: () => (
+    <p>
+      <Trans>Loading</Trans>...
+    </p>
+  ),
 });
 
 const modules = {
@@ -52,7 +57,7 @@ const NewPost: NextPage = ({ boards }) => {
   });
 
   return (
-    <>
+    <main>
       <h2>New Forum Post</h2>
 
       {/* TODO: Add something to show that the forum is submitted  */}
@@ -76,7 +81,9 @@ const NewPost: NextPage = ({ boards }) => {
         }}
       >
         <Form.Group>
-          <Form.ControlLabel>Post Title</Form.ControlLabel>
+          <Form.ControlLabel>
+            <Trans>Post Title</Trans>
+          </Form.ControlLabel>
           <Form.Control
             name="title"
             type="text"
@@ -87,7 +94,9 @@ const NewPost: NextPage = ({ boards }) => {
         </Form.Group>
 
         <Form.Group>
-          <Form.ControlLabel>Board</Form.ControlLabel>
+          <Form.ControlLabel>
+            <Trans>Board</Trans>
+          </Form.ControlLabel>
           <Form.Control
             block
             placeholder="Please choose a category"
@@ -100,7 +109,9 @@ const NewPost: NextPage = ({ boards }) => {
         </Form.Group>
 
         <Form.Group>
-          <Form.ControlLabel>Post Body</Form.ControlLabel>
+          <Form.ControlLabel>
+            <Trans>Post Body</Trans>
+          </Form.ControlLabel>
           <QuillNoSSRWrapper
             modules={modules}
             theme="snow"
@@ -108,19 +119,21 @@ const NewPost: NextPage = ({ boards }) => {
             placeholder="Content goes here..."
           />
           <Form.HelpText>
-            Please <strong>do not</strong> reveal any personally-identifiable
-            information (e.g., your name, address, location) to protect your
-            safety.
+            <Trans>
+              Please <strong>do not</strong> reveal any personally-identifiable
+              information (e.g., your name, address, location) to protect your
+              safety.
+            </Trans>
           </Form.HelpText>
         </Form.Group>
 
         <Form.Group>
           <Button type="submit" appearance="primary">
-            Submit New Post
+            <Trans>Submit New Post</Trans>
           </Button>
         </Form.Group>
       </Form>
-    </>
+    </main>
   );
 };
 

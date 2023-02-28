@@ -1,0 +1,202 @@
+msgid ""
+msgstr ""
+"POT-Creation-Date: 2023-02-28 13:37+0000\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: @lingui/cli\n"
+"Language: ny\n"
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: \n"
+"PO-Revision-Date: \n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Plural-Forms: \n"
+
+#: src/pages/index.tsx:17
+msgid "A safe-space for survivors to discuss and share their experiences of abuse, and get support."
+msgstr "Malo otetezeka opulumuka kuti akambirane ndikugawana zomwe akumana nazo zachiwerewere, komanso amathandizira."
+
+#: src/pages/forum/new.tsx:98
+msgid "Board"
+msgstr "Thabwa"
+
+#: src/pages/forum/index.tsx:87
+msgid "Boards"
+msgstr "Matabwa"
+
+#: src/components/Header.tsx:43
+#: src/pages/chat/index.tsx:93
+msgid "Chat"
+msgstr "Cheza"
+
+#: src/pages/forum/[id].tsx:101
+msgid "Comment"
+msgstr "Ganizo"
+
+#: src/pages/forum/index.tsx:82
+msgid "Create new post?"
+msgstr "Pangani positi yatsopano?"
+
+#: src/pages/report/index.tsx:134
+msgid "Female"
+msgstr "Mkazi"
+
+#: src/components/Header.tsx:38
+#: src/pages/forum/index.tsx:58
+msgid "Forum"
+msgstr "Foru"
+
+#: src/pages/report/index.tsx:126
+msgid "Gender"
+msgstr "Amuna"
+
+#: src/pages/forum/new.tsx:14
+msgid "Loading"
+msgstr "Kutsitsa"
+
+#: src/components/Header.tsx:74
+msgid "Login as moderator"
+msgstr "Lowani ngati Woyang'anira"
+
+#: src/pages/report/index.tsx:95
+msgid "Make a Report"
+msgstr "Pangani lipoti"
+
+#: src/pages/report/index.tsx:131
+msgid "Male"
+msgstr "Mamuna"
+
+#: src/components/Header.tsx:66
+msgid "Moderator"
+msgstr "Oyang'anira"
+
+#: src/pages/report/index.tsx:118
+msgid "Name"
+msgstr "Dzina"
+
+#: src/pages/forum/[id].tsx:74
+msgid "New comment"
+msgstr "Ndemanga Yatsopano"
+
+#: src/pages/report/index.tsx:137
+msgid "Other"
+msgstr "Ena"
+
+#: src/components/Header.tsx:34
+msgid "Oxfam Survivors Community"
+msgstr "Oxfam Opulumuka Gulu"
+
+#: src/pages/forum/new.tsx:122
+msgid "Please <0>do not</0> reveal any personally-identifiable information (e.g., your name, address, location) to protect your safety."
+msgstr "Chonde <0> musatero </ 0> Kuwulula zidziwitso zilizonse zodziwika (E.g., dzina lanu, adilesi, malo) kuteteza chitetezo chanu."
+
+#: src/pages/forum/new.tsx:113
+msgid "Post Body"
+msgstr "Chitoto"
+
+#: src/pages/forum/new.tsx:85
+msgid "Post Title"
+msgstr "Mutu wankhani"
+
+#: src/pages/forum/[id].tsx:107
+msgid "Post comment"
+msgstr "Ndemanga"
+
+#: src/pages/forum/[id].tsx:128
+msgid "Replies"
+msgstr "Amayankha"
+
+#: src/components/Header.tsx:53
+msgid "Report"
+msgstr "Kuulula"
+
+#: src/pages/chat/index.tsx:62
+msgid "Request Chat"
+msgstr "Funsani Chat"
+
+#: src/pages/chat/index.tsx:54
+msgid "Request sent"
+msgstr "Pempho lotumizidwa"
+
+#: src/components/Header.tsx:48
+#: src/pages/resources/index.tsx:50
+msgid "Resources"
+msgstr "Chuma"
+
+#: src/pages/forum/index.tsx:100
+msgid "Search..."
+msgstr "Sakani ..."
+
+#: src/pages/report/index.tsx:129
+msgid "Select a gender"
+msgstr "Sankhani jenda"
+
+#: src/components/Chat.tsx:72
+msgid "Send message"
+msgstr "Tumizani uthenga"
+
+#: src/components/Header.tsx:69
+msgid "Sign out"
+msgstr "Tulukani"
+
+#: src/pages/report/index.tsx:145
+msgid "Situation"
+msgstr "Kakhalidwe"
+
+#: src/pages/report/index.tsx:154
+msgid "Submit"
+msgstr "Lolera"
+
+#: src/pages/forum/new.tsx:132
+msgid "Submit New Post"
+msgstr "Tumizani positi yatsopano"
+
+#: src/components/Chat.tsx:51
+msgid "Them"
+msgstr "Iwo"
+
+#: src/pages/chat/index.tsx:69
+msgid "There are no moderators available to chat at the moment."
+msgstr "Palibe oganiza omwe amapezeka kuti azicheza pakadali pano."
+
+#: src/pages/forum/index.tsx:68
+msgid "There are no posts yet."
+msgstr "Palibe zolemba pano."
+
+#: src/pages/forum/[id].tsx:139
+msgid "There was an error loading the post. Please try again later."
+msgstr "Panali vuto kuyika positi. Chonde yesaninso pambuyo pake."
+
+#: src/pages/forum/index.tsx:74
+msgid "There was an error loading the posts. Please try again later."
+msgstr "Panali vuto kuyika zolemba. Chonde yesaninso pambuyo pake."
+
+#: src/pages/resources/[resourceId].tsx:44
+msgid "There was an error loading the resource. Please try again later."
+msgstr "Panali vuto kuyika gwero. Chonde yesaninso pambuyo pake."
+
+#: src/pages/resources/index.tsx:67
+msgid "There was an error loading the resources. Please try again later."
+msgstr "Panali vuto kuyika zinthu. Chonde yesaninso pambuyo pake."
+
+#: src/pages/forum/index.tsx:90
+msgid "We have oragnised the posts according to the boards to make it easier for you to find support, information and talk to others with similar experiences."
+msgstr "Tazindikira zolembazo malinga ndi matabwa kuti zikhale zosavuta kuti mulandire thandizo, zidziwitso ndikulankhula ndi ena omwe ali ndi zokumana nazo zofanana."
+
+#: src/components/Chat.tsx:55
+msgid "You"
+msgstr "Inu"
+
+#: src/pages/forum/[id].tsx:131
+msgid "add comment"
+msgstr "Onjezani ndemanga"
+
+#. e.g., on [date]
+#: src/pages/forum/[id].tsx:44
+msgid "on"
+msgstr "pa"
+
+#: src/components/Header.tsx:36
+#~ msgid "{pagename}"
+#~ msgstr "{pagename}"

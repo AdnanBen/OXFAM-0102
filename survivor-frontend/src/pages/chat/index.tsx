@@ -1,3 +1,4 @@
+import { Trans } from "@lingui/macro";
 import { NextPage } from "next";
 import Head from "next/head";
 import React, { useEffect, useState } from "react";
@@ -48,14 +49,26 @@ const UserChat = ({ socket }: { socket: Socket }) => {
   }
 
   if (requestSent) {
-    return <div>Request sent!</div>;
+    return (
+      <div>
+        <Trans>Request sent</Trans>
+      </div>
+    );
   }
 
   if (moderatorsAvailable) {
-    return <button onClick={requestChat}>Request Chat</button>;
+    return (
+      <button onClick={requestChat}>
+        <Trans>Request Chat</Trans>
+      </button>
+    );
   }
 
-  return <div>There are no moderators available to chat at the moment.</div>;
+  return (
+    <div>
+      <Trans>There are no moderators available to chat at the moment.</Trans>
+    </div>
+  );
 };
 
 const ChatPage: NextPage = () => {
@@ -76,7 +89,9 @@ const ChatPage: NextPage = () => {
       </Head>
 
       <main>
-        <h2>Chat</h2>
+        <h2>
+          <Trans>Chat</Trans>
+        </h2>
         {socket ? <UserChat socket={socket} /> : <Loader center backdrop />}
       </main>
     </>
