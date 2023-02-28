@@ -1,7 +1,6 @@
 import express, { Request, Response } from "express";
 import dotenv from "dotenv";
 import bodyParser from "body-parser";
-import cors from "cors";
 import sanitizeHTML from "sanitize-html";
 
 import prisma from "./db";
@@ -17,9 +16,6 @@ dotenv.config();
 const app = express();
 
 app.use(bodyParser.json());
-
-// TODO: remove this once the API gateway is configured for dev environments
-app.use(cors());
 
 /**
  * Global error handler.

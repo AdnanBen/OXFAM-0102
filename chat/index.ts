@@ -9,11 +9,7 @@ dotenv.config();
 const app = express();
 const server = http.createServer(app);
 
-// TODO get rid of CORS config when deployed with reverse proxy on same URL
-const io = new Server(server, {
-  cors: { origin: "http://localhost:3000" },
-  path: "/api/chat",
-});
+const io = new Server(server, { path: "/api/chat" });
 
 const MODERATOR_ROOM_NAME = "moderators";
 const USER_ROOM_NAME = "users";

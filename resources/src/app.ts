@@ -1,7 +1,6 @@
 import express, { Request, Response, Router } from "express";
 import http from "http";
 import mongoose from "mongoose";
-const cors = require("cors");
 
 import { config } from "./config/config";
 
@@ -29,9 +28,4 @@ mongoose
   });
 
 app.use(express.json());
-app.use(
-  cors({
-    origin: "*",
-  })
-);
 app.use("/articles", articleRoutes);
