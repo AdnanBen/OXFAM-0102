@@ -16,6 +16,10 @@ echo 'Starting resources'
 cd resources && docker-compose -f docker-compose-prod.yml up --build -d --remove-orphans
 cd ..
 
+echo 'Starting auth'
+cd auth && docker-compose -f docker-compose-prod.yml up --build -d --remove-orphans
+cd ..
+
 echo 'Starting survivor frontend'
 cd survivor-frontend && docker-compose -f docker-compose-prod.yml up --build -d --remove-orphans
 cd ..
@@ -24,6 +28,12 @@ echo 'Starting HAProxy Gateway'
 cd gateway && docker-compose -f docker-compose.yml up -d --remove-orphans
 cd ..
 
-
-  #\ -f gateway/docker-compose-prod.yml
-  #\ -f moderator-frontend/docker-compose.yml
+net=oxfamsurvivorscommunity
+docker network create $net
+docker network connect $net reports-api-1
+docker network connect $net resources-api-1
+docker network connect $net chat-api-1
+docker network connect $net auth-api-1
+docker network connect $net forum-api-1
+docker network connect $net survivor-frontend-web-1
+docker network connect $net gateway-proxy-1
