@@ -1,48 +1,37 @@
-import { useRouter } from "next/router";
-import { useState, useEffect } from "react";
+import { GetServerSideProps } from "next";
+import { Message } from "rsuite";
+import { getServerAuthSession } from "../../server/auth";
 import styles from "../../styles/ArticlePage.module.css";
-import { fetchArticleById } from "../../articles-helpers";
-import { Article } from "../../articles-interfaces";
 
-export default function ArticlePage() {
-  const router = useRouter();
-  console.log("router.query.articleId", router.query.resourceId);
-
-  const [values, setValues] = useState({
-    error: "",
-    article: {} as Article,
-  });
-
-  const { error, article } = values;
-
-  const loadArticleById = (id: string) => {
-    fetchArticleById(id).then((data) => {
-      console.log("data", data);
-      if (data.error) {
-        setValues({ ...values, error: data.error });
-      } else {
-        setValues({
-          ...values,
-          article: data.article,
-        });
-      }
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  const article = await fetch(
+    `http://localhost/api/resources/articles/get/${context.query.resourceId}`
+  )
+    .then((res) => res.json())
+    .then((res) => res.article)
+    .catch((err) => {
+      console.error("error fetching resource", err);
+      return null;
     });
+
+  return {
+    props: {
+      session: await getServerAuthSession(context),
+      article,
+    },
   };
+};
 
-  useEffect(() => {
-    const id = Array.isArray(router.query.resourceId)
-      ? router.query.resourceId[0]
-      : router.query.resourceId;
-    loadArticleById(id);
-  }, []);
-
-  return (
-    <>
-      <div className={styles.articleContainer}>
-        <div className={styles.articleTitle}>{article.title}</div>
-        <div>{article.category}</div>
-        <div>{article.body}</div>
-      </div>
-    </>
+export default function ArticlePage({ article }) {
+  return article ? (
+    <div className={styles.articleContainer}>
+      <div className={styles.articleTitle}>{article.title}</div>
+      <div>{article.category}</div>
+      <div>{article.body}</div>
+    </div>
+  ) : (
+    <Message type="error">
+      There was an error loading the resource. Please try again later
+    </Message>
   );
 }
