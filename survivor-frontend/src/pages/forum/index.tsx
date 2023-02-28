@@ -30,9 +30,14 @@ const Post = ({ post }: { post: Post }) => {
 };
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-  const posts = await fetch("http://localhost/api/forum/posts").then((res) =>
-    res.json()
-  );
+  const posts = await fetch("http://localhost/api/forum/posts")
+    .then((res) => res.json())
+    .then((res) => res.posts)
+    .catch((err) => {
+      console.error("error fetching posts", err);
+      return [];
+    });
+
   return {
     props: {
       session: await getServerAuthSession(context),
@@ -51,10 +56,10 @@ const Feed: NextPage = ({ posts }) => {
 
       <main>
         <h2>Forum</h2>
-        {posts?.posts?.map((p) => (
+        {posts.map((p) => (
           <Post post={p} />
         ))}
-        {!posts?.posts?.length && <div>There are no posts yet.</div>}
+        {!posts.length && <div>There are no posts yet.</div>}
         <Link href="/forum/new" className={styles.createPostBtn}>
           <Button appearance="primary">Create new post?</Button>
         </Link>
