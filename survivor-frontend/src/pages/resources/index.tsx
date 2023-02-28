@@ -1,7 +1,7 @@
 import Link from "next/link";
 import styles from "../../styles/Resources.module.css";
 import { Article } from "../../articles-interfaces";
-import { Panel } from "rsuite";
+import { Message, Panel } from "rsuite";
 import Head from "next/head";
 import { GetServerSideProps } from "next";
 import { getServerAuthSession } from "../../server/auth";
@@ -12,7 +12,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     .then((res) => res.articles)
     .catch((err) => {
       console.error("error fetching resources", err);
-      return [];
+      return null;
     });
 
   return {
@@ -24,7 +24,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 };
 
 function ResourceHome({ articles }) {
-  const categoryTypes: string[] = ["violence", "sexual_assault"];
+  const categoryTypes: string[] = articles?.map((a: any) => a.category);
 
   const collapsibleContent = (category: string) => {
     const filteredArticles = articles.filter(
@@ -46,18 +46,24 @@ function ResourceHome({ articles }) {
 
       <main>
         <h2>Resources</h2>
-        {categoryTypes.map((category: string) => {
-          return (
-            <Panel
-              collapsible
-              header={category}
-              bordered
-              className={styles.resourceCategory}
-            >
-              {collapsibleContent(category)}
-            </Panel>
-          );
-        })}
+        {categoryTypes ? (
+          categoryTypes.map((category: string) => {
+            return (
+              <Panel
+                collapsible
+                header={<div className={styles.header}>{category}</div>}
+                bordered
+                className={styles.resourceCategory}
+              >
+                {collapsibleContent(category)}
+              </Panel>
+            );
+          })
+        ) : (
+          <Message type="error">
+            There was an error loading the resources. Please try again later.
+          </Message>
+        )}
       </main>
     </>
   );
