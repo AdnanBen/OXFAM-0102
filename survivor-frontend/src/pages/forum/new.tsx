@@ -1,11 +1,10 @@
-import { type NextPage } from "next";
-import useSWR from "swr";
-
-import "react-quill/dist/quill.snow.css";
+import { GetServerSideProps, type NextPage } from "next";
 import dynamic from "next/dynamic";
-import { useState } from "react";
-import { Button, Form, SelectPicker } from "rsuite";
 import { useRouter } from "next/router";
+import { useState } from "react";
+import "react-quill/dist/quill.snow.css";
+import { Button, Form, SelectPicker } from "rsuite";
+import { getServerAuthSession } from "../../server/auth";
 
 const QuillNoSSRWrapper = dynamic(import("react-quill"), {
   ssr: false,
@@ -27,21 +26,30 @@ const modules = {
   ],
 };
 
-const fetcher = (...args) => fetch(...args).then((res) => res.json());
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  const boards = await fetch("http://localhost/api/forum/boards")
+    .then((res) => res.json())
+    .then((res) => res.boards)
+    .catch((err) => {
+      console.error("error fetching boards", err);
+      return null;
+    });
 
-const NewPost: NextPage = () => {
+  return {
+    props: {
+      session: await getServerAuthSession(context),
+      boards,
+    },
+  };
+};
+
+const NewPost: NextPage = ({ boards }) => {
   const router = useRouter();
   const [formData, setFormData] = useState({
     title: "",
     board_id: null,
     body: "",
   });
-
-  const {
-    data: boards,
-    error,
-    isLoading,
-  } = useSWR(`/api/forum/boards`, fetcher);
 
   return (
     <>
@@ -87,7 +95,7 @@ const NewPost: NextPage = () => {
             name="board_id"
             labelKey="name"
             valueKey="id"
-            data={boards?.boards}
+            data={boards ?? []}
           />
         </Form.Group>
 

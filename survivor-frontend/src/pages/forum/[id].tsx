@@ -1,34 +1,31 @@
+import { GetServerSideProps, type NextPage } from "next";
 import { useState } from "react";
-import styles from "../../styles/Forum.module.css";
 import { Loader, Message, Modal } from "rsuite";
-import { type NextPage } from "next";
-import { useRouter } from "next/router";
-import useSWR from "swr";
+import { getServerAuthSession } from "../../server/auth";
+import styles from "../../styles/Forum.module.css";
+import useRouterRefresh from "../../utils/useRouterRefresh";
 
-type Props = {
-  id: number;
-  title: string;
-  tag: string;
-  body: string;
-  created: Date;
-  comments: string[];
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  const post = await fetch(
+    `http://localhost/api/forum/posts/${context.query.id}`
+  )
+    .then((res) => res.json())
+    .then((res) => res.post)
+    .catch((err) => {
+      console.error("error fetching post", err);
+      return null;
+    });
+
+  return {
+    props: {
+      session: await getServerAuthSession(context),
+      post,
+    },
+  };
 };
 
-const fetcher = (...args) => fetch(...args).then((res) => res.json());
-
-const Post: NextPage = () => {
-  const router = useRouter();
-  const { id } = router.query;
-
-  const {
-    data: post,
-    error,
-    isLoading,
-    mutate,
-  } = useSWR(`/api/forum/posts/${id}`, fetcher);
-
-  console.log(post, error);
-
+const Post: NextPage = ({ post }) => {
+  const [refresh, isRefresing] = useRouterRefresh(post);
   const [showCommentDialog, setShowCommentDialog] = useState(false);
   const [replyToComment, setReplyToComment] = useState(null);
 
@@ -41,9 +38,7 @@ const Post: NextPage = () => {
               <div className={styles.commentWrapper} key={`comment-${c.id}`}>
                 {c.parent_comment && (
                   <div className={styles.parentComment}>
-                    <i>
-                      on {new Date(c.parent_comment.created).toLocaleString()}
-                    </i>
+                    <i>on {new Date(c.parent_comment.created).toUTCString()}</i>
                     <p>{c.parent_comment.body}</p>
                   </div>
                 )}
@@ -79,16 +74,19 @@ const Post: NextPage = () => {
                   const data = { body: formData.get("body") };
                   if (replyToComment) data.parentCommentId = replyToComment;
 
-                  const res = await fetch(`/api/forum/posts/${id}/comments`, {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify(data),
-                  }).then((res) => res.json());
+                  const res = await fetch(
+                    `/api/forum/posts/${post.id}/comments`,
+                    {
+                      method: "POST",
+                      headers: { "Content-Type": "application/json" },
+                      body: JSON.stringify(data),
+                    }
+                  ).then((res) => res.json());
 
                   if (!res.error) {
                     setShowCommentDialog(false);
                     setReplyToComment(null);
-                    mutate();
+                    refresh();
                   }
                 }}
               >
@@ -105,31 +103,28 @@ const Post: NextPage = () => {
         </Modal>
       )}
 
-      {isLoading && <Loader />}
-
-      {error && (
-        <Message type="error">There was an error loading the post.</Message>
-      )}
-
-      {!!post && (
+      {post ? (
         <>
           <div className={styles.postHeader}>
-            <h3>{post.post.title}</h3>
+            <h3>{post.title}</h3>
             <i className={styles.timestamp}>
-              {new Date(post.post.created).toLocaleString()}
+              {new Date(post.created).toUTCString()}
             </i>
           </div>
-          <h3>{post.post.tag}</h3>
-          <p>{post.post.body}</p>
+          <h3>{post.tag}</h3>
+          <p>{post.body}</p>
 
           <div className={styles.commentsWrapper}>
             <strong>Replies</strong>{" "}
             <button onClick={() => setShowCommentDialog(true)}>
               add comment
             </button>
-            {renderComments(post.post.comments)}
+            {renderComments(post.comments)}
+            {isRefresing && <Loader center />}
           </div>
         </>
+      ) : (
+        <Message type="error">There was an error loading the post.</Message>
       )}
     </>
   );

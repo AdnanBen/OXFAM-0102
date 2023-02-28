@@ -1,57 +1,42 @@
-import { useEffect, useState } from "react";
-import { fetchAllArticleTitles } from "../../articles-helpers";
-import Link from "next/link";
-import styles from "../../styles/Resources.module.css";
-import { Article } from "../../articles-interfaces";
-import { Panel } from "rsuite";
+import { GetServerSideProps } from "next";
 import Head from "next/head";
+import Link from "next/link";
+import { Message, Panel } from "rsuite";
+import { Article } from "../../articles-interfaces";
+import { getServerAuthSession } from "../../server/auth";
+import styles from "../../styles/Resources.module.css";
 
-function ResourceHome() {
-  const categoryTypes: string[] = ["violence", "sexual_assault"];
-  const [values, setValues] = useState({
-    error: "",
-    articles: [],
-  });
-
-  //get article titles by category.
-
-  const loadAllArticleTitles = () => {
-    fetchAllArticleTitles().then((data) => {
-      console.log("data", data.articles);
-      if (data.error) {
-        setValues({ ...values, error: data.error });
-      } else {
-        setValues({
-          ...values,
-          articles: data.articles,
-        });
-      }
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  const articles = await fetch("http://localhost/api/resources/articles/getall")
+    .then((res) => res.json())
+    .then((res) => res.articles)
+    .catch((err) => {
+      console.error("error fetching resources", err);
+      return null;
     });
-  };
 
-  console.log("values.articles", values.articles);
-
-  const collapsibleHeader = (category: string) => {
-    return <div>{category}</div>;
+  return {
+    props: {
+      session: await getServerAuthSession(context),
+      articles,
+    },
   };
+};
+
+function ResourceHome({ articles }) {
+  const categoryTypes: string[] = articles?.map((a: any) => a.category);
 
   const collapsibleContent = (category: string) => {
-    const filteredArticles = values?.articles?.filter(
+    const filteredArticles = articles.filter(
       (article: Article) => article.category === category
     );
-    console.log("filteredArticles", filteredArticles);
-    return filteredArticles.map((article: Article) => {
-      return (
-        <Link href={`/resources/${article._id}`} key={article._id}>
-          <div className={styles.articleContainer}>{article.title}</div>
-        </Link>
-      );
-    });
-  };
 
-  useEffect(() => {
-    loadAllArticleTitles();
-  }, []);
+    return filteredArticles.map((article: Article) => (
+      <Link href={`/resources/${article._id}`} key={article._id}>
+        <div className={styles.articleContainer}>{article.title}</div>
+      </Link>
+    ));
+  };
 
   return (
     <>
@@ -61,18 +46,24 @@ function ResourceHome() {
 
       <main>
         <h2>Resources</h2>
-        {categoryTypes.map((category: string) => {
-          return (
-            <Panel
-              collapsible
-              header={collapsibleHeader(category)}
-              bordered
-              className={styles.resourceCategory}
-            >
-              {collapsibleContent(category)}
-            </Panel>
-          );
-        })}
+        {categoryTypes ? (
+          categoryTypes.map((category: string) => {
+            return (
+              <Panel
+                collapsible
+                header={<div className={styles.header}>{category}</div>}
+                bordered
+                className={styles.resourceCategory}
+              >
+                {collapsibleContent(category)}
+              </Panel>
+            );
+          })
+        ) : (
+          <Message type="error">
+            There was an error loading the resources. Please try again later.
+          </Message>
+        )}
       </main>
     </>
   );
