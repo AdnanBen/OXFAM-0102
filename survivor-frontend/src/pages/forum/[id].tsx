@@ -66,7 +66,7 @@ const Post: NextPage = ({ post }) => {
   };
 
   return (
-    <>
+    <main>
       {showCommentDialog && (
         <Modal open onClose={() => setShowCommentDialog(false)}>
           <Modal.Header>
@@ -141,7 +141,7 @@ const Post: NextPage = ({ post }) => {
           </Trans>
         </Message>
       )}
-    </>
+    </main>
   );
 };
 

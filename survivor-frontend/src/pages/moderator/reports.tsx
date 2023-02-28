@@ -24,8 +24,7 @@ export default function ReportsView() {
   }, [incompleteReports]);
 
   return (
-    <div className={styles.reportsmodpage}>
-      <br />
+    <main className={styles.reportsmodpage}>
       <h3>Reports</h3>
 
       <div>
@@ -77,6 +76,6 @@ export default function ReportsView() {
           </tbody>
         </table>
       </div>
-    </div>
+    </main>
   );
 }

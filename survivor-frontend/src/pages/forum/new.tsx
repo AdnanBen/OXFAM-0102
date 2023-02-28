@@ -57,7 +57,7 @@ const NewPost: NextPage = ({ boards }) => {
   });
 
   return (
-    <>
+    <main>
       <h2>New Forum Post</h2>
 
       {/* TODO: Add something to show that the forum is submitted  */}
@@ -133,7 +133,7 @@ const NewPost: NextPage = ({ boards }) => {
           </Button>
         </Form.Group>
       </Form>
-    </>
+    </main>
   );
 };
 

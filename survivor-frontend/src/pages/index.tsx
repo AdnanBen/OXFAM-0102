@@ -12,12 +12,14 @@ const Home: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <p className={styles.intro}>
-        <Trans>
-          A safe-space for survivors to discuss and share their experiences of
-          abuse, and get support.
-        </Trans>
-      </p>
+      <main>
+        <p className={styles.intro}>
+          <Trans>
+            A safe-space for survivors to discuss and share their experiences of
+            abuse, and get support.
+          </Trans>
+        </p>
+      </main>
     </>
   );
 };
