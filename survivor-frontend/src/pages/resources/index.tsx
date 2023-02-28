@@ -46,7 +46,9 @@ function ResourceHome({ articles }) {
       </Head>
 
       <main>
-        <h2>Resources</h2>
+        <h2>
+          <Trans>Resources</Trans>
+        </h2>
         {categoryTypes ? (
           categoryTypes.map((category: string) => {
             return (

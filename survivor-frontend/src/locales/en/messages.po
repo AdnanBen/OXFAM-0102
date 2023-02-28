@@ -13,7 +13,7 @@ msgstr ""
 "Language-Team: \n"
 "Plural-Forms: \n"
 
-#: src/pages/index.tsx:16
+#: src/pages/index.tsx:17
 msgid "A safe-space for survivors to discuss and share their experiences of abuse, and get support."
 msgstr ""
 
@@ -25,6 +25,7 @@ msgstr ""
 msgid "Boards"
 msgstr ""
 
+#: src/components/Header.tsx:43
 #: src/pages/chat/index.tsx:93
 msgid "Chat"
 msgstr ""
@@ -41,6 +42,7 @@ msgstr ""
 msgid "Female"
 msgstr ""
 
+#: src/components/Header.tsx:38
 #: src/pages/forum/index.tsx:58
 msgid "Forum"
 msgstr ""
@@ -53,7 +55,7 @@ msgstr ""
 msgid "Loading"
 msgstr ""
 
-#: src/components/Header.tsx:56
+#: src/components/Header.tsx:74
 msgid "Login as moderator"
 msgstr ""
 
@@ -65,7 +67,7 @@ msgstr ""
 msgid "Male"
 msgstr ""
 
-#: src/components/Header.tsx:48
+#: src/components/Header.tsx:66
 msgid "Moderator"
 msgstr ""
 
@@ -81,7 +83,7 @@ msgstr ""
 msgid "Other"
 msgstr ""
 
-#: src/components/Header.tsx:24
+#: src/components/Header.tsx:34
 msgid "Oxfam Survivors Community"
 msgstr ""
 
@@ -105,12 +107,21 @@ msgstr ""
 msgid "Replies"
 msgstr ""
 
+#: src/components/Header.tsx:53
+msgid "Report"
+msgstr ""
+
 #: src/pages/chat/index.tsx:62
 msgid "Request Chat"
 msgstr ""
 
 #: src/pages/chat/index.tsx:54
 msgid "Request sent"
+msgstr ""
+
+#: src/components/Header.tsx:48
+#: src/pages/resources/index.tsx:50
+msgid "Resources"
 msgstr ""
 
 #: src/pages/forum/index.tsx:100
@@ -125,7 +136,7 @@ msgstr ""
 msgid "Send message"
 msgstr ""
 
-#: src/components/Header.tsx:51
+#: src/components/Header.tsx:69
 msgid "Sign out"
 msgstr ""
 
@@ -161,11 +172,11 @@ msgstr ""
 msgid "There was an error loading the posts. Please try again later."
 msgstr ""
 
-#: src/pages/resources/[resourceId].tsx:36
+#: src/pages/resources/[resourceId].tsx:44
 msgid "There was an error loading the resource. Please try again later."
 msgstr ""
 
-#: src/pages/resources/index.tsx:65
+#: src/pages/resources/index.tsx:67
 msgid "There was an error loading the resources. Please try again later."
 msgstr ""
 
@@ -187,5 +198,5 @@ msgid "on"
 msgstr ""
 
 #: src/components/Header.tsx:36
-msgid "{pagename}"
-msgstr ""
+#~ msgid "{pagename}"
+#~ msgstr ""
