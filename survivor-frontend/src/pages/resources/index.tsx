@@ -1,10 +1,10 @@
-import Link from "next/link";
-import styles from "../../styles/Resources.module.css";
-import { Article } from "../../articles-interfaces";
-import { Message, Panel } from "rsuite";
-import Head from "next/head";
 import { GetServerSideProps } from "next";
+import Head from "next/head";
+import Link from "next/link";
+import { Message, Panel } from "rsuite";
+import { Article } from "../../articles-interfaces";
 import { getServerAuthSession } from "../../server/auth";
+import styles from "../../styles/Resources.module.css";
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const articles = await fetch("http://localhost/api/resources/articles/getall")

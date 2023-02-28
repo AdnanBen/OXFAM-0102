@@ -1,9 +1,8 @@
 import { GetServerSideProps, type NextPage } from "next";
 import Head from "next/head";
 import Link from "next/link";
-import { Button } from "rsuite";
+import { Button, Message } from "rsuite";
 import { getServerAuthSession } from "../../server/auth";
-
 import styles from "../../styles/Forum.module.css";
 
 type Post = {
@@ -11,7 +10,6 @@ type Post = {
   title: string;
   tag: string;
   created: number; // new Date(number)
-  // commentCount: number;
 };
 
 const Post = ({ post }: { post: Post }) => {
@@ -35,7 +33,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     .then((res) => res.posts)
     .catch((err) => {
       console.error("error fetching posts", err);
-      return [];
+      return null;
     });
 
   return {
@@ -56,10 +54,19 @@ const Feed: NextPage = ({ posts }) => {
 
       <main>
         <h2>Forum</h2>
-        {posts.map((p) => (
-          <Post post={p} />
-        ))}
-        {!posts.length && <div>There are no posts yet.</div>}
+        {posts ? (
+          <>
+            {posts?.map((p) => (
+              <Post post={p} />
+            ))}
+            {!posts?.length && <div>There are no posts yet.</div>}
+          </>
+        ) : (
+          <Message type="error">
+            There was an error loading the posts. Please try again later.
+          </Message>
+        )}
+
         <Link href="/forum/new" className={styles.createPostBtn}>
           <Button appearance="primary">Create new post?</Button>
         </Link>
