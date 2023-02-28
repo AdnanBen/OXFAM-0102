@@ -1,6 +1,7 @@
 import { GetServerSideProps, type NextPage } from "next";
 import { useState } from "react";
 import { Loader, Message, Modal } from "rsuite";
+import sanitizeHTML from "sanitize-html";
 import { getServerAuthSession } from "../../server/auth";
 import styles from "../../styles/Forum.module.css";
 import useRouterRefresh from "../../utils/useRouterRefresh";
@@ -112,7 +113,7 @@ const Post: NextPage = ({ post }) => {
             </i>
           </div>
           <h3>{post.tag}</h3>
-          <p>{post.body}</p>
+          <p dangerouslySetInnerHTML={{ __html: sanitizeHTML(post.body) }} />
 
           <div className={styles.commentsWrapper}>
             <strong>Replies</strong>{" "}

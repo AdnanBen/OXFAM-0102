@@ -1,5 +1,6 @@
 import { GetServerSideProps } from "next";
 import { Message } from "rsuite";
+import sanitizeHTML from "sanitize-html";
 import { getServerAuthSession } from "../../server/auth";
 import styles from "../../styles/ArticlePage.module.css";
 
@@ -27,7 +28,7 @@ export default function ArticlePage({ article }) {
     <div className={styles.articleContainer}>
       <div className={styles.articleTitle}>{article.title}</div>
       <div>{article.category}</div>
-      <div>{article.body}</div>
+      <div dangerouslySetInnerHTML={{ __html: sanitizeHTML(article.body) }} />
     </div>
   ) : (
     <Message type="error">
