@@ -109,7 +109,7 @@ msgstr "Amayankha"
 
 #: src/components/Header.tsx:53
 msgid "Report"
-msgstr ""
+msgstr "Kuulula"
 
 #: src/pages/chat/index.tsx:62
 msgid "Request Chat"
@@ -122,7 +122,7 @@ msgstr "Pempho lotumizidwa"
 #: src/components/Header.tsx:48
 #: src/pages/resources/index.tsx:50
 msgid "Resources"
-msgstr ""
+msgstr "Chuma"
 
 #: src/pages/forum/index.tsx:100
 msgid "Search..."
