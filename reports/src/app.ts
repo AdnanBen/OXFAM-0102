@@ -1,6 +1,5 @@
 import express, { Request, Response, Router } from "express";
 import mongoose from "mongoose";
-import cors from "cors";
 
 import { config } from "./config/config";
 
@@ -11,8 +10,6 @@ const app = express();
 const port = config.server.port;
 
 app.use(express.json());
-
-app.use(cors());
 
 app.get("/", (req: Request, res: Response) => {
   res.send("Hello World!");
