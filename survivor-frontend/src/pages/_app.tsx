@@ -12,6 +12,7 @@ import { useRouter } from "next/router";
 import { useEffect } from "react";
 import Header from "../components/Header";
 import { api } from "../utils/api";
+import Footer from "../components/Footer";
 
 const MyApp: AppType<{ session: Session | null }> = ({
   Component,
@@ -29,8 +30,11 @@ const MyApp: AppType<{ session: Session | null }> = ({
   return (
     <SessionProvider session={session}>
       <I18nProvider i18n={i18n}>
-        <Header />
-        <Component {...pageProps} />
+        <div className="rootContainer">
+          <Header />
+          <Component {...pageProps} />
+          <Footer />
+        </div>
       </I18nProvider>
     </SessionProvider>
   );
