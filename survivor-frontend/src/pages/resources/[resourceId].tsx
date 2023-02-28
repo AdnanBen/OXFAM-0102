@@ -1,3 +1,4 @@
+import { Trans } from "@lingui/macro";
 import { GetServerSideProps } from "next";
 import { Message } from "rsuite";
 import sanitizeHTML from "sanitize-html";
@@ -32,7 +33,9 @@ export default function ArticlePage({ article }) {
     </div>
   ) : (
     <Message type="error">
-      There was an error loading the resource. Please try again later
+      <Trans>
+        There was an error loading the resource. Please try again later.
+      </Trans>
     </Message>
   );
 }

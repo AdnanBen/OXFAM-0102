@@ -1,3 +1,4 @@
+import { t, Trans } from "@lingui/macro";
 import { GetServerSideProps, type NextPage } from "next";
 import Head from "next/head";
 import Link from "next/link";
@@ -53,35 +54,50 @@ const Feed: NextPage = ({ posts }) => {
       </Head>
 
       <main>
-        <h2>Forum</h2>
+        <h2>
+          <Trans>Forum</Trans>
+        </h2>
+
         {posts ? (
           <>
             {posts?.map((p) => (
               <Post post={p} />
             ))}
-            {!posts?.length && <div>There are no posts yet.</div>}
+            {!posts?.length && (
+              <div>
+                <Trans>There are no posts yet.</Trans>
+              </div>
+            )}
           </>
         ) : (
           <Message type="error">
-            There was an error loading the posts. Please try again later.
+            <Trans>
+              There was an error loading the posts. Please try again later.
+            </Trans>
           </Message>
         )}
 
         <Link href="/forum/new" className={styles.createPostBtn}>
-          <Button appearance="primary">Create new post?</Button>
+          <Button appearance="primary">
+            <Trans>Create new post?</Trans>
+          </Button>
         </Link>
         <br />
-        <h3>Boards</h3>
+        <h3>
+          <Trans>Boards</Trans>
+        </h3>
         <text>
-          We have oragnised the posts according to the boards to make it easier
-          for you to find support, information and talk to others with similar
-          experiences.
+          <Trans>
+            We have oragnised the posts according to the boards to make it
+            easier for you to find support, information and talk to others with
+            similar experiences.
+          </Trans>
         </text>
         <br />
         <input
           className={styles.board_search}
           type="text"
-          placeholder="Search.."
+          placeholder={t`Search...`}
         />
         <br />
         <button className={styles.board_button}>General discussion</button>

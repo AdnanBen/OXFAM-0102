@@ -1,3 +1,4 @@
+import { t, Trans } from "@lingui/macro";
 import { GetServerSideProps } from "next";
 import { signIn, signOut, useSession } from "next-auth/react";
 import Link from "next/link";
@@ -19,7 +20,9 @@ const Header = () => {
 
   return (
     <nav className={styles.header}>
-      <Link href="/">Oxfam Survivors Community</Link>
+      <Link href="/">
+        <Trans>Oxfam Survivors Community</Trans>
+      </Link>
       <div className={styles.links}>
         {["Forum", "Chat", "Resources", "Report"].map((pagename) => {
           const pathname = `/${pagename.toLowerCase()}`;
@@ -30,7 +33,7 @@ const Header = () => {
                 router.pathname.startsWith(pathname) ? styles.active : ""
               }
             >
-              {pagename}
+              {t`${pagename}`}
             </Link>
           );
         })}
@@ -42,15 +45,15 @@ const Header = () => {
                 router.pathname.startsWith("/moderator") ? styles.active : ""
               }
             >
-              Moderator
+              <Trans>Moderator</Trans>
             </Link>
             <a className={styles.authLink} onClick={() => signOut()}>
-              Sign out
+              <Trans>Sign out</Trans>
             </a>
           </>
         ) : (
           <a className={styles.authLink} onClick={() => signIn("azure-ad-b2c")}>
-            Login as moderator
+            <Trans>Login as moderator</Trans>
           </a>
         )}
       </div>

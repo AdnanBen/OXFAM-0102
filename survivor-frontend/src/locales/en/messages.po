@@ -6,3 +6,186 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: @lingui/cli\n"
 "Language: en\n"
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: \n"
+"PO-Revision-Date: \n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Plural-Forms: \n"
+
+#: src/pages/index.tsx:16
+msgid "A safe-space for survivors to discuss and share their experiences of abuse, and get support."
+msgstr ""
+
+#: src/pages/forum/new.tsx:98
+msgid "Board"
+msgstr ""
+
+#: src/pages/forum/index.tsx:87
+msgid "Boards"
+msgstr ""
+
+#: src/pages/chat/index.tsx:93
+msgid "Chat"
+msgstr ""
+
+#: src/pages/forum/[id].tsx:101
+msgid "Comment"
+msgstr ""
+
+#: src/pages/forum/index.tsx:82
+msgid "Create new post?"
+msgstr ""
+
+#: src/pages/report/index.tsx:134
+msgid "Female"
+msgstr ""
+
+#: src/pages/forum/index.tsx:58
+msgid "Forum"
+msgstr ""
+
+#: src/pages/report/index.tsx:126
+msgid "Gender"
+msgstr ""
+
+#: src/pages/forum/new.tsx:14
+msgid "Loading"
+msgstr ""
+
+#: src/components/Header.tsx:56
+msgid "Login as moderator"
+msgstr ""
+
+#: src/pages/report/index.tsx:95
+msgid "Make a Report"
+msgstr ""
+
+#: src/pages/report/index.tsx:131
+msgid "Male"
+msgstr ""
+
+#: src/components/Header.tsx:48
+msgid "Moderator"
+msgstr ""
+
+#: src/pages/report/index.tsx:118
+msgid "Name"
+msgstr ""
+
+#: src/pages/forum/[id].tsx:74
+msgid "New comment"
+msgstr ""
+
+#: src/pages/report/index.tsx:137
+msgid "Other"
+msgstr ""
+
+#: src/components/Header.tsx:24
+msgid "Oxfam Survivors Community"
+msgstr ""
+
+#: src/pages/forum/new.tsx:122
+msgid "Please <0>do not</0> reveal any personally-identifiable information (e.g., your name, address, location) to protect your safety."
+msgstr ""
+
+#: src/pages/forum/new.tsx:113
+msgid "Post Body"
+msgstr ""
+
+#: src/pages/forum/new.tsx:85
+msgid "Post Title"
+msgstr ""
+
+#: src/pages/forum/[id].tsx:107
+msgid "Post comment"
+msgstr ""
+
+#: src/pages/forum/[id].tsx:128
+msgid "Replies"
+msgstr ""
+
+#: src/pages/chat/index.tsx:62
+msgid "Request Chat"
+msgstr ""
+
+#: src/pages/chat/index.tsx:54
+msgid "Request sent"
+msgstr ""
+
+#: src/pages/forum/index.tsx:100
+msgid "Search..."
+msgstr ""
+
+#: src/pages/report/index.tsx:129
+msgid "Select a gender"
+msgstr ""
+
+#: src/components/Chat.tsx:72
+msgid "Send message"
+msgstr ""
+
+#: src/components/Header.tsx:51
+msgid "Sign out"
+msgstr ""
+
+#: src/pages/report/index.tsx:145
+msgid "Situation"
+msgstr ""
+
+#: src/pages/report/index.tsx:154
+msgid "Submit"
+msgstr ""
+
+#: src/pages/forum/new.tsx:132
+msgid "Submit New Post"
+msgstr ""
+
+#: src/components/Chat.tsx:51
+msgid "Them"
+msgstr ""
+
+#: src/pages/chat/index.tsx:69
+msgid "There are no moderators available to chat at the moment."
+msgstr ""
+
+#: src/pages/forum/index.tsx:68
+msgid "There are no posts yet."
+msgstr ""
+
+#: src/pages/forum/[id].tsx:139
+msgid "There was an error loading the post. Please try again later."
+msgstr ""
+
+#: src/pages/forum/index.tsx:74
+msgid "There was an error loading the posts. Please try again later."
+msgstr ""
+
+#: src/pages/resources/[resourceId].tsx:36
+msgid "There was an error loading the resource. Please try again later."
+msgstr ""
+
+#: src/pages/resources/index.tsx:65
+msgid "There was an error loading the resources. Please try again later."
+msgstr ""
+
+#: src/pages/forum/index.tsx:90
+msgid "We have oragnised the posts according to the boards to make it easier for you to find support, information and talk to others with similar experiences."
+msgstr ""
+
+#: src/components/Chat.tsx:55
+msgid "You"
+msgstr ""
+
+#: src/pages/forum/[id].tsx:131
+msgid "add comment"
+msgstr ""
+
+#. e.g., on [date]
+#: src/pages/forum/[id].tsx:44
+msgid "on"
+msgstr ""
+
+#: src/components/Header.tsx:36
+msgid "{pagename}"
+msgstr ""

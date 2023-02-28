@@ -1,3 +1,4 @@
+import { Trans } from "@lingui/macro";
 import { GetServerSideProps, type NextPage } from "next";
 import { useState } from "react";
 import { Loader, Message, Modal } from "rsuite";
@@ -39,7 +40,10 @@ const Post: NextPage = ({ post }) => {
               <div className={styles.commentWrapper} key={`comment-${c.id}`}>
                 {c.parent_comment && (
                   <div className={styles.parentComment}>
-                    <i>on {new Date(c.parent_comment.created).toUTCString()}</i>
+                    <i>
+                      <Trans comment="e.g., on [date]">on</Trans>{" "}
+                      {new Date(c.parent_comment.created).toUTCString()}
+                    </i>
                     <p>{c.parent_comment.body}</p>
                   </div>
                 )}
@@ -66,7 +70,9 @@ const Post: NextPage = ({ post }) => {
       {showCommentDialog && (
         <Modal open onClose={() => setShowCommentDialog(false)}>
           <Modal.Header>
-            <Modal.Title>New comment</Modal.Title>
+            <Modal.Title>
+              <Trans>New comment</Trans>
+            </Modal.Title>
             <Modal.Body>
               <form
                 onSubmit={async (e) => {
@@ -92,12 +98,14 @@ const Post: NextPage = ({ post }) => {
                 }}
               >
                 <label>
-                  Comment:
+                  <Trans>Comment</Trans>:
                   <br />
                   <textarea name="body"></textarea>
                 </label>
                 <br />
-                <button type="submit">Post comment</button>
+                <button type="submit">
+                  <Trans>Post comment</Trans>
+                </button>
               </form>
             </Modal.Body>
           </Modal.Header>
@@ -116,16 +124,22 @@ const Post: NextPage = ({ post }) => {
           <p dangerouslySetInnerHTML={{ __html: sanitizeHTML(post.body) }} />
 
           <div className={styles.commentsWrapper}>
-            <strong>Replies</strong>{" "}
+            <strong>
+              <Trans>Replies</Trans>
+            </strong>{" "}
             <button onClick={() => setShowCommentDialog(true)}>
-              add comment
+              <Trans>add comment</Trans>
             </button>
             {renderComments(post.comments)}
             {isRefresing && <Loader center />}
           </div>
         </>
       ) : (
-        <Message type="error">There was an error loading the post.</Message>
+        <Message type="error">
+          <Trans>
+            There was an error loading the post. Please try again later.
+          </Trans>
+        </Message>
       )}
     </>
   );

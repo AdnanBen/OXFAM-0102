@@ -7,7 +7,7 @@
 		"dev": "next dev -H 0.0.0.0",
 		"lint": "next lint",
 		"start": "next start",
-		"i18n:extract": "lingui extract",
+		"i18n:extract": "cross-env NODE_ENV=development lingui extract",
 		"i18n:compile": "lingui compile"
 	},
 	"dependencies": {
@@ -43,6 +43,7 @@
 		"@typescript-eslint/eslint-plugin": "^5.47.1",
 		"@typescript-eslint/parser": "^5.47.1",
 		"babel-plugin-macros": "^3.1.0",
+		"cross-env": "^7.0.3",
 		"eslint": "^8.30.0",
 		"eslint-config-next": "13.1.6",
 		"ts-node": "^10.9.1",

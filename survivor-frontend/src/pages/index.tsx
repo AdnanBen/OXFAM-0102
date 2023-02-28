@@ -1,23 +1,22 @@
+import { Trans } from "@lingui/macro";
 import { type NextPage } from "next";
 import Head from "next/head";
 import styles from "../styles/Home.module.css";
 
-import { api } from "../utils/api";
-
 const Home: NextPage = () => {
-  const hello = api.example.hello.useQuery({ text: "from tRPC" });
-
   return (
     <>
       <Head>
         <title>Oxfam Survivors Community</title>
-        <meta name="description" content="Oxfam Survivor's Community" />
+        <meta name="description" content="Oxfam Survivors Community" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
       <p className={styles.intro}>
-        A safe-space for survivors to discuss and share their experiences of
-        abuse, and get support.
+        <Trans>
+          A safe-space for survivors to discuss and share their experiences of
+          abuse, and get support.
+        </Trans>
       </p>
     </>
   );

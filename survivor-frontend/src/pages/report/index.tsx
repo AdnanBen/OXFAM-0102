@@ -6,6 +6,7 @@ import { FormikProps } from "formik";
 
 import styles from "../../styles/Report.module.css";
 import Head from "next/head";
+import { t, Trans } from "@lingui/macro";
 
 interface Values {
   name: string;
@@ -90,7 +91,9 @@ function FormPage(data: Values) {
       <main>
         <div className={`${styles.body}`}>
           <div className={styles.form}>
-            <h3>Make a Report</h3>
+            <h3>
+              <Trans>Make a Report</Trans>
+            </h3>
             <Formik
               innerRef={formRef}
               initialValues={{
@@ -111,31 +114,45 @@ function FormPage(data: Values) {
             >
               <Form>
                 <p>
-                  <label htmlFor="firstName">Name</label>
-                  <br />
-                  <Field name="name" />
+                  <label htmlFor="firstName">
+                    <Trans>Name</Trans>
+                    <br />
+                    <Field name="name" />
+                  </label>
                 </p>
 
                 <p>
-                  <label htmlFor="gender">Gender</label>
-                  <br />
-                  <Field as="select" name="gender">
-                    <option value="" label="Select a gender" />
-                    <option value="M">M</option>
-                    <option value="F">F</option>
-                    <option value="O">Other</option>
-                  </Field>
+                  <label htmlFor="gender">
+                    <Trans>Gender</Trans>
+                    <br />
+                    <Field as="select" name="gender">
+                      <option value="" label={t`Select a gender`} />
+                      <option value="M">
+                        <Trans>Male</Trans>
+                      </option>
+                      <option value="F">
+                        <Trans>Female</Trans>
+                      </option>
+                      <option value="O">
+                        <Trans>Other</Trans>
+                      </option>
+                    </Field>
+                  </label>
                 </p>
 
                 <p>
-                  <label htmlFor="body">Situation</label>
-                  <br />
-                  <Field name="body" component="textarea" />
+                  <label htmlFor="body">
+                    <Trans>Situation</Trans>
+                    <br />
+                    <Field name="body" component="textarea" />
+                  </label>
                 </p>
 
                 <br />
 
-                <button type="submit">Submit</button>
+                <button type="submit">
+                  <Trans>Submit</Trans>
+                </button>
               </Form>
             </Formik>
           </div>
