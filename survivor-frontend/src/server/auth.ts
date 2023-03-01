@@ -1,7 +1,7 @@
 import type { GetServerSidePropsContext } from "next";
 import { getServerSession, type NextAuthOptions } from "next-auth";
 import AzureADB2CProvider from "next-auth/providers/azure-ad-b2c";
-import { env } from "../env/server.mjs";
+import { env } from "../env/env.mjs";
 
 async function getAzureGraphAccessToken() {
   const params = new URLSearchParams({
