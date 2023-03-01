@@ -2,7 +2,7 @@ name: Build microservices
 
 on:
   push:
-    branches: "shu8/ci"
+    branches: "main"
 
 # Workflow template from https://docs.github.com/en/actions/publishing-packages/publishing-docker-images#publishing-images-to-github-packages
 jobs:
