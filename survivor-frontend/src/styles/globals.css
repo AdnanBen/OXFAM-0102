@@ -51,4 +51,7 @@ main {
 footer {
   padding-top: 10px;
   border-top: 1px solid black;
+  display: flex;
+  align-items: center;
+  gap: 30px
 }

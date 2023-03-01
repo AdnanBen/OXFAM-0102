@@ -12,6 +12,9 @@ const Footer = () => {
           <Dropdown.Item>Nyanja (Chichewa)</Dropdown.Item>
         </Link>
       </Dropdown>
+      <a href="https://forms.office.com/e/YKExsD7nAA" target="_blank">
+        Provide your feedback
+      </a>
     </footer>
   );
 };
