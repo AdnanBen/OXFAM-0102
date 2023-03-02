@@ -1,6 +1,33 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
 .intro {
-  font-size: 1.5em;
+  font-size: 1.8em;
+  width: 80%;
+  margin: 0 auto;
   font-weight: bold;
   text-align: center;
-  padding: 2em 0;
+  margin-bottom: 1em;
+}
+
+.links {
+  display: grid;
+  column-gap: 15px;
+  row-gap: 15px;
+  text-align: center;
+  grid-template-columns: repeat(2, 1fr);
+}
+
+.links>* {
+  display: flex;
+  width: 100%;
+  font-size: 1.1em;
+}
+
+.links .linkHeader {
+  font-weight: bold;
+  font-size: 1.3em;
 }
