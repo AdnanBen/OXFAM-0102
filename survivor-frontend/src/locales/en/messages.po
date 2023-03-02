@@ -13,28 +13,33 @@ msgstr ""
 "Language-Team: \n"
 "Plural-Forms: \n"
 
-#: src/pages/index.tsx:17
+#: src/pages/index.tsx:19
 msgid "A safe-space for survivors to discuss and share their experiences of abuse, and get support."
 msgstr ""
 
-#: src/pages/forum/new.tsx:98
+#: src/pages/forum/new.tsx:99
 msgid "Board"
 msgstr ""
 
-#: src/pages/forum/index.tsx:87
+#: src/pages/forum/index.tsx:88
 msgid "Boards"
 msgstr ""
 
 #: src/components/Header.tsx:43
 #: src/pages/chat/index.tsx:93
+#: src/pages/index.tsx:47
 msgid "Chat"
 msgstr ""
 
-#: src/pages/forum/[id].tsx:101
+#: src/pages/index.tsx:54
+msgid "Chat individually with trained moderators for advice."
+msgstr ""
+
+#: src/pages/forum/[id].tsx:102
 msgid "Comment"
 msgstr ""
 
-#: src/pages/forum/index.tsx:82
+#: src/pages/forum/index.tsx:83
 msgid "Create new post?"
 msgstr ""
 
@@ -42,8 +47,13 @@ msgstr ""
 msgid "Female"
 msgstr ""
 
+#: src/pages/index.tsx:70
+msgid "Find free self-help and educational resources to help manage and recover from abuse."
+msgstr ""
+
 #: src/components/Header.tsx:38
-#: src/pages/forum/index.tsx:58
+#: src/pages/forum/index.tsx:59
+#: src/pages/index.tsx:30
 msgid "Forum"
 msgstr ""
 
@@ -51,7 +61,7 @@ msgstr ""
 msgid "Gender"
 msgstr ""
 
-#: src/pages/forum/new.tsx:14
+#: src/pages/forum/new.tsx:15
 msgid "Loading"
 msgstr ""
 
@@ -59,7 +69,7 @@ msgstr ""
 msgid "Login as moderator"
 msgstr ""
 
-#: src/pages/report/index.tsx:95
+#: src/pages/report/index.tsx:93
 msgid "Make a Report"
 msgstr ""
 
@@ -75,7 +85,7 @@ msgstr ""
 msgid "Name"
 msgstr ""
 
-#: src/pages/forum/[id].tsx:74
+#: src/pages/forum/[id].tsx:75
 msgid "New comment"
 msgstr ""
 
@@ -87,28 +97,33 @@ msgstr ""
 msgid "Oxfam Survivors Community"
 msgstr ""
 
-#: src/pages/forum/new.tsx:122
+#: src/pages/forum/new.tsx:123
 msgid "Please <0>do not</0> reveal any personally-identifiable information (e.g., your name, address, location) to protect your safety."
 msgstr ""
 
-#: src/pages/forum/new.tsx:113
+#: src/pages/forum/new.tsx:114
 msgid "Post Body"
 msgstr ""
 
-#: src/pages/forum/new.tsx:85
+#: src/pages/forum/new.tsx:86
 msgid "Post Title"
 msgstr ""
 
-#: src/pages/forum/[id].tsx:107
+#: src/pages/forum/[id].tsx:108
 msgid "Post comment"
 msgstr ""
 
-#: src/pages/forum/[id].tsx:128
+#: src/pages/forum/[id].tsx:129
 msgid "Replies"
 msgstr ""
 
 #: src/components/Header.tsx:53
+#: src/pages/index.tsx:80
 msgid "Report"
+msgstr ""
+
+#: src/pages/index.tsx:87
+msgid "Report severe abuse to receive help from trained responders."
 msgstr ""
 
 #: src/pages/chat/index.tsx:62
@@ -120,11 +135,16 @@ msgid "Request sent"
 msgstr ""
 
 #: src/components/Header.tsx:48
-#: src/pages/resources/index.tsx:50
+#: src/pages/index.tsx:63
+#: src/pages/resources/index.tsx:51
 msgid "Resources"
 msgstr ""
 
-#: src/pages/forum/index.tsx:100
+#: src/pages/index.tsx:37
+msgid "Safely discuss your concerns and receive feedback from the community."
+msgstr ""
+
+#: src/pages/forum/index.tsx:101
 msgid "Search..."
 msgstr ""
 
@@ -148,7 +168,7 @@ msgstr ""
 msgid "Submit"
 msgstr ""
 
-#: src/pages/forum/new.tsx:132
+#: src/pages/forum/new.tsx:133
 msgid "Submit New Post"
 msgstr ""
 
@@ -160,27 +180,27 @@ msgstr ""
 msgid "There are no moderators available to chat at the moment."
 msgstr ""
 
-#: src/pages/forum/index.tsx:68
+#: src/pages/forum/index.tsx:69
 msgid "There are no posts yet."
 msgstr ""
 
-#: src/pages/forum/[id].tsx:139
+#: src/pages/forum/[id].tsx:140
 msgid "There was an error loading the post. Please try again later."
 msgstr ""
 
-#: src/pages/forum/index.tsx:74
+#: src/pages/forum/index.tsx:75
 msgid "There was an error loading the posts. Please try again later."
 msgstr ""
 
-#: src/pages/resources/[resourceId].tsx:44
+#: src/pages/resources/[resourceId].tsx:45
 msgid "There was an error loading the resource. Please try again later."
 msgstr ""
 
-#: src/pages/resources/index.tsx:67
+#: src/pages/resources/index.tsx:68
 msgid "There was an error loading the resources. Please try again later."
 msgstr ""
 
-#: src/pages/forum/index.tsx:90
+#: src/pages/forum/index.tsx:91
 msgid "We have oragnised the posts according to the boards to make it easier for you to find support, information and talk to others with similar experiences."
 msgstr ""
 
@@ -188,12 +208,12 @@ msgstr ""
 msgid "You"
 msgstr ""
 
-#: src/pages/forum/[id].tsx:131
+#: src/pages/forum/[id].tsx:132
 msgid "add comment"
 msgstr ""
 
 #. e.g., on [date]
-#: src/pages/forum/[id].tsx:44
+#: src/pages/forum/[id].tsx:45
 msgid "on"
 msgstr ""
 
