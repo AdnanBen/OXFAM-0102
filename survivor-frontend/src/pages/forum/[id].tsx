@@ -3,13 +3,14 @@ import { GetServerSideProps, type NextPage } from "next";
 import { useState } from "react";
 import { Loader, Message, Modal } from "rsuite";
 import sanitizeHTML from "sanitize-html";
+import { env } from "../../env/env.mjs";
 import { getServerAuthSession } from "../../server/auth";
 import styles from "../../styles/Forum.module.css";
 import useRouterRefresh from "../../utils/useRouterRefresh";
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const post = await fetch(
-    `http://localhost/api/forum/posts/${context.query.id}`
+    `${env.SSR_HOST}/api/forum/posts/${context.query.id}`
   )
     .then((res) => res.json())
     .then((res) => res.post)

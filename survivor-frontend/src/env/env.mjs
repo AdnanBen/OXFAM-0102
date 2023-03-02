@@ -24,6 +24,7 @@ const server = z.object({
   AZURE_AD_B2C_PRIMARY_USER_FLOW: z.string(),
   AZURE_AD_SERVER_CLIENT_SECRET: z.string(),
   AZURE_AD_SERVER_TENANT_ID: z.string(),
+  SSR_HOST: z.string(),
 });
 
 /**
@@ -50,6 +51,7 @@ const processEnv = {
   AZURE_AD_B2C_PRIMARY_USER_FLOW: process.env.AZURE_AD_B2C_PRIMARY_USER_FLOW,
   AZURE_AD_SERVER_CLIENT_SECRET: process.env.AZURE_AD_SERVER_CLIENT_SECRET,
   AZURE_AD_SERVER_TENANT_ID: process.env.AZURE_AD_SERVER_TENANT_ID,
+  SSR_HOST: process.env.SSR_HOST,
 };
 
 // Don't touch the part below

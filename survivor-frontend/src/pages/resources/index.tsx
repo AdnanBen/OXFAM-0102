@@ -4,11 +4,12 @@ import Head from "next/head";
 import Link from "next/link";
 import { Message, Panel } from "rsuite";
 import { Article } from "../../articles-interfaces";
+import { env } from "../../env/env.mjs";
 import { getServerAuthSession } from "../../server/auth";
 import styles from "../../styles/Resources.module.css";
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-  const articles = await fetch("http://localhost/api/resources/articles/getall")
+  const articles = await fetch(`${env.SSR_HOST}/api/resources/articles/getall`)
     .then((res) => res.json())
     .then((res) => res.articles)
     .catch((err) => {

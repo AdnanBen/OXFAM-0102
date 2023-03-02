@@ -3,6 +3,7 @@ import { GetServerSideProps, type NextPage } from "next";
 import Head from "next/head";
 import Link from "next/link";
 import { Button, Message } from "rsuite";
+import { env } from "../../env/env.mjs";
 import { getServerAuthSession } from "../../server/auth";
 import styles from "../../styles/Forum.module.css";
 
@@ -29,7 +30,7 @@ const Post = ({ post }: { post: Post }) => {
 };
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-  const posts = await fetch("http://localhost/api/forum/posts")
+  const posts = await fetch(`${env.SSR_HOST}/api/forum/posts`)
     .then((res) => res.json())
     .then((res) => res.posts)
     .catch((err) => {

@@ -2,12 +2,13 @@ import { Trans } from "@lingui/macro";
 import { GetServerSideProps } from "next";
 import { Message } from "rsuite";
 import sanitizeHTML from "sanitize-html";
+import { env } from "../../env/env.mjs";
 import { getServerAuthSession } from "../../server/auth";
 import styles from "../../styles/ArticlePage.module.css";
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const article = await fetch(
-    `http://localhost/api/resources/articles/get/${context.query.resourceId}`
+    `${env.SSR_HOST}/api/resources/articles/get/${context.query.resourceId}`
   )
     .then((res) => res.json())
     .then((res) => res.article)

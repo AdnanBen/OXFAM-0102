@@ -5,6 +5,7 @@ import { useRouter } from "next/router";
 import { useState } from "react";
 import "react-quill/dist/quill.snow.css";
 import { Button, Form, SelectPicker } from "rsuite";
+import { env } from "../../env/env.mjs";
 import { getServerAuthSession } from "../../server/auth";
 
 const QuillNoSSRWrapper = dynamic(import("react-quill"), {
@@ -32,7 +33,7 @@ const modules = {
 };
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-  const boards = await fetch("http://localhost/api/forum/boards")
+  const boards = await fetch(`${env.SSR_HOST}/api/forum/boards`)
     .then((res) => res.json())
     .then((res) => res.boards)
     .catch((err) => {
