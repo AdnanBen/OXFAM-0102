@@ -30,7 +30,7 @@ const Header = () => {
 
   return (
     <nav className={styles.header}>
-      <Link href="/">
+      <Link href="/" className={styles.name}>
         <Trans>Oxfam Survivors Community</Trans>
       </Link>
       <div className={styles.links}>

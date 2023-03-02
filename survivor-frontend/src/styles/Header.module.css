@@ -18,3 +18,20 @@
 .authLink {
   cursor: pointer;
 }
+
+.name {
+  text-align: center;
+}
+
+@media (max-width: 991.98px) {
+  .header {
+    flex-direction: column;
+  }
+
+  .links {
+    font-size: 0.6em;
+    flex-wrap: wrap;
+    justify-content: center;
+    row-gap: 0;
+  }
+}
