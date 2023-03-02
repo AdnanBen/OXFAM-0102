@@ -1,12 +1,12 @@
 import * as React from "react";
 import { Formik, Field, Form, FormikHelpers } from "formik";
-import router, { useRouter } from "next/router";
+import { useRouter } from "next/router";
 import { useEffect, useRef } from "react";
 import { FormikProps } from "formik";
 
-import styles from "../../styles/Report.module.css";
 import Head from "next/head";
 import { t, Trans } from "@lingui/macro";
+import { Button } from "rsuite";
 
 interface Values {
   name: string;
@@ -89,73 +89,72 @@ function FormPage(data: Values) {
       </Head>
 
       <main>
-        <div className={`${styles.body}`}>
-          <div className={styles.form}>
-            <h3>
-              <Trans>Make a Report</Trans>
-            </h3>
-            <Formik
-              innerRef={formRef}
-              initialValues={{
-                name: "",
-                gender: "",
-                body: "",
-              }}
-              onSubmit={(
-                values: Values,
-                { setSubmitting }: FormikHelpers<Values>
-              ) => {
-                setTimeout(() => {
-                  alert(JSON.stringify(values, null));
-                  submitForm(values);
-                  setSubmitting(false);
-                }, 500);
-              }}
-            >
-              <Form>
-                <p>
-                  <label htmlFor="firstName">
-                    <Trans>Name</Trans>
-                    <br />
-                    <Field name="name" />
-                  </label>
-                </p>
+        <h2>
+          <Trans>Make a Report</Trans>
+        </h2>
 
-                <p>
-                  <label htmlFor="gender">
-                    <Trans>Gender</Trans>
-                    <br />
-                    <Field as="select" name="gender">
-                      <option value="" label={t`Select a gender`} />
-                      <option value="M">
-                        <Trans>Male</Trans>
-                      </option>
-                      <option value="F">
-                        <Trans>Female</Trans>
-                      </option>
-                      <option value="O">
-                        <Trans>Other</Trans>
-                      </option>
-                    </Field>
-                  </label>
-                </p>
+        <div>
+          <Formik
+            innerRef={formRef}
+            initialValues={{
+              name: "",
+              gender: "",
+              body: "",
+            }}
+            onSubmit={(
+              values: Values,
+              { setSubmitting }: FormikHelpers<Values>
+            ) => {
+              setTimeout(() => {
+                alert(JSON.stringify(values, null));
+                submitForm(values);
+                setSubmitting(false);
+              }, 500);
+            }}
+          >
+            <Form>
+              <p>
+                <label htmlFor="firstName">
+                  <Trans>Name</Trans>
+                  <br />
+                  <Field name="name" />
+                </label>
+              </p>
 
-                <p>
-                  <label htmlFor="body">
-                    <Trans>Situation</Trans>
-                    <br />
-                    <Field name="body" component="textarea" />
-                  </label>
-                </p>
+              <p>
+                <label htmlFor="gender">
+                  <Trans>Gender</Trans>
+                  <br />
+                  <Field as="select" name="gender">
+                    <option value="" label={t`Select a gender`} />
+                    <option value="M">
+                      <Trans>Male</Trans>
+                    </option>
+                    <option value="F">
+                      <Trans>Female</Trans>
+                    </option>
+                    <option value="O">
+                      <Trans>Other</Trans>
+                    </option>
+                  </Field>
+                </label>
+              </p>
 
-                <br />
+              <p>
+                <label htmlFor="body">
+                  <Trans>Situation</Trans>
+                  <br />
+                  <Field name="body" component="textarea" />
+                </label>
+              </p>
 
-                <button type="submit">
-                  <Trans>Submit</Trans>
-                </button>
-              </Form>
-            </Formik>
-          </div>
+              <br />
+
+              <Button type="submit" appearance="primary">
+                <Trans>Submit</Trans>
+              </Button>
+            </Form>
+          </Formik>
         </div>
       </main>
     </>
