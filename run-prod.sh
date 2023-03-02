@@ -1,31 +1,29 @@
-sudo rm -rf ./{resources,reports,forum}/docker-volumes
-
 echo 'Starting forum'
-cd forum && docker-compose -f docker-compose-prod.yml up --build -d --remove-orphans
+cd forum && docker-compose -f docker-compose-prod.yml pull && docker-compose -f docker-compose-prod.yml up -d --remove-orphans
 cd ..
 
 echo 'Starting chat'
-cd chat && docker-compose -f docker-compose-prod.yml up --build -d --remove-orphans
+cd chat && docker-compose -f docker-compose-prod.yml pull && docker-compose -f docker-compose-prod.yml up -d --remove-orphans
 cd ..
 
 echo 'Starting reports'
-cd reports && docker-compose -f docker-compose-prod.yml up --build -d --remove-orphans
+cd reports && docker-compose -f docker-compose-prod.yml pull && docker-compose -f docker-compose-prod.yml up -d --remove-orphans
 cd ..
 
 echo 'Starting resources'
-cd resources && docker-compose -f docker-compose-prod.yml up --build -d --remove-orphans
+cd resources && docker-compose -f docker-compose-prod.yml pull && docker-compose -f docker-compose-prod.yml up -d --remove-orphans
 cd ..
 
 echo 'Starting auth'
-cd auth && docker-compose -f docker-compose-prod.yml up --build -d --remove-orphans
+cd auth && docker-compose -f docker-compose-prod.yml pull && docker-compose -f docker-compose-prod.yml up -d --remove-orphans
 cd ..
 
 echo 'Starting survivor frontend'
-cd survivor-frontend && docker-compose -f docker-compose-prod.yml up --build -d --remove-orphans
+cd survivor-frontend && docker-compose -f docker-compose-prod.yml pull && docker-compose -f docker-compose-prod.yml up -d --remove-orphans
 cd ..
 
 echo 'Starting HAProxy Gateway'
-cd gateway && docker-compose -f docker-compose.yml up -d --remove-orphans
+cd gateway && docker-compose -f docker-compose-prod.yml up -d --remove-orphans
 cd ..
 
 net=oxfamsurvivorscommunity

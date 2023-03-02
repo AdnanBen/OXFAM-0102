@@ -18,7 +18,7 @@ services:
   api:
     depends_on:
       - mongo
-    build: .
+    image: ghcr.io/adnanben/oxfam-0102/resources:main
     env_file: ./.env
     ports:
       - 127.0.0.1:${PROXY_PORT}:${PORT}

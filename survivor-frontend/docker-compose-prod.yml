@@ -2,7 +2,9 @@ version: '3.8'
 
 services:
  web:
-   build: .
+   image: ghcr.io/adnanben/oxfam-0102/survivor-frontend:main
    env_file: .env
    ports:
      - "127.0.0.1:${PROXY_PORT}:${PORT}"
+   extra_hosts:
+     - "host.docker.internal:host-gateway"

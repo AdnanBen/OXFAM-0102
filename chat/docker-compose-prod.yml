@@ -2,7 +2,7 @@ version: "3.8"
 
 services:
   api:
-    build: .
+    image: ghcr.io/adnanben/oxfam-0102/chat:main
     restart: unless-stopped
     ports:
       - 127.0.0.1:${PROXY_PORT}:${PORT}
