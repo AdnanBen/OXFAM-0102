@@ -171,6 +171,8 @@ const acceptPendingRegistration = async (
         displayName:
           registration.displayName ||
           `${registration.givenName} ${registration.surname}`,
+        [`extension_${process.env.AZURE_AD_USER_EXTENSION_APP_ID}_Roles`]:
+          "Moderator",
       }),
     });
 

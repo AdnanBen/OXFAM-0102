@@ -1,5 +1,9 @@
 import type { GetServerSidePropsContext } from "next";
-import { getServerSession, type NextAuthOptions } from "next-auth";
+import {
+  DefaultSession,
+  getServerSession,
+  type NextAuthOptions,
+} from "next-auth";
 import AzureADB2CProvider from "next-auth/providers/azure-ad-b2c";
 import { env } from "../env/env.mjs";
 
@@ -22,6 +26,18 @@ async function getAzureGraphAccessToken() {
   return res.access_token;
 }
 
+declare module "next-auth" {
+  interface Session extends DefaultSession {
+    user: {
+      isModerator: boolean;
+      isAdmin: boolean;
+    } & DefaultSession["user"];
+  }
+  interface User {
+    role: "Administrator" | "Moderator";
+  }
+}
+
 /**
  * Options for NextAuth.js used to configure adapters, providers, callbacks,
  * etc.
@@ -39,7 +55,7 @@ export const authOptions: NextAuthOptions = {
       authorization: { params: { scope: `offline_access openid` } },
       async profile(profile) {
         /**
-         * Azure AD B2C requires a lot of configuration via custom policies  to return the user email
+         * Azure AD B2C requires a lot of configuration via custom policies to return the user email
          *  as a claim. See [1].
          * But this can become quite complex and requires additional configuration in Azure
          *  which would add another configuration/setup step when someone deploys this.
@@ -56,8 +72,9 @@ export const authOptions: NextAuthOptions = {
          * [4] https://github.com/Azure-Samples/active-directory-b2c-custom-policy-starterpack/tree/main/SocialAndLocalAccounts
          */
         const accessToken = await getAzureGraphAccessToken();
+        const roleExtensionFieldName = `extension_${env.AZURE_AD_B2C_USER_EXTENSION_APP_ID}_Role`;
         const details = await fetch(
-          `https://graph.microsoft.com/v1.0/users/${profile.sub}`,
+          `https://graph.microsoft.com/v1.0/users/${profile.sub}?$select=mail,givenName,${roleExtensionFieldName}`,
           {
             headers: { Authorization: `Bearer ${accessToken}` },
           }
@@ -66,11 +83,26 @@ export const authOptions: NextAuthOptions = {
           id: profile.sub,
           email: details.mail,
           name: details.givenName,
+          role: details[roleExtensionFieldName],
           image: null,
         };
       },
     }),
   ],
+  callbacks: {
+    jwt({ token, user }) {
+      if (user) {
+        token.isModerator = user.role === "Moderator";
+        token.isAdmin = user.role === "Administrator";
+      }
+      return token;
+    },
+    session({ session, token }) {
+      session.user.isModerator = token.isModerator as boolean;
+      session.user.isAdmin = token.isAdmin as boolean;
+      return session;
+    },
+  },
 };
 
 /**
