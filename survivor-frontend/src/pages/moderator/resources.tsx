@@ -7,10 +7,15 @@ import Link from "next/link";
 
 import Router from "next/router";
 import { Article } from "../../articles-interfaces";
-import { Button, ButtonGroup, Panel } from "rsuite";
+import { Button, Panel } from "rsuite";
 import Head from "next/head";
 
 import styles from "../../styles/ModeratorResources.module.css";
+import { requireAuth } from "../../server/requireAuth";
+import { GetServerSideProps } from "next";
+
+export const getServerSideProps: GetServerSideProps = (context) =>
+  requireAuth(context, "moderator");
 
 function AdminDashboard() {
   const [values, setValues] = useState({

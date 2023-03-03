@@ -1,8 +1,12 @@
-import { type NextPage } from "next";
+import { GetServerSideProps, type NextPage } from "next";
 import Head from "next/head";
 import Link from "next/link";
 import { Button, Panel } from "rsuite";
+import { requireAuth } from "../../server/requireAuth";
 import styles from "../../styles/ModeratorDashboard.module.css";
+
+export const getServerSideProps: GetServerSideProps = (context) =>
+  requireAuth(context, "moderator");
 
 const ModeratorDashboard: NextPage = () => {
   return (

@@ -2,22 +2,11 @@ import { GetServerSideProps, type NextPage } from "next";
 import Head from "next/head";
 import Link from "next/link";
 import { Button, Panel } from "rsuite";
-import { getServerAuthSession } from "../../server/auth";
+import { requireAuth } from "../../server/requireAuth";
 import styles from "../../styles/ModeratorDashboard.module.css";
 
-export const getServerSideProps: GetServerSideProps = async (context) => {
-  const session = await getServerAuthSession(context);
-  if (!session?.user?.isAdmin) {
-    return {
-      redirect: {
-        destination: "/",
-        permanent: false,
-      },
-    };
-  }
-
-  return { props: { session } };
-};
+export const getServerSideProps: GetServerSideProps = (context) =>
+  requireAuth(context, "administrator");
 
 const AdminDashboard: NextPage = () => {
   return (
