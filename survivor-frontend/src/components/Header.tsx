@@ -19,7 +19,7 @@ const HeaderLink = (props: {
   pathname: string;
   active: boolean;
 }) => (
-  <Link href={props.pathname} className={props.active ? styles.active : ""}>
+  <Link href={props.pathname} className={props.active ? styles.active : ""} replace>
     {props.text}
   </Link>
 );
@@ -30,7 +30,7 @@ const Header = () => {
 
   return (
     <nav className={styles.header}>
-      <Link href="/" className={styles.name}>
+      <Link href="/" className={styles.name} replace>
         <Trans>Oxfam Survivors Community</Trans>
       </Link>
       <div className={styles.links}>
@@ -62,6 +62,7 @@ const Header = () => {
               className={
                 router.pathname.startsWith("/moderator") ? styles.active : ""
               }
+              replace
             >
               <Trans>Moderator</Trans>
             </Link>

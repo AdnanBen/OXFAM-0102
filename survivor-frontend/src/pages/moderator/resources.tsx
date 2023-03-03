@@ -69,6 +69,7 @@ function AdminDashboard() {
                     <Link
                       href={`/moderator/article-update-form?articleId=${article._id}`}
                       key={article._id}
+                      replace
                     >
                       {article.title}
                     </Link>
@@ -105,7 +106,7 @@ function AdminDashboard() {
           })}
         </div>
 
-        <Link href={`/moderator/article-submission-form`}>
+        <Link href={`/moderator/article-submission-form`} replace>
           <Button appearance="ghost">Add new resource?</Button>
         </Link>
       </main>

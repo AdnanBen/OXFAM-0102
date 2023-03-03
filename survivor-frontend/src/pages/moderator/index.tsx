@@ -20,10 +20,10 @@ const ModeratorDashboard: NextPage = () => {
         <div className={styles.callToActions}>
           <Panel header="Resources" bordered className={styles.group} shaded>
             <p>Manage resources available to survivors.</p>
-            <Link href="/moderator/article-submission-form">
+            <Link href="/moderator/article-submission-form" replace>
               <Button appearance="ghost">Create new resource &rarr;</Button>
             </Link>
-            <Link href="/moderator/resources">
+            <Link href="/moderator/resources" replace>
               <Button appearance="ghost">View resources &rarr;</Button>
             </Link>
           </Panel>
@@ -32,14 +32,14 @@ const ModeratorDashboard: NextPage = () => {
             <p>
               Provide live, one-to-one, confidential support with survivors.
             </p>
-            <Link href="/moderator/chat">
+            <Link href="/moderator/chat" replace>
               <Button appearance="ghost">Chat with survivors &rarr;</Button>
             </Link>
           </Panel>
 
           <Panel header="Reports" bordered className={styles.group} shaded>
             <p>Manage reports submitted by survivors.</p>
-            <Link href="/moderator/reports">
+            <Link href="/moderator/reports" replace>
               <Button appearance="ghost">View reports &rarr;</Button>
             </Link>
           </Panel>

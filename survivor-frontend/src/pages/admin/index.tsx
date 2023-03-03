@@ -20,7 +20,7 @@ const AdminDashboard: NextPage = () => {
         <div className={styles.callToActions}>
           <Panel header="Trends" bordered className={styles.group} shaded>
             <p>View trends regarding the platform's usage.</p>
-            <Link href="/admin/trends">
+            <Link href="/admin/trends" replace>
               <Button appearance="ghost">View trends &rarr;</Button>
             </Link>
           </Panel>

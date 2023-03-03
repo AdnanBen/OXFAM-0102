@@ -16,7 +16,7 @@ type Post = {
 
 const Post = ({ post }: { post: Post }) => {
   return (
-    <Link href={`/forum/${post.id}`} className={styles.post_link}>
+    <Link href={`/forum/${post.id}`} className={styles.post_link} replace>
       <div className={styles.post}>
         <p className={styles.post_id}>{post.id}</p>
         <p className={styles.post_title}>{post.title}</p>
@@ -78,7 +78,7 @@ const Feed: NextPage = ({ posts }) => {
           </Message>
         )}
 
-        <Link href="/forum/new" className={styles.createPostBtn}>
+        <Link href="/forum/new" className={styles.createPostBtn} replace>
           <Button appearance="primary">
             <Trans>Create new post?</Trans>
           </Button>
