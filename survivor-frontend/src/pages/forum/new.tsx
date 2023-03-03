@@ -7,6 +7,7 @@ import "react-quill/dist/quill.snow.css";
 import { Button, Form, SelectPicker } from "rsuite";
 import { env } from "../../env/env.mjs";
 import { getServerAuthSession } from "../../server/auth";
+import requireSSRTransition from "../../server/requireSSRTransition";
 
 const QuillNoSSRWrapper = dynamic(import("react-quill"), {
   ssr: false,
@@ -33,6 +34,10 @@ const modules = {
 };
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
+  // Only allow access through the homepage, not directly
+  const redirectNoDirectAccess = requireSSRTransition(context);
+  if (redirectNoDirectAccess) return redirectNoDirectAccess;
+
   const boards = await fetch(`${env.SSR_HOST}/api/forum/boards`)
     .then((res) => res.json())
     .then((res) => res.boards)

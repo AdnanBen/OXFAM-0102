@@ -34,7 +34,7 @@ const server = z.object({
  * To expose them to the client, prefix them with `NEXT_PUBLIC_`.
  */
 const client = z.object({
-  // NEXT_PUBLIC_CLIENTVAR: z.string().min(1),
+  NEXT_PUBLIC_PANIC_URL_PATH: z.string(),
 });
 
 /**
@@ -52,8 +52,10 @@ const processEnv = {
   AZURE_AD_B2C_PRIMARY_USER_FLOW: process.env.AZURE_AD_B2C_PRIMARY_USER_FLOW,
   AZURE_AD_SERVER_CLIENT_SECRET: process.env.AZURE_AD_SERVER_CLIENT_SECRET,
   AZURE_AD_SERVER_TENANT_ID: process.env.AZURE_AD_SERVER_TENANT_ID,
-  AZURE_AD_B2C_USER_EXTENSION_APP_ID: process.env.AZURE_AD_B2C_USER_EXTENSION_APP_ID,
+  AZURE_AD_B2C_USER_EXTENSION_APP_ID:
+    process.env.AZURE_AD_B2C_USER_EXTENSION_APP_ID,
   SSR_HOST: process.env.SSR_HOST,
+  NEXT_PUBLIC_PANIC_URL_PATH: process.env.NEXT_PUBLIC_PANIC_URL_PATH,
 };
 
 // Don't touch the part below

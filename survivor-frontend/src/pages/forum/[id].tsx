@@ -5,10 +5,15 @@ import { Loader, Message, Modal } from "rsuite";
 import sanitizeHTML from "sanitize-html";
 import { env } from "../../env/env.mjs";
 import { getServerAuthSession } from "../../server/auth";
+import requireSSRTransition from "../../server/requireSSRTransition";
 import styles from "../../styles/Forum.module.css";
 import useRouterRefresh from "../../utils/useRouterRefresh";
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
+  // Only allow access through the homepage, not directly
+  const redirectNoDirectAccess = requireSSRTransition(context);
+  if (redirectNoDirectAccess) return redirectNoDirectAccess;
+
   const post = await fetch(
     `${env.SSR_HOST}/api/forum/posts/${context.query.id}`
   )
