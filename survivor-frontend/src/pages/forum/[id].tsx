@@ -1,13 +1,16 @@
 import { Trans } from "@lingui/macro";
+import RemindOutlineIcon from "@rsuite/icons/RemindOutline";
 import { GetServerSideProps, type NextPage } from "next";
 import { useState } from "react";
-import { Loader, Message, Modal } from "rsuite";
+import { IconButton, Loader, Message, Modal } from "rsuite";
 import sanitizeHTML from "sanitize-html";
 import { env } from "../../env/env.mjs";
 import { getServerAuthSession } from "../../server/auth";
 import requireSSRTransition from "../../server/requireSSRTransition";
 import styles from "../../styles/Forum.module.css";
+import { fetchJsonApi } from "../../utils/helpers";
 import useRouterRefresh from "../../utils/useRouterRefresh";
+import useToaster from "../../utils/useToaster";
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   // Only allow access through the homepage, not directly
@@ -33,9 +36,56 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 };
 
 const Post: NextPage = ({ post }) => {
+  const toaster = useToaster();
   const [refresh, isRefresing] = useRouterRefresh(post);
   const [showCommentDialog, setShowCommentDialog] = useState(false);
   const [replyToComment, setReplyToComment] = useState(null);
+
+  const reportPost = async () => {
+    await fetchJsonApi(`/api/forum/posts/${post.id}/flags`, {
+      method: "POST",
+    })
+      .then(() => {
+        toaster.push(
+          <Message type="success" closable>
+            <Trans>The post was reported successfully.</Trans>
+          </Message>
+        );
+      })
+      .catch((err) => {
+        console.log(err);
+        toaster.push(
+          <Message type="error" duration={0} closable>
+            <Trans>
+              There was an error reporting the post. Please try again later.
+            </Trans>
+          </Message>
+        );
+      });
+  };
+
+  const reportComment = async (commentId: string) => {
+    await fetchJsonApi(`/api/forum/comments/${commentId}/flags`, {
+      method: "POST",
+    })
+      .then(() => {
+        toaster.push(
+          <Message type="success" closable>
+            <Trans>The comment was reported successfully.</Trans>
+          </Message>
+        );
+      })
+      .catch((err) => {
+        console.log(err);
+        toaster.push(
+          <Message type="error" duration={0} closable>
+            <Trans>
+              There was an error reporting the comment. Please try again later.
+            </Trans>
+          </Message>
+        );
+      });
+  };
 
   const renderComments = (comments) => {
     return (
@@ -63,6 +113,17 @@ const Post: NextPage = ({ post }) => {
                 >
                   ↲
                 </span>
+                <IconButton
+                  className={styles.reportBtn}
+                  icon={<RemindOutlineIcon />}
+                  style={{ float: "right" }}
+                  appearance="ghost"
+                  size="xs"
+                  color="red"
+                  onClick={() => reportComment(c.id)}
+                >
+                  Report comment?
+                </IconButton>
               </div>
             </>
           );
@@ -125,6 +186,16 @@ const Post: NextPage = ({ post }) => {
             <i className={styles.timestamp}>
               {new Date(post.created).toUTCString()}
             </i>
+            <IconButton
+              className={styles.reportBtn}
+              icon={<RemindOutlineIcon />}
+              appearance="ghost"
+              size="xs"
+              color="red"
+              onClick={reportPost}
+            >
+              Report post?
+            </IconButton>
           </div>
           <h3>{post.tag}</h3>
           <p dangerouslySetInnerHTML={{ __html: sanitizeHTML(post.body) }} />

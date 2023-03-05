@@ -18,6 +18,13 @@ const ModeratorDashboard: NextPage = () => {
       <main>
         <h2>Moderator Dashboard</h2>
         <div className={styles.callToActions}>
+          <Panel header="Forum" bordered className={styles.group} shaded>
+            <p>Manage reports of abuse/spam flagged on the forum.</p>
+            <Link href="/moderator/forum-flags" replace>
+              <Button appearance="ghost">View flags &rarr;</Button>
+            </Link>
+          </Panel>
+
           <Panel header="Resources" bordered className={styles.group} shaded>
             <p>Manage resources available to survivors.</p>
             <Link href="/moderator/article-submission-form" replace>
