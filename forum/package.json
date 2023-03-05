@@ -9,7 +9,7 @@
     "db:seed": "ts-node prisma/seed.ts",
     "db:createmigrations": "prisma migrate dev",
     "postinstall": "prisma generate",
-    "test": "docker-compose -f docker-compose-test.yml up -d && jest --forceExit"
+    "test": "docker-compose -f docker-compose-test.yml up -d && jest --forceExit --coverage --coverageReporters='text-summary'"
   },
   "keywords": [],
   "author": "",

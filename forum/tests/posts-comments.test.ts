@@ -352,6 +352,7 @@ describe("POST /posts/:id/flags", () => {
         body: "<p>test</p>",
         title: "Test",
         board: { create: { name: "test" } },
+        deleted: true,
       },
     });
 

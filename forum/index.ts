@@ -187,7 +187,6 @@ app.post(
     const comment = await prisma.comment.findFirst({
       where: { id: +commentId, deleted: false },
     });
-    console.log(comment);
 
     if (!comment) {
       throw new APIError(404, "The comment you wish to flag does not exist.");
@@ -363,9 +362,11 @@ app.delete(
   })
 );
 
-const port = process.env.PORT;
-app.listen(port, "0.0.0.0", () => {
-  console.log(`⚡️[forum]: Server is running at http://localhost:${port}`);
-});
+if (process.env.NODE_ENV !== "test") {
+  const port = process.env.PORT ?? 3000;
+  app.listen(+port, "0.0.0.0", () => {
+    console.log(`⚡️[forum]: Server is running at http://localhost:${port}`);
+  });
+}
 
 export { app };
