@@ -5,6 +5,7 @@ import Link from "next/link";
 import { Button, Message } from "rsuite";
 import { env } from "../../env/env.mjs";
 import { getServerAuthSession } from "../../server/auth";
+import requireSSRTransition from "../../server/requireSSRTransition";
 import styles from "../../styles/Forum.module.css";
 
 type Post = {
@@ -16,7 +17,7 @@ type Post = {
 
 const Post = ({ post }: { post: Post }) => {
   return (
-    <Link href={`/forum/${post.id}`} className={styles.post_link}>
+    <Link href={`/forum/${post.id}`} className={styles.post_link} replace>
       <div className={styles.post}>
         <p className={styles.post_id}>{post.id}</p>
         <p className={styles.post_title}>{post.title}</p>
@@ -30,6 +31,10 @@ const Post = ({ post }: { post: Post }) => {
 };
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
+  // Only allow access through the homepage, not directly
+  const redirectNoDirectAccess = requireSSRTransition(context);
+  if (redirectNoDirectAccess) return redirectNoDirectAccess;
+
   const posts = await fetch(`${env.SSR_HOST}/api/forum/posts`)
     .then((res) => res.json())
     .then((res) => res.posts)
@@ -78,7 +83,7 @@ const Feed: NextPage = ({ posts }) => {
           </Message>
         )}
 
-        <Link href="/forum/new" className={styles.createPostBtn}>
+        <Link href="/forum/new" className={styles.createPostBtn} replace>
           <Button appearance="primary">
             <Trans>Create new post?</Trans>
           </Button>

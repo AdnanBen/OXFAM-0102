@@ -6,9 +6,14 @@ import { Message, Panel } from "rsuite";
 import { Article } from "../../articles-interfaces";
 import { env } from "../../env/env.mjs";
 import { getServerAuthSession } from "../../server/auth";
+import requireSSRTransition from "../../server/requireSSRTransition";
 import styles from "../../styles/Resources.module.css";
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
+  // Only allow access through the homepage, not directly
+  const redirectNoDirectAccess = requireSSRTransition(context);
+  if (redirectNoDirectAccess) return redirectNoDirectAccess;
+
   const articles = await fetch(`${env.SSR_HOST}/api/resources/articles/getall`)
     .then((res) => res.json())
     .then((res) => res.articles)
@@ -34,7 +39,7 @@ function ResourceHome({ articles }) {
     );
 
     return filteredArticles.map((article: Article) => (
-      <Link href={`/resources/${article._id}`} key={article._id}>
+      <Link href={`/resources/${article._id}`} key={article._id} replace>
         <div className={styles.articleContainer}>{article.title}</div>
       </Link>
     ));

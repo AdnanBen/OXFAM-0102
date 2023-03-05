@@ -1,10 +1,18 @@
 import { Trans } from "@lingui/macro";
-import { NextPage } from "next";
+import { GetServerSideProps, NextPage } from "next";
 import Head from "next/head";
 import React, { useEffect, useState } from "react";
 import { Loader } from "rsuite";
 import io, { Socket } from "socket.io-client";
 import Chat from "../../components/Chat";
+import requireSSRTransition from "../../server/requireSSRTransition";
+
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  // Only allow access through the homepage, not directly
+  const redirectNoDirectAccess = requireSSRTransition(context);
+  if (redirectNoDirectAccess) return redirectNoDirectAccess;
+  return { props: {} };
+};
 
 //https://stackoverflow.com/questions/72238175/why-useeffect-running-twice-and-how-to-handle-it-well-in-react
 const UserChat = ({ socket }: { socket: Socket }) => {

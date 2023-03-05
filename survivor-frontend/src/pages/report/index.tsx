@@ -7,12 +7,21 @@ import { FormikProps } from "formik";
 import Head from "next/head";
 import { t, Trans } from "@lingui/macro";
 import { Button } from "rsuite";
+import requireSSRTransition from "../../server/requireSSRTransition";
+import { GetServerSideProps } from "next";
 
 interface Values {
   name: string;
   gender: string;
   body: string;
 }
+
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  // Only allow access through the homepage, not directly
+  const redirectNoDirectAccess = requireSSRTransition(context);
+  if (redirectNoDirectAccess) return redirectNoDirectAccess;
+  return { props: {} };
+};
 
 function FormPage(data: Values) {
   const router = useRouter();

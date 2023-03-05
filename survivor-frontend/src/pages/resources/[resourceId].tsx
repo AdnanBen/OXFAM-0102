@@ -4,9 +4,14 @@ import { Message } from "rsuite";
 import sanitizeHTML from "sanitize-html";
 import { env } from "../../env/env.mjs";
 import { getServerAuthSession } from "../../server/auth";
+import requireSSRTransition from "../../server/requireSSRTransition";
 import styles from "../../styles/ArticlePage.module.css";
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
+  // Only allow access through the homepage, not directly
+  const redirectNoDirectAccess = requireSSRTransition(context);
+  if (redirectNoDirectAccess) return redirectNoDirectAccess;
+
   const article = await fetch(
     `${env.SSR_HOST}/api/resources/articles/get/${context.query.resourceId}`
   )

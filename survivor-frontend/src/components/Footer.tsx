@@ -5,10 +5,10 @@ const Footer = () => {
   return (
     <footer>
       <Dropdown title="Language" size="sm" placement="topStart">
-        <Link href="#" locale="en">
+        <Link href="#" locale="en" replace>
           <Dropdown.Item>English</Dropdown.Item>
         </Link>
-        <Link href="#" locale="ny">
+        <Link href="#" locale="ny" replace>
           <Dropdown.Item>Nyanja (Chichewa)</Dropdown.Item>
         </Link>
       </Dropdown>

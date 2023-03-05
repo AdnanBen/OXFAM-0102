@@ -23,7 +23,7 @@ const Home: NextPage = () => {
         </p>
 
         <div className={styles.links}>
-          <Link href="/forum">
+          <Link href="/forum" replace>
             <Panel
               header={
                 <span className={styles.linkHeader}>
@@ -40,7 +40,7 @@ const Home: NextPage = () => {
               </Trans>
             </Panel>
           </Link>
-          <Link href="/chat">
+          <Link href="/chat" replace>
             <Panel
               header={
                 <span className={styles.linkHeader}>
@@ -56,7 +56,7 @@ const Home: NextPage = () => {
               </Trans>
             </Panel>
           </Link>
-          <Link href="/resources">
+          <Link href="/resources" replace>
             <Panel
               header={
                 <span className={styles.linkHeader}>
@@ -73,7 +73,7 @@ const Home: NextPage = () => {
               </Trans>
             </Panel>
           </Link>
-          <Link href="/report">
+          <Link href="/report" replace>
             <Panel
               header={
                 <span className={styles.linkHeader}>
