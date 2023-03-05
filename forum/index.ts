@@ -72,19 +72,44 @@ app.get(
 );
 
 /**
- * Flag a post for moderator attention.
- * TODO: this should require a CAPTCHA (to avoid bots flooding site with spam flag requests).
+ * Get all flagged comments
+ * TODO: eventually, this should only be doable by a moderator (behind auth)
  */
-app.post(
-  "/posts/:postId/flag",
+app.get(
+  "/comments/flagged",
   catchErrors(async (req: Request, res: Response) => {
-    const { postId } = req.params;
-
-    await prisma.postFlag.create({
-      data: { post_id: +postId, timestamp: new Date() },
+    const comments = await prisma.comment.findMany({
+      where: { flags: { gt: 0 } },
+      select: {
+        Post: { select: { id: true, title: true } },
+        id: true,
+        body: true,
+        created: true,
+      },
     });
 
-    return res.status(200).json({ error: false });
+    return res.status(200).json({ error: false, comments });
+  })
+);
+
+/**
+ * Get all flagged posts
+ * TODO: eventually, this should only be doable by a moderator (behind auth)
+ */
+app.get(
+  "/posts/flagged",
+  catchErrors(async (req: Request, res: Response) => {
+    const posts = await prisma.post.findMany({
+      where: { flags: { gt: 0 } },
+      select: {
+        id: true,
+        body: true,
+        title: true,
+        created: true,
+      },
+    });
+
+    return res.status(200).json({ error: false, posts });
   })
 );
 
@@ -120,15 +145,10 @@ app.delete(
     const { postId } = req.params;
 
     // Mark the post as deleted; don't actually delete it (i.e., soft-delete)
+    // Mark all the flags for this post as handled
     await prisma.post.update({
       where: { id: +postId },
-      data: { deleted: true },
-    });
-
-    // Mark all the flags for this post as handled
-    await prisma.postFlag.updateMany({
-      where: { post_id: +postId },
-      data: { handled: new Date() },
+      data: { deleted: true, flags: 0 },
     });
 
     return res.status(200).json({ error: false, postId });
@@ -139,10 +159,13 @@ app.delete(
  * Flag a post as abusive/spam for moderator attention.
  */
 app.post(
-  "/posts/:postId/flag",
+  "/posts/:postId/flags",
   catchErrors(async (req: Request, res: Response) => {
     const { postId } = req.params;
-    await prisma.postFlag.create({ data: { post_id: +postId } });
+    await prisma.post.update({
+      data: { flags: { increment: 1 } },
+      where: { id: +postId },
+    });
 
     return res.status(200).json({ error: false });
   })
@@ -183,10 +206,13 @@ app.post(
  * Flag a comment as abusive/spam for moderator attention.
  */
 app.post(
-  "/comments/:commentId/flag",
+  "/comments/:commentId/flags",
   catchErrors(async (req: Request, res: Response) => {
     const { commentId } = req.params;
-    await prisma.commentFlag.create({ data: { comment_id: +commentId } });
+    await prisma.post.update({
+      data: { flags: { increment: 1 } },
+      where: { id: +commentId },
+    });
 
     return res.status(200).json({ error: false });
   })
@@ -202,15 +228,10 @@ app.delete(
     const { commentId } = req.params;
 
     // Mark the comment as deleted; don't actually delete it (i.e., soft-delete)
+    // Mark all the flags for this comment as handled
     await prisma.comment.update({
       where: { id: +commentId },
-      data: { deleted: true },
-    });
-
-    // Mark all the flags for this comment as handled
-    await prisma.commentFlag.updateMany({
-      where: { comment_id: +commentId },
-      data: { handled: new Date() },
+      data: { deleted: true, flags: 0 },
     });
 
     return res.status(200).json({ error: false });
@@ -218,16 +239,16 @@ app.delete(
 );
 
 /**
- * Mark a comment flag as handled (e.g., ignored)
+ * Mark a comment's flags as handled (e.g., ignored)
  * TODO: eventually, this should only be doable by a moderator (behind auth)
  */
 app.delete(
-  "/comments/flags/:flagId",
+  "/comments/:commentId/flags",
   catchErrors(async (req: Request, res: Response) => {
-    const { flagId } = req.params;
-    await prisma.commentFlag.update({
-      data: { handled: new Date() },
-      where: { id: +flagId },
+    const { commentId } = req.params;
+    await prisma.comment.update({
+      data: { flags: 0 },
+      where: { id: +commentId },
     });
 
     return res.status(200).json({ error: false });
@@ -235,71 +256,19 @@ app.delete(
 );
 
 /**
- * Mark a post flag as handled (e.g., ignored)
+ * Mark a post's flags as handled (e.g., ignored)
  * TODO: eventually, this should only be doable by a moderator (behind auth)
  */
 app.delete(
-  "/posts/flags/:flagId",
+  "/posts/:postId/flags",
   catchErrors(async (req: Request, res: Response) => {
-    const { flagId } = req.params;
-    await prisma.postFlag.update({
-      data: { handled: new Date() },
-      where: { id: +flagId },
+    const { postId } = req.params;
+    await prisma.post.update({
+      data: { flags: 0 },
+      where: { id: +postId },
     });
 
     return res.status(200).json({ error: false });
-  })
-);
-
-/**
- * Get all flagged comments
- * TODO: eventually, this should only be doable by a moderator (behind auth)
- */
-app.get(
-  "/comments/flagged",
-  catchErrors(async (req: Request, res: Response) => {
-    const comments = await prisma.commentFlag.findMany({
-      where: { handled: { not: null } },
-      select: {
-        id: true,
-        comment: {
-          select: {
-            Post: { select: { id: true, title: true } },
-            id: true,
-            body: true,
-            created: true,
-          },
-        },
-      },
-    });
-
-    return res.status(200).json({ error: false, comments });
-  })
-);
-
-/**
- * Get all flagged posts
- * TODO: eventually, this should only be doable by a moderator (behind auth)
- */
-app.get(
-  "/posts/flagged",
-  catchErrors(async (req: Request, res: Response) => {
-    const posts = await prisma.postFlag.findMany({
-      where: { handled: { not: null } },
-      select: {
-        id: true,
-        post: {
-          select: {
-            id: true,
-            body: true,
-            title: true,
-            created: true,
-          },
-        },
-      },
-    });
-
-    return res.status(200).json({ error: false, posts });
   })
 );
 
