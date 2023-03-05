@@ -34,6 +34,10 @@
   cursor: pointer;
 }
 
+.reportBtn {
+  margin-left: 10px;
+}
+
 /** Feed **/
 .post {
   border: 2px solid rgb(87, 138, 91);
@@ -86,7 +90,7 @@
 
 
 /** board **/
-.board_button{
+.board_button {
   margin-top: 10px;
   margin-right: 20px;
   background-color: #FAFBFC;
@@ -94,9 +98,8 @@
   border-radius: 6px;
 }
 
-.board_search{
+.board_search {
   margin-top: 10px;
   background-color: #FAFBFC;
   border: 1px solid rgba(27, 31, 35, 0.15);
 }
-

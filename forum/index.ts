@@ -64,27 +64,13 @@ app.get(
     // Don't get the post body itself
     const posts = await prisma.post.findMany({
       select: { id: true, title: true, created: true },
-      ...(boardId != null && { where: { board_id: +boardId } }),
+      where: {
+        deleted: false,
+        ...(boardId != null && { board_id: +boardId }),
+      },
     });
 
     return res.status(200).json({ error: false, posts });
-  })
-);
-
-/**
- * Flag a post for moderator attention.
- * TODO: this should require a CAPTCHA (to avoid bots flooding site with spam flag requests).
- */
-app.post(
-  "/posts/:postId/flag",
-  catchErrors(async (req: Request, res: Response) => {
-    const { postId } = req.params;
-
-    await prisma.postFlag.create({
-      data: { post_id: +postId, timestamp: new Date() },
-    });
-
-    return res.status(200).json({ error: false });
   })
 );
 
@@ -101,7 +87,7 @@ app.get(
     // Note: if needed, it is possible to extract the entire tree using a recursive query -- Prisma
     // doesn't support that yet https://github.com/prisma/prisma/issues/3725, but PostgreSQL does.
     const post = await prisma.post.findFirst({
-      where: { id: +postId },
+      where: { id: +postId, deleted: false },
       include: { comments: { include: { parent_comment: true } } },
     });
     if (!post) throw new APIError(404, "The requested post does not exist");
@@ -111,21 +97,18 @@ app.get(
 );
 
 /**
- * Delete a top-level post or comment
- * TODO: eventually, this should only be doable by a moderator (behind auth)
+ * Flag a post as abusive/spam for moderator attention.
  */
-app.delete(
-  "/posts/:postId",
+app.post(
+  "/posts/:postId/flags",
   catchErrors(async (req: Request, res: Response) => {
     const { postId } = req.params;
-
-    // Mark the post as deleted; don't actually delete it (i.e., soft-delete)
     await prisma.post.update({
+      data: { flags: { increment: 1 } },
       where: { id: +postId },
-      data: { deleted: true },
     });
 
-    return res.status(200).json({ error: false, postId });
+    return res.status(200).json({ error: false });
   })
 );
 
@@ -161,7 +144,23 @@ app.post(
 );
 
 /**
- * Get list of all boards
+ * Flag a comment as abusive/spam for moderator attention.
+ */
+app.post(
+  "/comments/:commentId/flags",
+  catchErrors(async (req: Request, res: Response) => {
+    const { commentId } = req.params;
+    await prisma.comment.update({
+      data: { flags: { increment: 1 } },
+      where: { id: +commentId },
+    });
+
+    return res.status(200).json({ error: false });
+  })
+);
+
+/**
+ * Get list of all boards.
  */
 app.get(
   "/boards",
@@ -174,7 +173,7 @@ app.get(
 );
 
 /**
- * Get list of all tags
+ * Get list of all tags.
  */
 app.get(
   "/tags",
@@ -184,6 +183,122 @@ app.get(
     });
 
     return res.status(200).json({ error: false, tags });
+  })
+);
+
+// =====================================================================
+// ==========================Moderator actions==========================
+// =====================================================================
+
+/**
+ * Get all flagged comments.
+ */
+app.get(
+  "/moderator/comments/flagged",
+  catchErrors(async (req: Request, res: Response) => {
+    const comments = await prisma.comment.findMany({
+      where: { flags: { gt: 0 } },
+      select: {
+        Post: { select: { id: true, title: true } },
+        id: true,
+        body: true,
+        created: true,
+        flags: true,
+      },
+    });
+
+    return res.status(200).json({ error: false, comments });
+  })
+);
+
+/**
+ * Mark a comment's flags as handled (e.g., ignored).
+ */
+app.delete(
+  "/moderator/comments/:commentId/flags",
+  catchErrors(async (req: Request, res: Response) => {
+    const { commentId } = req.params;
+    await prisma.comment.update({
+      data: { flags: 0 },
+      where: { id: +commentId },
+    });
+
+    return res.status(200).json({ error: false });
+  })
+);
+
+/**
+ * Delete a top-level comment.
+ */
+app.delete(
+  "/moderator/comments/:commentId",
+  catchErrors(async (req: Request, res: Response) => {
+    const { commentId } = req.params;
+
+    // Mark the comment as deleted; don't actually delete it (i.e., soft-delete)
+    // Mark all the flags for this comment as handled
+    await prisma.comment.update({
+      where: { id: +commentId },
+      data: { deleted: true, flags: 0 },
+    });
+
+    return res.status(200).json({ error: false });
+  })
+);
+
+/**
+ * Get all flagged posts.
+ */
+app.get(
+  "/moderator/posts/flagged",
+  catchErrors(async (req: Request, res: Response) => {
+    const posts = await prisma.post.findMany({
+      where: { flags: { gt: 0 } },
+      select: {
+        id: true,
+        body: true,
+        title: true,
+        created: true,
+        flags: true,
+      },
+    });
+
+    return res.status(200).json({ error: false, posts });
+  })
+);
+
+/**
+ * Mark a post's flags as handled (e.g., ignored).
+ */
+app.delete(
+  "/moderator/posts/:postId/flags",
+  catchErrors(async (req: Request, res: Response) => {
+    const { postId } = req.params;
+    await prisma.post.update({
+      data: { flags: 0 },
+      where: { id: +postId },
+    });
+
+    return res.status(200).json({ error: false });
+  })
+);
+
+/**
+ * Delete a top-level post.
+ */
+app.delete(
+  "/moderator/posts/:postId",
+  catchErrors(async (req: Request, res: Response) => {
+    const { postId } = req.params;
+
+    // Mark the post as deleted; don't actually delete it (i.e., soft-delete)
+    // Mark all the flags for this post as handled
+    await prisma.post.update({
+      where: { id: +postId },
+      data: { deleted: true, flags: 0 },
+    });
+
+    return res.status(200).json({ error: false, postId });
   })
 );
 
