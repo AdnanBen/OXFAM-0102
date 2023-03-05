@@ -240,7 +240,7 @@ app.get(
   "/moderator/comments/flagged",
   catchErrors(async (req: Request, res: Response) => {
     const comments = await prisma.comment.findMany({
-      where: { flags: { gt: 0 } },
+      where: { flags: { gt: 0 }, deleted: false },
       select: {
         Post: { select: { id: true, title: true } },
         id: true,
@@ -261,6 +261,11 @@ app.delete(
   "/moderator/comments/:commentId/flags",
   catchErrors(async (req: Request, res: Response) => {
     const { commentId } = req.params;
+    const comment = await prisma.comment.findFirst({
+      where: { id: +commentId, deleted: false },
+    });
+    if (!comment) throw new APIError(404, "The comment does not exist");
+
     await prisma.comment.update({
       data: { flags: 0 },
       where: { id: +commentId },
@@ -277,6 +282,10 @@ app.delete(
   "/moderator/comments/:commentId",
   catchErrors(async (req: Request, res: Response) => {
     const { commentId } = req.params;
+    const comment = await prisma.comment.findFirst({
+      where: { id: +commentId, deleted: false },
+    });
+    if (!comment) throw new APIError(404, "The comment does not exist");
 
     // Mark the comment as deleted; don't actually delete it (i.e., soft-delete)
     // Mark all the flags for this comment as handled
@@ -296,7 +305,7 @@ app.get(
   "/moderator/posts/flagged",
   catchErrors(async (req: Request, res: Response) => {
     const posts = await prisma.post.findMany({
-      where: { flags: { gt: 0 } },
+      where: { flags: { gt: 0 }, deleted: false },
       select: {
         id: true,
         body: true,
@@ -317,6 +326,11 @@ app.delete(
   "/moderator/posts/:postId/flags",
   catchErrors(async (req: Request, res: Response) => {
     const { postId } = req.params;
+    const post = await prisma.post.findFirst({
+      where: { id: +postId, deleted: false },
+    });
+    if (!post) throw new APIError(404, "The post does not exist");
+
     await prisma.post.update({
       data: { flags: 0 },
       where: { id: +postId },
@@ -333,6 +347,10 @@ app.delete(
   "/moderator/posts/:postId",
   catchErrors(async (req: Request, res: Response) => {
     const { postId } = req.params;
+    const post = await prisma.post.findFirst({
+      where: { id: +postId, deleted: false },
+    });
+    if (!post) throw new APIError(404, "The post does not exist");
 
     // Mark the post as deleted; don't actually delete it (i.e., soft-delete)
     // Mark all the flags for this post as handled
@@ -341,7 +359,7 @@ app.delete(
       data: { deleted: true, flags: 0 },
     });
 
-    return res.status(200).json({ error: false, postId });
+    return res.status(200).json({ error: false });
   })
 );
 
@@ -349,3 +367,5 @@ const port = process.env.PORT;
 app.listen(port, "0.0.0.0", () => {
   console.log(`⚡️[forum]: Server is running at http://localhost:${port}`);
 });
+
+export { app };
