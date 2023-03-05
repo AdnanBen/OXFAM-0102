@@ -130,6 +130,19 @@ app.delete(
 );
 
 /**
+ * Flag a post as abusive/spam for moderator attention.
+ */
+app.post(
+  "/posts/:postId/flag",
+  catchErrors(async (req: Request, res: Response) => {
+    const { postId } = req.params;
+    await prisma.postFlag.create({ data: { post_id: +postId } });
+
+    return res.status(200).json({ error: false });
+  })
+);
+
+/**
  * Make a new comment on the given top-level Post ID.
  * Optionally pass the parentCommentId if replying to a comment.
  */
