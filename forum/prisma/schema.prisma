@@ -59,6 +59,7 @@ model Comment {
   replies           Comment[]     @relation("Comment")
   Post              Post?         @relation(fields: [post_id], references: [id])
   post_id           Int?
+  deleted           Boolean       @default(false)
   CommentFlag       CommentFlag[]
 }
 
