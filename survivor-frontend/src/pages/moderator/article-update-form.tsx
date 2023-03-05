@@ -5,6 +5,8 @@ import { useRouter } from "next/router";
 
 import "react-quill/dist/quill.snow.css";
 import { Button, Form } from "rsuite";
+import { requireAuth } from "../../server/requireAuth";
+import { GetServerSideProps } from "next";
 
 const QuillNoSSRWrapper = dynamic(import("react-quill"), {
   ssr: false,
@@ -30,6 +32,9 @@ const modules = {
     matchVisual: false,
   },
 };
+
+export const getServerSideProps: GetServerSideProps = (context) =>
+  requireAuth(context, "moderator");
 
 export default function ArticleSubmissionForm() {
   const router = useRouter();

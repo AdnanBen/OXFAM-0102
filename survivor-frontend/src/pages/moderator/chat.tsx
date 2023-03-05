@@ -1,8 +1,12 @@
-import { NextPage } from "next";
+import { GetServerSideProps, NextPage } from "next";
 import React, { useEffect, useRef, useState } from "react";
 import { Loader, Button } from "rsuite";
 import io, { Socket } from "socket.io-client";
 import Chat from "../../components/Chat";
+import { requireAuth } from "../../server/requireAuth";
+
+export const getServerSideProps: GetServerSideProps = (context) =>
+  requireAuth(context, "moderator");
 
 // TODO: when auth is working, as soon as moderator logs in, they should be 'listening'
 const ModeratorChat = ({ socket }: { socket: Socket }) => {

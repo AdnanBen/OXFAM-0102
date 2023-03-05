@@ -106,8 +106,8 @@ const createPendingRegistration = async (
       await sendEmail({
         to: process.env.NEW_USER_VERIFIER_EMAIL!,
         subject: "Oxfam Survivors Community: verify moderator",
-        text: `Please verify the following user: ${req.body.displayName} (${req.body.email}). ${process.env.BASE_URL}/pendingRegistrations/approve/${token}`,
-        html: `Please verify the following user:<br/>${req.body.displayName} (${req.body.email}). ${process.env.BASE_URL}/pendingRegistrations/approve/${token}`,
+        text: `Please verify the following user: ${req.body.displayName} (${req.body.email}). ${process.env.BASE_URL}/api/adauth/pendingRegistrations/approve/${token}`,
+        html: `Please verify the following user:<br/>${req.body.displayName} (${req.body.email}). ${process.env.BASE_URL}/api/adauth/pendingRegistrations/approve/${token}`,
       });
     } else {
       console.log("[Development] Would send email with token", token);
@@ -171,6 +171,8 @@ const acceptPendingRegistration = async (
         displayName:
           registration.displayName ||
           `${registration.givenName} ${registration.surname}`,
+        [`extension_${process.env.AZURE_AD_USER_EXTENSION_APP_ID}_Roles`]:
+          "Moderator",
       }),
     });
 
