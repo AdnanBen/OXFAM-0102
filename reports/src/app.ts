@@ -15,9 +15,11 @@ app.get("/", (req: Request, res: Response) => {
   res.send("Hello World!");
 });
 
-app.listen(port, () => {
-  return console.log(`Express is listening at http://localhost:${port}`);
-});
+if (process.env.NODE_ENV !== "test") {
+  app.listen(port, () => {
+    return console.log(`Express is listening at http://localhost:${port}`);
+  });
+}
 
 mongoose
   .connect(config.mongo.url, { retryWrites: true, w: "majority" })
@@ -33,3 +35,5 @@ app.use(express.json());
 
 app.use("/reports/completereports", reportRoutes);
 app.use("/reports/incompletereports", incompleteReportRoutes);
+
+export { app };

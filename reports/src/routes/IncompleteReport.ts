@@ -10,4 +10,4 @@ router.get("/getall", controller.getAll);
 
 router.delete("/delete/:IncompleteReportId", controller.deleteIncompleteReport);
 
-export = router;
+export default router;

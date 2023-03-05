@@ -8,6 +8,6 @@ router.post("/create", controller.createReport);
 router.get("/get/:reportId", controller.getReport);
 router.get("/getall", controller.getAll);
 
-router.delete("/delete/:ReportId", controller.deleteReport);
+router.delete("/delete/:reportId", controller.deleteReport);
 
-export = router;
+export default router;
