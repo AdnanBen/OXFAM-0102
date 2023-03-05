@@ -40,15 +40,33 @@ app.use((err: Error, req: Request, res: Response, next: any) => {
 app.post(
   "/posts",
   catchErrors(async (req: Request, res: Response) => {
-    const post = await prisma.post.create({
-      data: {
-        title: sanitizeHTML(req.body.title),
-        body: sanitizeHTML(req.body.body),
-        board: { connect: { id: req.body.board_id } },
-      },
+    // Don't allow any HTML for Title
+    const title = sanitizeHTML(req.body.title ?? "", {
+      allowedTags: [],
+      allowedAttributes: {},
     });
 
-    return res.status(200).json({ error: false, id: post.id });
+    const body = sanitizeHTML(req.body.body ?? "");
+
+    // Ensure title and body both have content, even after sanitisation
+    if (!title || !body) {
+      throw new APIError(400, "You did not provide valid post details");
+    }
+
+    try {
+      const post = await prisma.post.create({
+        data: { title, body, board: { connect: { id: req.body.board_id } } },
+      });
+
+      return res.status(200).json({ error: false, id: post.id });
+    } catch (err) {
+      // Dependent record do not exist
+      if (err.code === "P2025") {
+        throw new APIError(404, "The requested board does not exist");
+      }
+
+      throw err;
+    }
   })
 );
 
@@ -88,7 +106,13 @@ app.get(
     // doesn't support that yet https://github.com/prisma/prisma/issues/3725, but PostgreSQL does.
     const post = await prisma.post.findFirst({
       where: { id: +postId, deleted: false },
-      include: { comments: { include: { parent_comment: true } } },
+      select: {
+        comments: { select: { parent_comment: true } },
+        body: true,
+        id: true,
+        title: true,
+        created: true,
+      },
     });
     if (!post) throw new APIError(404, "The requested post does not exist");
 
@@ -103,6 +127,15 @@ app.post(
   "/posts/:postId/flags",
   catchErrors(async (req: Request, res: Response) => {
     const { postId } = req.params;
+
+    const post = await prisma.post.findFirst({
+      where: { id: +postId, deleted: false },
+    });
+
+    if (!post) {
+      throw new APIError(404, "The post you wish to flag does not exist");
+    }
+
     await prisma.post.update({
       data: { flags: { increment: 1 } },
       where: { id: +postId },
@@ -150,6 +183,15 @@ app.post(
   "/comments/:commentId/flags",
   catchErrors(async (req: Request, res: Response) => {
     const { commentId } = req.params;
+
+    const comment = await prisma.comment.findFirst({
+      where: { id: +commentId, deleted: false },
+    });
+
+    if (!comment) {
+      throw new APIError(404, "The comment you wish to flag does not exist.");
+    }
+
     await prisma.comment.update({
       data: { flags: { increment: 1 } },
       where: { id: +commentId },
@@ -197,7 +239,7 @@ app.get(
   "/moderator/comments/flagged",
   catchErrors(async (req: Request, res: Response) => {
     const comments = await prisma.comment.findMany({
-      where: { flags: { gt: 0 } },
+      where: { flags: { gt: 0 }, deleted: false },
       select: {
         Post: { select: { id: true, title: true } },
         id: true,
@@ -218,6 +260,11 @@ app.delete(
   "/moderator/comments/:commentId/flags",
   catchErrors(async (req: Request, res: Response) => {
     const { commentId } = req.params;
+    const comment = await prisma.comment.findFirst({
+      where: { id: +commentId, deleted: false },
+    });
+    if (!comment) throw new APIError(404, "The comment does not exist");
+
     await prisma.comment.update({
       data: { flags: 0 },
       where: { id: +commentId },
@@ -234,6 +281,10 @@ app.delete(
   "/moderator/comments/:commentId",
   catchErrors(async (req: Request, res: Response) => {
     const { commentId } = req.params;
+    const comment = await prisma.comment.findFirst({
+      where: { id: +commentId, deleted: false },
+    });
+    if (!comment) throw new APIError(404, "The comment does not exist");
 
     // Mark the comment as deleted; don't actually delete it (i.e., soft-delete)
     // Mark all the flags for this comment as handled
@@ -253,7 +304,7 @@ app.get(
   "/moderator/posts/flagged",
   catchErrors(async (req: Request, res: Response) => {
     const posts = await prisma.post.findMany({
-      where: { flags: { gt: 0 } },
+      where: { flags: { gt: 0 }, deleted: false },
       select: {
         id: true,
         body: true,
@@ -274,6 +325,11 @@ app.delete(
   "/moderator/posts/:postId/flags",
   catchErrors(async (req: Request, res: Response) => {
     const { postId } = req.params;
+    const post = await prisma.post.findFirst({
+      where: { id: +postId, deleted: false },
+    });
+    if (!post) throw new APIError(404, "The post does not exist");
+
     await prisma.post.update({
       data: { flags: 0 },
       where: { id: +postId },
@@ -290,6 +346,10 @@ app.delete(
   "/moderator/posts/:postId",
   catchErrors(async (req: Request, res: Response) => {
     const { postId } = req.params;
+    const post = await prisma.post.findFirst({
+      where: { id: +postId, deleted: false },
+    });
+    if (!post) throw new APIError(404, "The post does not exist");
 
     // Mark the post as deleted; don't actually delete it (i.e., soft-delete)
     // Mark all the flags for this post as handled
@@ -298,11 +358,15 @@ app.delete(
       data: { deleted: true, flags: 0 },
     });
 
-    return res.status(200).json({ error: false, postId });
+    return res.status(200).json({ error: false });
   })
 );
 
-const port = process.env.PORT;
-app.listen(port, "0.0.0.0", () => {
-  console.log(`⚡️[forum]: Server is running at http://localhost:${port}`);
-});
+if (process.env.NODE_ENV !== "test") {
+  const port = process.env.PORT ?? 3000;
+  app.listen(+port, "0.0.0.0", () => {
+    console.log(`⚡️[forum]: Server is running at http://localhost:${port}`);
+  });
+}
+
+export { app };

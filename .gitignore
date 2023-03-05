@@ -6,3 +6,4 @@ build
 
 *icloud
 .env.local
+coverage

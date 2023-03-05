@@ -14,4 +14,4 @@ router.get("/getbycategory", controller.getByCategory);
 router.patch("/update/:articleId", controller.updateArticle);
 router.delete("/delete/:articleId", controller.deleteArticle);
 
-export = router;
+export default router;
