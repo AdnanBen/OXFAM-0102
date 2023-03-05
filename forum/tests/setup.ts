@@ -30,7 +30,9 @@ beforeEach(async () => {
 });
 
 afterEach(async () => {
-  await mockPrisma.$executeRawUnsafe(`TRUNCATE TABLE ${tableNamesCsv} CASCADE`);
+  await mockPrisma.$executeRawUnsafe(
+    `TRUNCATE TABLE ${tableNamesCsv} RESTART IDENTITY CASCADE`
+  );
   await mockPrisma.$disconnect();
 });
 
