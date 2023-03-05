@@ -125,6 +125,12 @@ app.delete(
       data: { deleted: true },
     });
 
+    // Mark all the flags for this post as handled
+    await prisma.postFlag.updateMany({
+      where: { post_id: +postId },
+      data: { handled: true },
+    });
+
     return res.status(200).json({ error: false, postId });
   })
 );
@@ -199,6 +205,12 @@ app.delete(
     await prisma.comment.update({
       where: { id: +commentId },
       data: { deleted: true },
+    });
+
+    // Mark all the flags for this comment as handled
+    await prisma.commentFlag.updateMany({
+      where: { comment_id: +commentId },
+      data: { handled: true },
     });
 
     return res.status(200).json({ error: false });
