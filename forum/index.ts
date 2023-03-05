@@ -206,6 +206,56 @@ app.delete(
 );
 
 /**
+ * Get all flagged comments
+ * TODO: eventually, this should only be doable by a moderator (behind auth)
+ */
+app.get(
+  "/comments/flagged",
+  catchErrors(async (req: Request, res: Response) => {
+    const comments = await prisma.commentFlag.findMany({
+      where: { handled: false },
+      select: {
+        comment: {
+          select: {
+            Post: { select: { id: true, title: true } },
+            id: true,
+            body: true,
+            created: true,
+          },
+        },
+      },
+    });
+
+    return res.status(200).json({ error: false, comments });
+  })
+);
+
+/**
+ * Get all flagged posts
+ * TODO: eventually, this should only be doable by a moderator (behind auth)
+ */
+app.get(
+  "/posts/flagged",
+  catchErrors(async (req: Request, res: Response) => {
+    const posts = await prisma.postFlag.findMany({
+      where: { handled: false },
+      select: {
+        post: {
+          select: {
+            id: true,
+            body: true,
+            title: true,
+            created: true,
+          },
+        },
+      },
+    });
+
+    return res.status(200).json({ error: false, posts });
+  })
+);
+
+/**
  * Get list of all boards
  */
 app.get(
