@@ -128,7 +128,7 @@ app.delete(
     // Mark all the flags for this post as handled
     await prisma.postFlag.updateMany({
       where: { post_id: +postId },
-      data: { handled: true },
+      data: { handled: new Date() },
     });
 
     return res.status(200).json({ error: false, postId });
@@ -210,7 +210,7 @@ app.delete(
     // Mark all the flags for this comment as handled
     await prisma.commentFlag.updateMany({
       where: { comment_id: +commentId },
-      data: { handled: true },
+      data: { handled: new Date() },
     });
 
     return res.status(200).json({ error: false });
@@ -226,7 +226,7 @@ app.delete(
   catchErrors(async (req: Request, res: Response) => {
     const { flagId } = req.params;
     await prisma.commentFlag.update({
-      data: { handled: true },
+      data: { handled: new Date() },
       where: { id: +flagId },
     });
 
@@ -243,7 +243,7 @@ app.delete(
   catchErrors(async (req: Request, res: Response) => {
     const { flagId } = req.params;
     await prisma.postFlag.update({
-      data: { handled: true },
+      data: { handled: new Date() },
       where: { id: +flagId },
     });
 
@@ -259,7 +259,7 @@ app.get(
   "/comments/flagged",
   catchErrors(async (req: Request, res: Response) => {
     const comments = await prisma.commentFlag.findMany({
-      where: { handled: false },
+      where: { handled: { not: null } },
       select: {
         id: true,
         comment: {
@@ -285,7 +285,7 @@ app.get(
   "/posts/flagged",
   catchErrors(async (req: Request, res: Response) => {
     const posts = await prisma.postFlag.findMany({
-      where: { handled: false },
+      where: { handled: { not: null } },
       select: {
         id: true,
         post: {
