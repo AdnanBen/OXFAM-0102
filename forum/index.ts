@@ -75,50 +75,6 @@ app.get(
 );
 
 /**
- * Get all flagged comments
- * TODO: eventually, this should only be doable by a moderator (behind auth)
- */
-app.get(
-  "/comments/flagged",
-  catchErrors(async (req: Request, res: Response) => {
-    const comments = await prisma.comment.findMany({
-      where: { flags: { gt: 0 } },
-      select: {
-        Post: { select: { id: true, title: true } },
-        id: true,
-        body: true,
-        created: true,
-        flags: true,
-      },
-    });
-
-    return res.status(200).json({ error: false, comments });
-  })
-);
-
-/**
- * Get all flagged posts
- * TODO: eventually, this should only be doable by a moderator (behind auth)
- */
-app.get(
-  "/posts/flagged",
-  catchErrors(async (req: Request, res: Response) => {
-    const posts = await prisma.post.findMany({
-      where: { flags: { gt: 0 } },
-      select: {
-        id: true,
-        body: true,
-        title: true,
-        created: true,
-        flags: true,
-      },
-    });
-
-    return res.status(200).json({ error: false, posts });
-  })
-);
-
-/**
  * Get a top-level post and all its comments.
  */
 app.get(
@@ -137,26 +93,6 @@ app.get(
     if (!post) throw new APIError(404, "The requested post does not exist");
 
     return res.status(200).json({ error: false, post });
-  })
-);
-
-/**
- * Delete a top-level post
- * TODO: eventually, this should only be doable by a moderator (behind auth)
- */
-app.delete(
-  "/posts/:postId",
-  catchErrors(async (req: Request, res: Response) => {
-    const { postId } = req.params;
-
-    // Mark the post as deleted; don't actually delete it (i.e., soft-delete)
-    // Mark all the flags for this post as handled
-    await prisma.post.update({
-      where: { id: +postId },
-      data: { deleted: true, flags: 0 },
-    });
-
-    return res.status(200).json({ error: false, postId });
   })
 );
 
@@ -224,11 +160,78 @@ app.post(
 );
 
 /**
- * Delete a top-level comment
- * TODO: eventually, this should only be doable by a moderator (behind auth)
+ * Get list of all boards.
+ */
+app.get(
+  "/boards",
+  catchErrors(async (req: Request, res: Response) => {
+    const boards = await prisma.board.findMany({
+      select: { id: true, name: true, description: true },
+    });
+    return res.status(200).json({ error: false, boards });
+  })
+);
+
+/**
+ * Get list of all tags.
+ */
+app.get(
+  "/tags",
+  catchErrors(async (req: Request, res: Response) => {
+    const tags = await prisma.tag.findMany({
+      select: { name: true, description: true },
+    });
+
+    return res.status(200).json({ error: false, tags });
+  })
+);
+
+// =====================================================================
+// ==========================Moderator actions==========================
+// =====================================================================
+
+/**
+ * Get all flagged comments.
+ */
+app.get(
+  "/moderator/comments/flagged",
+  catchErrors(async (req: Request, res: Response) => {
+    const comments = await prisma.comment.findMany({
+      where: { flags: { gt: 0 } },
+      select: {
+        Post: { select: { id: true, title: true } },
+        id: true,
+        body: true,
+        created: true,
+        flags: true,
+      },
+    });
+
+    return res.status(200).json({ error: false, comments });
+  })
+);
+
+/**
+ * Mark a comment's flags as handled (e.g., ignored).
  */
 app.delete(
-  "/comments/:commentId",
+  "/moderator/comments/:commentId/flags",
+  catchErrors(async (req: Request, res: Response) => {
+    const { commentId } = req.params;
+    await prisma.comment.update({
+      data: { flags: 0 },
+      where: { id: +commentId },
+    });
+
+    return res.status(200).json({ error: false });
+  })
+);
+
+/**
+ * Delete a top-level comment.
+ */
+app.delete(
+  "/moderator/comments/:commentId",
   catchErrors(async (req: Request, res: Response) => {
     const { commentId } = req.params;
 
@@ -244,28 +247,31 @@ app.delete(
 );
 
 /**
- * Mark a comment's flags as handled (e.g., ignored)
- * TODO: eventually, this should only be doable by a moderator (behind auth)
+ * Get all flagged posts.
  */
-app.delete(
-  "/comments/:commentId/flags",
+app.get(
+  "/moderator/posts/flagged",
   catchErrors(async (req: Request, res: Response) => {
-    const { commentId } = req.params;
-    await prisma.comment.update({
-      data: { flags: 0 },
-      where: { id: +commentId },
+    const posts = await prisma.post.findMany({
+      where: { flags: { gt: 0 } },
+      select: {
+        id: true,
+        body: true,
+        title: true,
+        created: true,
+        flags: true,
+      },
     });
 
-    return res.status(200).json({ error: false });
+    return res.status(200).json({ error: false, posts });
   })
 );
 
 /**
- * Mark a post's flags as handled (e.g., ignored)
- * TODO: eventually, this should only be doable by a moderator (behind auth)
+ * Mark a post's flags as handled (e.g., ignored).
  */
 app.delete(
-  "/posts/:postId/flags",
+  "/moderator/posts/:postId/flags",
   catchErrors(async (req: Request, res: Response) => {
     const { postId } = req.params;
     await prisma.post.update({
@@ -278,29 +284,21 @@ app.delete(
 );
 
 /**
- * Get list of all boards
+ * Delete a top-level post.
  */
-app.get(
-  "/boards",
+app.delete(
+  "/moderator/posts/:postId",
   catchErrors(async (req: Request, res: Response) => {
-    const boards = await prisma.board.findMany({
-      select: { id: true, name: true, description: true },
-    });
-    return res.status(200).json({ error: false, boards });
-  })
-);
+    const { postId } = req.params;
 
-/**
- * Get list of all tags
- */
-app.get(
-  "/tags",
-  catchErrors(async (req: Request, res: Response) => {
-    const tags = await prisma.tag.findMany({
-      select: { name: true, description: true },
+    // Mark the post as deleted; don't actually delete it (i.e., soft-delete)
+    // Mark all the flags for this post as handled
+    await prisma.post.update({
+      where: { id: +postId },
+      data: { deleted: true, flags: 0 },
     });
 
-    return res.status(200).json({ error: false, tags });
+    return res.status(200).json({ error: false, postId });
   })
 );
 
