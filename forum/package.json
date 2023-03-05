@@ -8,14 +8,23 @@
     "start:migrate": "prisma migrate deploy && npm run db:seed && npm run start",
     "db:seed": "ts-node prisma/seed.ts",
     "db:createmigrations": "prisma migrate dev",
-    "postinstall": "prisma generate"
+    "postinstall": "prisma generate",
+    "test": "docker-compose -f docker-compose-test.yml up -d && jest --forceExit"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "@babel/core": "^7.21.0",
+    "@babel/preset-env": "^7.20.2",
+    "@babel/preset-typescript": "^7.21.0",
+    "@jest/globals": "^29.4.3",
     "@types/express": "^4.17.15",
     "@types/node": "^18.11.18",
+    "@types/supertest": "^2.0.12",
+    "babel-jest": "^29.4.3",
+    "jest": "^29.4.3",
+    "supertest": "^6.3.3",
     "ts-node": "^10.9.1",
     "typescript": "^4.9.4"
   },
