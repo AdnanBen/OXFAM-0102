@@ -26,7 +26,7 @@ const createReport = (req: Request, res: Response, next: NextFunction) => {
 
 const getReport = (req: Request, res: Response, next: NextFunction) => {
   const reportId = req.params.reportId;
-  if (!mongoose.Types.ObjectId.isValid(reportId)) {
+  if (!mongoose.Types.ObjectId.isValid(reportId ?? "")) {
     return res
       .status(400)
       .json({ error: true, message: "Invalid ID provided" });
@@ -49,7 +49,7 @@ const getAll = (req: Request, res: Response, next: NextFunction) => {
 
 const deleteReport = (req: Request, res: Response, next: NextFunction) => {
   const reportId = req.params.reportId;
-  if (!mongoose.Types.ObjectId.isValid(reportId)) {
+  if (!mongoose.Types.ObjectId.isValid(reportId ?? "")) {
     return res
       .status(400)
       .json({ error: true, message: "Invalid ID provided" });

@@ -27,7 +27,7 @@ const createArticle = (req: Request, res: Response, next: NextFunction) => {
 const getArticle = (req: Request, res: Response, next: NextFunction) => {
   const articleId = req.params.articleId;
 
-  if (!mongoose.Types.ObjectId.isValid(articleId)) {
+  if (!mongoose.Types.ObjectId.isValid(articleId ?? "")) {
     return res
       .status(400)
       .json({ error: true, message: "Invalid ID provided" });
@@ -65,7 +65,7 @@ const getByCategory = (req: Request, res: Response, next: NextFunction) => {
 
 const updateArticle = (req: Request, res: Response, next: NextFunction) => {
   const articleId = req.params.articleId;
-  if (!mongoose.Types.ObjectId.isValid(articleId)) {
+  if (!mongoose.Types.ObjectId.isValid(articleId ?? "")) {
     return res
       .status(400)
       .json({ error: true, message: "Invalid ID provided" });
@@ -89,7 +89,7 @@ const updateArticle = (req: Request, res: Response, next: NextFunction) => {
 
 const deleteArticle = (req: Request, res: Response, next: NextFunction) => {
   const articleId = req.params.articleId;
-  if (!mongoose.Types.ObjectId.isValid(articleId)) {
+  if (!mongoose.Types.ObjectId.isValid(articleId ?? "")) {
     return res
       .status(400)
       .json({ error: true, message: "Invalid ID provided" });
