@@ -111,7 +111,7 @@ app.get(
 );
 
 /**
- * Delete a top-level post or comment
+ * Delete a top-level post
  * TODO: eventually, this should only be doable by a moderator (behind auth)
  */
 app.delete(
@@ -170,6 +170,38 @@ app.post(
     });
 
     return res.status(200).json({ error: false, id: comment.id });
+  })
+);
+
+/**
+ * Flag a comment as abusive/spam for moderator attention.
+ */
+app.post(
+  "/comments/:commentId/flag",
+  catchErrors(async (req: Request, res: Response) => {
+    const { commentId } = req.params;
+    await prisma.commentFlag.create({ data: { comment_id: +commentId } });
+
+    return res.status(200).json({ error: false });
+  })
+);
+
+/**
+ * Delete a top-level comment
+ * TODO: eventually, this should only be doable by a moderator (behind auth)
+ */
+app.delete(
+  "/comments/:commentId",
+  catchErrors(async (req: Request, res: Response) => {
+    const { commentId } = req.params;
+
+    // Mark the comment as deleted; don't actually delete it (i.e., soft-delete)
+    await prisma.comment.update({
+      where: { id: +commentId },
+      data: { deleted: true },
+    });
+
+    return res.status(200).json({ error: false });
   })
 );
 
