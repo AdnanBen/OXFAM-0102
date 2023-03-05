@@ -218,6 +218,40 @@ app.delete(
 );
 
 /**
+ * Mark a comment flag as handled (e.g., ignored)
+ * TODO: eventually, this should only be doable by a moderator (behind auth)
+ */
+app.delete(
+  "/comments/flags/:flagId",
+  catchErrors(async (req: Request, res: Response) => {
+    const { flagId } = req.params;
+    await prisma.commentFlag.update({
+      data: { handled: true },
+      where: { id: +flagId },
+    });
+
+    return res.status(200).json({ error: false });
+  })
+);
+
+/**
+ * Mark a post flag as handled (e.g., ignored)
+ * TODO: eventually, this should only be doable by a moderator (behind auth)
+ */
+app.delete(
+  "/posts/flags/:flagId",
+  catchErrors(async (req: Request, res: Response) => {
+    const { flagId } = req.params;
+    await prisma.postFlag.update({
+      data: { handled: true },
+      where: { id: +flagId },
+    });
+
+    return res.status(200).json({ error: false });
+  })
+);
+
+/**
  * Get all flagged comments
  * TODO: eventually, this should only be doable by a moderator (behind auth)
  */
@@ -227,6 +261,7 @@ app.get(
     const comments = await prisma.commentFlag.findMany({
       where: { handled: false },
       select: {
+        id: true,
         comment: {
           select: {
             Post: { select: { id: true, title: true } },
@@ -252,6 +287,7 @@ app.get(
     const posts = await prisma.postFlag.findMany({
       where: { handled: false },
       select: {
+        id: true,
         post: {
           select: {
             id: true,
