@@ -64,7 +64,10 @@ app.get(
     // Don't get the post body itself
     const posts = await prisma.post.findMany({
       select: { id: true, title: true, created: true },
-      ...(boardId != null && { where: { board_id: +boardId } }),
+      where: {
+        deleted: false,
+        ...(boardId != null && { board_id: +boardId }),
+      },
     });
 
     return res.status(200).json({ error: false, posts });
@@ -85,6 +88,7 @@ app.get(
         id: true,
         body: true,
         created: true,
+        flags: true,
       },
     });
 
@@ -106,6 +110,7 @@ app.get(
         body: true,
         title: true,
         created: true,
+        flags: true,
       },
     });
 
@@ -126,7 +131,7 @@ app.get(
     // Note: if needed, it is possible to extract the entire tree using a recursive query -- Prisma
     // doesn't support that yet https://github.com/prisma/prisma/issues/3725, but PostgreSQL does.
     const post = await prisma.post.findFirst({
-      where: { id: +postId },
+      where: { id: +postId, deleted: false },
       include: { comments: { include: { parent_comment: true } } },
     });
     if (!post) throw new APIError(404, "The requested post does not exist");
@@ -209,7 +214,7 @@ app.post(
   "/comments/:commentId/flags",
   catchErrors(async (req: Request, res: Response) => {
     const { commentId } = req.params;
-    await prisma.post.update({
+    await prisma.comment.update({
       data: { flags: { increment: 1 } },
       where: { id: +commentId },
     });
