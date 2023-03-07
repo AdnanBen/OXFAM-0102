@@ -10,32 +10,32 @@ app.get("/api/incompletereports", (req, res) => {
     {
       report_id: "1",
       // questionid : filled in
-      report_data: [{ 1: 1 }, { 1: 0 }, { 1: 0 }],
+      report_data: [{ 1: 1 }, { 2: 0 }, { 3: 0 }],
     },
 
     {
       report_id: "2",
-      report_data: [{ 1: 1 }, { 1: 1 }, { 1: 0 }],
+      report_data: [{ 1: 1 }, { 2: 1 }, { 3: 0 }],
     },
 
     {
       report_id: "3",
-      report_data: [{ 1: 1 }, { 1: 1 }, { 1: 0 }],
+      report_data: [{ 1: 1 }, { 2: 0 }, { 3: 0 }],
     },
 
     {
       report_id: "4",
-      report_data: [{ 1: 1 }, { 1: 1 }, { 1: 0 }],
+      report_data: [{ 1: 1 }, { 2: 0 }, { 3: 1 }],
     },
 
     {
       report_id: "5",
-      report_data: [{ 1: 1 }, { 1: 1 }, { 1: 0 }],
+      report_data: [{ 1: 0 }, { 2: 1 }, { 3: 1 }],
     },
 
     {
       report_id: "6",
-      report_data: [{ 1: 1 }, { 1: 1 }, { 1: 0 }],
+      report_data: [{ 1: 0 }, { 2: 1 }, { 3: 0 }],
     },
   ];
   res.json(data);
