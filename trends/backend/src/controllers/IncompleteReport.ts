@@ -5,7 +5,6 @@ import IncompleteReport from "../models/IncompleteReport";
 const createIncompleteReport = (body: string) => {
   const bodyObj = JSON.parse(body);
 
-  console.log(body);
   const { reportId, info } = bodyObj;
 
   const incompleteReport = new IncompleteReport({

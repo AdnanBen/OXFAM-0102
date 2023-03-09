@@ -8,7 +8,7 @@ import reportRoutes from "./routes/Report";
 import incompleteReportRoutes from "./routes/IncompleteReport";
 
 const app = express();
-const port = config.server.port;
+const port = 3config.server.port;
 
 app.use(express.json());
 

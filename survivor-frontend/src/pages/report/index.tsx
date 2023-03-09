@@ -29,7 +29,7 @@ function FormPage(data: Values) {
     };
 
     const response = await fetch(
-      "/api/reports/completereports/create",
+      "http://localhost:3000/reports/completereports/create",
       requestOptions
     );
     await response.json();
@@ -63,7 +63,7 @@ function FormPage(data: Values) {
     };
 
     const response = fetch(
-      "/api/reports/incompletereports/create",
+      "http://localhost:3000/reports/incompletereports/create",
       requestOptions
     );
   }
