@@ -17,5 +17,5 @@ echo 'Starting HAProxy Gateway'
 
 echo 'Starting survivor frontend locally'
 cd survivor-frontend
-pnpm install 
-SKIP_ENV_VALIDATION=1 pnpm dev
+npm install 
+SKIP_ENV_VALIDATION=1 npm dev

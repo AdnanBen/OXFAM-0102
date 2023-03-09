@@ -55,3 +55,16 @@ footer {
   align-items: center;
   gap: 30px
 }
+
+@media screen and (max-width: 600px) {
+  .link-text {
+    display: none;
+  }
+  .forum-text {
+    display: none;
+  }
+  .link-icon {
+    display: inline-block;
+  }
+}
+
