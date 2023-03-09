@@ -28,6 +28,34 @@ const Header = () => {
   const router = useRouter();
   const { data: session } = useSession();
 
+  if (window.location.pathname === '/index.tsx'){
+    return (
+      <nav className={styles.header}>
+        {session ? (
+          <>
+            <Link
+              href="/moderator"
+              className={
+                router.pathname.startsWith("/moderator") ? styles.active : ""
+              }
+              replace
+            >
+              <Trans>Moderator</Trans>
+            </Link>
+            <a className={styles.authLink} onClick={() => signOut()}>
+              <Trans>Sign out</Trans>
+            </a>
+          </>
+        ) : (
+          <a className={styles.authLink} onClick={() => signIn("azure-ad-b2c")}>
+            <Trans>Login as moderator</Trans>
+          </a>
+        )}
+      
+      </nav>
+    );
+  };
+
   return (
     <nav className={styles.header}>
       <Link href="/" className={styles.name} replace>
