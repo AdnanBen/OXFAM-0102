@@ -8,6 +8,7 @@ import { Button, Form, SelectPicker } from "rsuite";
 import { env } from "../../env/env.mjs";
 import { getServerAuthSession } from "../../server/auth";
 import requireSSRTransition from "../../server/requireSSRTransition";
+import { BoardType } from "./index";
 
 const QuillNoSSRWrapper = dynamic(import("react-quill"), {
   ssr: false,
@@ -54,7 +55,12 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   };
 };
 
-const NewPost: NextPage = ({ boards }) => {
+
+type NewPostProps = {
+  boards: BoardType[];
+};
+
+const NewPost: NextPage<NewPostProps> = ({ boards }) => {
   const router = useRouter();
   const [formData, setFormData] = useState({
     title: "",
