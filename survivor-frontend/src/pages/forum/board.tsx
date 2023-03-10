@@ -26,11 +26,13 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
       return null;
     });
 
+  const boardName = boards.find((b) => b.id === +context.query.boardId!);
+
   return {
     props: {
       posts,
       boards,
-      boardId: context.query.boardId,
+      boardName,
     },
   };
 };
@@ -38,23 +40,10 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 type BoardProps = {
   posts: PostType[];
   boards: BoardType[];
-  boardId: string;
+  boardName: string;
 };
 
-const Board: NextPage<BoardProps> = ({ posts, boards, boardId }) => {
-  const [boardName, setBoardName] = useState<string>();
-
-  useEffect(() => {
-    console.log("cal");
-    for (let i = 0; i < boards.length; i++) {
-      const currBoard: BoardType = boards[i]!;
-      if (currBoard.id.toString() === boardId) {
-        console.log(currBoard.name);
-        setBoardName(currBoard.name);
-        return;
-      }
-    }
-  }, [boards]);
+const Board: NextPage<BoardProps> = ({ posts, boards, boardName }) => {
   return (
     <>
       <Link href="/forum">Back to Forums</Link>
