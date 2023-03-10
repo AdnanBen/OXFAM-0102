@@ -3,28 +3,43 @@ import express from "express";
 import { Server } from "socket.io";
 import { randomUUID } from "crypto";
 import dotenv from "dotenv";
+import { PeerServer } from "peer";
 
 dotenv.config();
 
 const app = express();
 const server = http.createServer(app);
 
-const io = new Server(server, { path: "/api/chat" });
+const port = parseInt(process.env.PORT);
+
+const io = new Server(server, {
+  path: "/api/chat",
+});
+
+const peerServer = PeerServer({ port: 9000, path: "/api/voiceserver" });
 
 const MODERATOR_ROOM_NAME = "moderators";
 const USER_ROOM_NAME = "users";
 
 const MODERATOR_AVAILABILITY_EVENT = "moderator availability";
+
 const USER_CHAT_REQUESTS_EVENT = "chat requests";
+const USER_CALL_REQUESTS_EVENT = "call requests";
+
 const USER_REQUEST_CHAT_EVENT = "request chat";
+const USER_REQUEST_CALL_EVENT = "request call";
+
 const NEW_SESSION_EVENT = "session";
 const MODERATOR_ACCEPT_CHAT_EVENT = "accept chat";
+const MODERATOR_ACCEPT_CALL_EVENT = "accept call";
 const CHAT_MESSAGE_EVENT = "private message";
 const CHAT_DISCONNECT_EVENT = "chat disconnected";
 const CHAT_STARTED_EVENT = "chat started";
 
 const sessions = {}; // Session ID => User ID
 const chatRequests = {}; // User ID => bool
+const callRequests = {}; // Peerjs ID => bool
+
 let numModeratorsConnected = 0;
 
 io.use((socket, next) => {
@@ -64,13 +79,30 @@ const sendLatestChatRequests = () => {
   });
 };
 
+const sendLatestCallRequests = () => {
+  // Send all moderators latest list of chat requests
+  io.to(MODERATOR_ROOM_NAME).emit(USER_CALL_REQUESTS_EVENT, {
+    callRequests,
+  });
+};
+
 const addChatRequest = (userId) => {
   chatRequests[userId] = true;
   sendLatestChatRequests();
 };
 
+const addCallRequest = (userId) => {
+  callRequests[userId] = true;
+  sendLatestCallRequests();
+};
+
 const deleteChatRequestAndSendUpdate = (userId) => {
   delete chatRequests[userId];
+  sendLatestChatRequests();
+};
+
+const deleteCallRequestAndSendUpdate = (userId) => {
+  delete callRequests[userId];
   sendLatestChatRequests();
 };
 
@@ -120,6 +152,23 @@ io.on("connection", (socket) => {
       deleteChatRequestAndSendUpdate(payload.userId);
     });
 
+    // When a moderator accepts a call request, initiate a call
+    socket.on(MODERATOR_ACCEPT_CALL_EVENT, (payload) => {
+      console.log("sending call accepted msg");
+      socket.emit("call accepted", {
+        userId: payload.userId,
+      });
+      // socket.join(`chat-${payload.userId}`);
+      // io.to(`chat-${payload.userId}`).emit(CHAT_STARTED_EVENT, {
+      //   userId: payload.userId,
+      // });
+      // deleteChatRequestAndSendUpdate(payload.userId);
+
+      console.log("should remove " + payload.userId);
+
+      deleteCallRequestAndSendUpdate(payload.userId);
+    });
+
     socket.on("disconnect", () => {
       numModeratorsConnected--;
       sendLatestModeratorAvailability();
@@ -147,8 +196,14 @@ io.on("connection", (socket) => {
       addChatRequest(socket.userId);
     });
 
+    socket.on(USER_REQUEST_CALL_EVENT, () => {
+      console.log("Sending call request event to moderator room");
+      addCallRequest(socket.id);
+    });
+
     socket.on("disconnect", () => {
       deleteChatRequestAndSendUpdate(socket.userId);
+      deleteCallRequestAndSendUpdate(socket.id);
 
       // Inform of disconnection to all members (moderators) of this chat room
       io.to(`chat-${socket.userId}`).emit(CHAT_DISCONNECT_EVENT);
