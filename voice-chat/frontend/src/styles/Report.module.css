@@ -1,0 +1,22 @@
+.body {
+  background: #f2f2f2;
+  color: #333;
+  height: calc(100vh - 70px);
+
+  display: block;
+  text-align: center;
+
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+
+  padding: 50px;
+
+  align-content: stretch;
+  align-items: center;
+}
+
+.body button {
+  background-color: grey;
+  color: white;
+}
