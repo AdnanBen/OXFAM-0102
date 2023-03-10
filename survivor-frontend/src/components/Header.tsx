@@ -28,7 +28,7 @@ const Header = () => {
   const router = useRouter();
   const { data: session } = useSession();
 
-  if (window.location.pathname === '/index.tsx'){
+  if (window.location.pathname === '/index'){
     return (
       <nav className={styles.header}>
         {session ? (

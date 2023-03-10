@@ -9,6 +9,7 @@ import { type AppType } from "next/app";
 import { I18nProvider } from "@lingui/react";
 
 import { useRouter } from "next/router";
+import Link from "next/link";
 import { useEffect } from "react";
 import Header from "../components/Header";
 import { api } from "../utils/api";
@@ -31,6 +32,9 @@ const MyApp: AppType<{ session: Session | null }> = ({
     <SessionProvider session={session}>
       <I18nProvider i18n={i18n}>
         <div className="rootContainer">
+          <Link href="/l.html" className="PanicButton">
+            Exit site quickly
+          </Link>
           <Header />
           <Component {...pageProps} />
           <Footer />
