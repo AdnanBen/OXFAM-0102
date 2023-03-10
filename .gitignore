@@ -7,3 +7,4 @@ build
 *icloud
 .env.local
 coverage
+*.tsbuildinfo

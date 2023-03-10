@@ -1,5 +1,6 @@
 import { t, Trans } from "@lingui/macro";
 import { GetServerSideProps, type NextPage } from "next";
+import { useEffect, useState } from "react";
 import Head from "next/head";
 import Link from "next/link";
 import { Button, Message } from "rsuite";
@@ -8,14 +9,14 @@ import { getServerAuthSession } from "../../server/auth";
 import requireSSRTransition from "../../server/requireSSRTransition";
 import styles from "../../styles/Forum.module.css";
 
-type Post = {
+export type PostType = {
   id: number;
   title: string;
   tag: string;
   created: number; // new Date(number)
 };
 
-const Post = ({ post }: { post: Post }) => {
+export const Post = ({ post }: { post: PostType }) => {
   return (
     <Link href={`/forum/${post.id}`} className={styles.post_link} replace>
       <div className={styles.post}>
@@ -43,15 +44,34 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
       return null;
     });
 
+  const boards = await fetch(`${env.SSR_HOST}/api/forum/boards`)
+    .then((res) => res.json())
+    .then((res) => res.boards)
+    .catch((err) => {
+      console.error("error fetching boards", err);
+      return null;
+    });
+
   return {
     props: {
       session: await getServerAuthSession(context),
       posts,
+      boards,
     },
   };
 };
 
-const Feed: NextPage = ({ posts }) => {
+export type BoardType = {
+  id: number;
+  name: string;
+  description: string;
+};
+
+type FeedProps = {
+  boards: BoardType[];
+};
+
+const Feed: NextPage<FeedProps> = ({ boards }) => {
   return (
     <>
       <Head>
@@ -63,25 +83,6 @@ const Feed: NextPage = ({ posts }) => {
         <h2>
           <Trans>Forum</Trans>
         </h2>
-
-        {posts ? (
-          <>
-            {posts?.map((p) => (
-              <Post post={p} />
-            ))}
-            {!posts?.length && (
-              <div>
-                <Trans>There are no posts yet.</Trans>
-              </div>
-            )}
-          </>
-        ) : (
-          <Message type="error">
-            <Trans>
-              There was an error loading the posts. Please try again later.
-            </Trans>
-          </Message>
-        )}
 
         <Link href="/forum/new" className={styles.createPostBtn} replace>
           <Button appearance="primary">
@@ -106,10 +107,37 @@ const Feed: NextPage = ({ posts }) => {
           placeholder={t`Search...`}
         />
         <br />
-        <button className={styles.board_button}>General discussion</button>
-        <button className={styles.board_button}>Requests for advice</button>
-        <button className={styles.board_button}>Tell me about yourself</button>
-        <button className={styles.board_button}>Political discussions</button>
+
+        {boards ? (
+          <>
+            {boards?.map((b) => {
+              const boardId = b.id;
+              const boardName = b.name;
+              return (
+                <div>
+                  <Link
+                    href={`/forum/board?boardId=${boardId}`}
+                    className={styles.post_link}
+                    replace
+                  >
+                    <div className={styles.board_button}>{boardName}</div>
+                  </Link>
+                </div>
+              );
+            })}
+            {!boards?.length && (
+              <div>
+                <Trans>There are no boards yet.</Trans>
+              </div>
+            )}
+          </>
+        ) : (
+          <Message type="error">
+            <Trans>
+              There was an error loading the boards. Please try again later.
+            </Trans>
+          </Message>
+        )}
       </main>
     </>
   );
