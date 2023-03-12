@@ -5,7 +5,6 @@ import Link from "next/link";
 import { Panel } from "rsuite";
 import styles from "../styles/Home.module.css";
 
-
 const Home: NextPage = () => {
   return (
     <>
@@ -16,8 +15,6 @@ const Home: NextPage = () => {
       </Head>
 
       <main className={styles.container}>
-
-      
         <p className={styles.intro}>
           <Trans>
             A safe-space for survivors to discuss and share their experiences of
@@ -26,37 +23,13 @@ const Home: NextPage = () => {
         </p>
 
         <div className={styles.links}>
-        <Link href="/forum">
-        <Panel
-          header={
-            <span className={styles.linkHeader}>
-              <Trans>
-                Forum <span className="link-text">&rarr;</span> 
-              </Trans>
-            </span>
-            
-          }
-
-          bordered
-          shaded
-          style={{ width: "100%" }}
-        >
-           <span className="link-text">
-            <Trans>
-              Safely discuss your concerns and receive feedback from the community.
-            </Trans>
-          </span>
-
-         </Panel>
-        </Link>
-        
-          
-        
-          <Link href="/chat">
+          <Link href="/forum">
             <Panel
               header={
                 <span className={styles.linkHeader}>
-                  Chat <span className="link-text">&rarr;</span>  
+                  <Trans>
+                    Forum <span className="link-text">&rarr;</span>
+                  </Trans>
                 </span>
               }
               bordered
@@ -64,9 +37,29 @@ const Home: NextPage = () => {
               style={{ width: "100%" }}
             >
               <span className="link-text">
-              <Trans>
-                Chat individually with trained moderators for advice.
-              </Trans>
+                <Trans>
+                  Safely discuss your concerns and receive feedback from the
+                  community.
+                </Trans>
+              </span>
+            </Panel>
+          </Link>
+
+          <Link href="/chat">
+            <Panel
+              header={
+                <span className={styles.linkHeader}>
+                  Chat <span className="link-text">&rarr;</span>
+                </span>
+              }
+              bordered
+              shaded
+              style={{ width: "100%" }}
+            >
+              <span className="link-text">
+                <Trans>
+                  Chat individually with trained moderators for advice.
+                </Trans>
               </span>
             </Panel>
           </Link>
@@ -74,7 +67,7 @@ const Home: NextPage = () => {
             <Panel
               header={
                 <span className={styles.linkHeader}>
-                  Resources <span className="link-text">&rarr;</span> 
+                  Resources <span className="link-text">&rarr;</span>
                 </span>
               }
               bordered
@@ -82,10 +75,10 @@ const Home: NextPage = () => {
               style={{ width: "100%" }}
             >
               <span className="link-text">
-              <Trans>
-                Find free self-help and educational resources to help manage and
-                recover from abuse.
-              </Trans>
+                <Trans>
+                  Find free self-help and educational resources to help manage
+                  and recover from abuse.
+                </Trans>
               </span>
             </Panel>
           </Link>
@@ -93,7 +86,7 @@ const Home: NextPage = () => {
             <Panel
               header={
                 <span className={styles.linkHeader}>
-                  Report <span className="link-text">&rarr;</span> 
+                  Report <span className="link-text">&rarr;</span>
                 </span>
               }
               bordered
@@ -101,9 +94,9 @@ const Home: NextPage = () => {
               style={{ width: "100%" }}
             >
               <span className="link-text">
-              <Trans>
-                Report severe abuse to receive help from trained responders.
-              </Trans>
+                <Trans>
+                  Report severe abuse to receive help from trained responders.
+                </Trans>
               </span>
             </Panel>
           </Link>
