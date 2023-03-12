@@ -32,27 +32,16 @@
   font-size: 1.3em;
 }
 
-
-
-.image{
-  width: 20px;
-  height: 20px;
-  border-radius: 1px;
-  object-fit: cover;
-
+.icon {
+  margin-right: 10px;
 }
 
 @media screen and (max-width: 768px) {
-  .link-text {
-    display: none;
+  .linkText {
+    font-size: 0.9em;
   }
-  .forum-text {
-    display: none;
-  }
-  .link-icon {
-    display: inline-block;
-  }
+
   .intro {
-    font-size: 1em;
+    font-size: 1.3em;
   }
 }
