@@ -82,54 +82,34 @@ const Feed: NextPage<FeedProps> = ({ boards }) => {
       <main>
         <h2>
           <Trans>Forum</Trans>
+
+          <Link href="/forum/new" className={styles.createPostBtn} replace>
+            <Button appearance="primary" size="sm">
+              <Trans>Create new post?</Trans>
+            </Button>
+          </Link>
         </h2>
 
-        <Link href="/forum/new" className={styles.createPostBtn} replace>
-          <Button appearance="primary">
-            <Trans>Create new post?</Trans>
-          </Button>
-        </Link>
-        <br />
-        <h3>
-          <Trans>Boards</Trans>
-        </h3>
-        <text>
-          <Trans>
-            We have oragnised the posts according to the boards to make it
-            easier for you to find support, information and talk to others with
-            similar experiences.
-          </Trans>
-        </text>
-        <br />
-        <input
-          className={styles.board_search}
-          type="text"
-          placeholder={t`Search...`}
-        />
-        <br />
+        <Trans>
+          Please select a category to find support and talk to others with
+          similar experiences.
+        </Trans>
 
         {boards ? (
           <>
             {boards?.map((b) => {
-              const boardId = b.id;
-              const boardName = b.name;
               return (
-                <div>
-                  <Link
-                    href={`/forum/board?boardId=${boardId}`}
-                    className={styles.post_link}
-                    replace
-                  >
-                    <div className={styles.board_button}>{boardName}</div>
-                  </Link>
-                </div>
+                <Link
+                  href={`/forum/board?boardId=${b.id}`}
+                  replace
+                  className={styles.board_wrapper}
+                >
+                  <div className={styles.board_button}>{b.name}</div>
+                  <p>{b.description}</p>
+                </Link>
               );
             })}
-            {!boards?.length && (
-              <div>
-                <Trans>There are no boards yet.</Trans>
-              </div>
-            )}
+            {!boards?.length && <Trans>There are no boards yet.</Trans>}
           </>
         ) : (
           <Message type="error">
