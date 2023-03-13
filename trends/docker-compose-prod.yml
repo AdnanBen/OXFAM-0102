@@ -5,11 +5,11 @@ services:
     image: rabbitmq:3-management-alpine
     container_name: "rabbitmq"
     ports:
-      - 5672:5672
-      - 15672:15672
+      - 127.0.0.1:5672:5672
+      # - 127.0.0.1:15672:15672
     volumes:
-      - ./docker-volumes/rabbitmq/data/:/var/lib/rabbitmq/
-      - ./docker-volumes/rabbitmq/log/:/var/log/rabbitmq
+      - ./docker-volumes/rabbitmq/data:/var/lib/rabbitmq
+      - ./docker-volumes/rabbitmq/log:/var/log/rabbitmq
 
   mongo:
     image: mongo:6

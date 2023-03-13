@@ -37,7 +37,15 @@ jobs:
     strategy:
       matrix:
         microservice:
-          ["auth", "chat", "forum", "reports", "resources", "survivor-frontend"]
+          [
+            "auth",
+            "chat",
+            "forum",
+            "reports",
+            "resources",
+            "trends",
+            "survivor-frontend",
+          ]
     steps:
       - name: Checkout
         uses: actions/checkout@v3
