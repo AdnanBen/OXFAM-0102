@@ -3,7 +3,7 @@ import { GetServerSideProps, type NextPage } from "next";
 import Link from "next/link";
 import { Message } from "rsuite";
 import { env } from "../../env/env.mjs";
-import requireSSRTransition from "../../server/requireSSRTransition.js";
+import requireSSRTransition from "../../server/requireSSRTransition";
 import { Post, PostType } from "./index";
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
