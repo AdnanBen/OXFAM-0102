@@ -14,7 +14,6 @@ import { useEffect } from "react";
 import Footer from "../components/Footer";
 import Header from "../components/Header";
 import styles from "../styles/App.module.css";
-import { api } from "../utils/api";
 
 const MyApp: AppType<{ session: Session | null }> = ({
   Component,
@@ -46,4 +45,4 @@ const MyApp: AppType<{ session: Session | null }> = ({
   );
 };
 
-export default api.withTRPC(MyApp);
+export default MyApp;
