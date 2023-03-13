@@ -103,14 +103,13 @@ const ModeratorChat = ({
             audioElement.srcObject = remoteStream;
             audioElement.play();
             document.body.appendChild(audioElement);
-          });
 
-          // handle errors that can occur during the call
-          call.on("close", () => {
-            localStream.getTracks().forEach((track) => track.stop());
-            audioStream.srcObject = null;
-            setActiveCall(null);
-            setAudioStream(null);
+            // handle errors that can occur during the call
+            call.on("close", () => {
+              localStream.getTracks().forEach((track) => track.stop());
+              audioElement.srcObject = null;
+              setActiveCall(null);
+            });
           });
 
           // handle errors that can occur during the call
@@ -203,7 +202,7 @@ const ModeratorDashboard: NextPage = () => {
         // Do your stuff here
         const peer = new Peer(socket.id, {
           host: window.location.host,
-          port: 443,
+          port: 80,
           path: "/api/voiceserver",
         });
 
