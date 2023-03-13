@@ -9,7 +9,6 @@ import { GetServerSideProps } from "next";
 import { requireAuth } from "../../server/requireAuth";
 import styles from "../../styles/ModeratorResources.module.css";
 import { fetchJsonApi } from "../../utils/helpers";
-import { env } from "../../env/env.mjs";
 
 export const getServerSideProps: GetServerSideProps = (context) =>
   requireAuth(context, "moderator");
@@ -21,7 +20,7 @@ function AdminDashboard() {
   });
 
   const loadAllArticleTitles = () => {
-    fetchJsonApi(`${env.SSR_HOST}/resources/titles`)
+    fetchJsonApi(`/api/resources/titles`)
       .then((res) => {
         setValues({
           ...values,
@@ -35,7 +34,7 @@ function AdminDashboard() {
   };
 
   const deleteArticle = (id: string) => {
-    fetchJsonApi(`${env.SSR_HOST}/resources/${id}`, {
+    fetchJsonApi(`/api/moderators/resources/${id}`, {
       method: "DELETE",
       headers: { "Content-Type": "application/json" },
     })

@@ -7,7 +7,6 @@ import "react-quill/dist/quill.snow.css";
 import { Button, Form } from "rsuite";
 import { requireAuth } from "../../server/requireAuth";
 import { fetchJsonApi } from "../../utils/helpers";
-import { env } from "../../env/env.mjs";
 
 const QuillNoSSRWrapper = dynamic(import("react-quill"), {
   ssr: false,
@@ -53,7 +52,7 @@ export default function ArticleSubmissionForm() {
       ? router.query.articleId[0]
       : router.query.articleId;
 
-    fetchJsonApi(`${env.SSR_HOST}/resources/${id}`, {
+    fetchJsonApi(`/api/moderators/resources/${id}`, {
       method: "PATCH",
       body: JSON.stringify(formData),
       headers: { "Content-Type": "application/json" },
@@ -61,7 +60,7 @@ export default function ArticleSubmissionForm() {
   };
 
   const loadArticle = (id: string) => {
-    fetchJsonApi(`${env.SSR_HOST}/resources/${id}`)
+    fetchJsonApi(`/api/resources/${id}`)
       .then((res) => setFormData(res.article))
       .catch((err) => setError(err));
   };
