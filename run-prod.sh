@@ -18,6 +18,10 @@ echo 'Starting auth'
 cd auth && docker-compose -f docker-compose-prod.yml pull && docker-compose -f docker-compose-prod.yml up -d --remove-orphans
 cd ..
 
+echo 'Starting trends'
+cd trends && docker-compose -f docker-compose-prod.yml pull && docker-compose -f docker-compose-prod.yml up -d --remove-orphans
+cd ..
+
 echo 'Starting survivor frontend'
 cd survivor-frontend && docker-compose -f docker-compose-prod.yml pull && docker-compose -f docker-compose-prod.yml up -d --remove-orphans
 cd ..
@@ -33,5 +37,6 @@ docker network connect $net resources-api-1
 docker network connect $net chat-api-1
 docker network connect $net auth-api-1
 docker network connect $net forum-api-1
+docker network connect $net trends-api-1
 docker network connect $net survivor-frontend-web-1
 docker network connect $net gateway-proxy-1
