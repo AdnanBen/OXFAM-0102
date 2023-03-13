@@ -257,7 +257,7 @@ const ChatPage: NextPage = () => {
         // Do your stuff here
         const peer = new Peer(socket.id, {
           host: window.location.host,
-          port: 80,
+          port: 443,
           path: "/api/voiceserver",
         });
 
