@@ -5,6 +5,7 @@ docker-volumes
 build
 
 *icloud
-.env.local
 coverage
 *.tsbuildinfo
+.env*
+!.env.local
