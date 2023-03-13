@@ -60,6 +60,7 @@ function ResourceHome({ articles }) {
             return (
               <Panel
                 collapsible
+                defaultExpanded
                 header={<div className={styles.header}>{category}</div>}
                 bordered
                 className={styles.resourceCategory}
