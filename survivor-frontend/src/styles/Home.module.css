@@ -31,3 +31,17 @@
   font-weight: bold;
   font-size: 1.3em;
 }
+
+.icon {
+  margin-right: 10px;
+}
+
+@media screen and (max-width: 768px) {
+  .linkText {
+    font-size: 0.9em;
+  }
+
+  .intro {
+    font-size: 1.3em;
+  }
+}

@@ -3,6 +3,10 @@ import { type NextPage } from "next";
 import Head from "next/head";
 import Link from "next/link";
 import { Panel } from "rsuite";
+import PublicOpinionIcon from "@rsuite/icons/PublicOpinion";
+import MessageIcon from "@rsuite/icons/Message";
+import RemindOutlineIcon from "@rsuite/icons/RemindOutline";
+import DetailIcon from "@rsuite/icons/Detail";
 import styles from "../styles/Home.module.css";
 
 const Home: NextPage = () => {
@@ -27,66 +31,78 @@ const Home: NextPage = () => {
             <Panel
               header={
                 <span className={styles.linkHeader}>
-                  <Trans>Forum</Trans> &rarr;
+                  <PublicOpinionIcon className={styles.icon} />
+                  <Trans>Forum </Trans>
                 </span>
               }
               bordered
               shaded
               style={{ width: "100%" }}
             >
-              <Trans>
-                Safely discuss your concerns and receive feedback from the
-                community.
-              </Trans>
+              <span className={styles.linkText}>
+                <Trans>
+                  Safely discuss your concerns and receive feedback from the
+                  community.
+                </Trans>
+              </span>
             </Panel>
           </Link>
           <Link href="/chat" replace>
             <Panel
               header={
                 <span className={styles.linkHeader}>
-                  <Trans>Chat</Trans> &rarr;
+                  <MessageIcon className={styles.icon} />
+                  Chat
                 </span>
               }
               bordered
               shaded
               style={{ width: "100%" }}
             >
-              <Trans>
-                Chat individually with trained moderators for advice.
-              </Trans>
+              <span className={styles.linkText}>
+                <Trans>
+                  Chat individually with trained moderators for advice.
+                </Trans>
+              </span>
             </Panel>
           </Link>
           <Link href="/resources" replace>
             <Panel
               header={
                 <span className={styles.linkHeader}>
-                  <Trans>Resources</Trans> &rarr;
+                  <DetailIcon className={styles.icon} />
+                  Resources
                 </span>
               }
               bordered
               shaded
               style={{ width: "100%" }}
             >
-              <Trans>
-                Find free self-help and educational resources to help manage and
-                recover from abuse.
-              </Trans>
+              <span className={styles.linkText}>
+                <Trans>
+                  Find free self-help and educational resources to help manage
+                  and recover from abuse.
+                </Trans>
+              </span>
             </Panel>
           </Link>
           <Link href="/report" replace>
             <Panel
               header={
                 <span className={styles.linkHeader}>
-                  <Trans>Report</Trans> &rarr;
+                  <RemindOutlineIcon className={styles.icon} />
+                  Report
                 </span>
               }
               bordered
               shaded
               style={{ width: "100%" }}
             >
-              <Trans>
-                Report severe abuse to receive help from trained responders.
-              </Trans>
+              <span className={styles.linkText}>
+                <Trans>
+                  Report severe abuse to receive help from trained responders.
+                </Trans>
+              </span>
             </Panel>
           </Link>
         </div>
