@@ -1,4 +1,3 @@
-import "bootstrap/dist/css/bootstrap.min.css";
 import "rsuite/dist/rsuite.min.css";
 import "../styles/globals.css";
 
@@ -11,17 +10,15 @@ import { type AppType } from "next/app";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
-import { Button } from "rsuite";
 import Footer from "../components/Footer";
 import Header from "../components/Header";
-import { api } from "../utils/api";
 import styles from "../styles/App.module.css";
 
 const MyApp: AppType<{ session: Session | null }> = ({
   Component,
   pageProps: { session, ...pageProps },
 }) => {
-  const { locale, pathname, replace: replacePath } = useRouter();
+  const { locale } = useRouter();
 
   useEffect(() => {
     const activeLocale = locale ?? "en";
@@ -29,12 +26,6 @@ const MyApp: AppType<{ session: Session | null }> = ({
       .then((messages) => i18n.load(activeLocale, messages.messages))
       .then(() => i18n.activate(activeLocale));
   }, [locale]);
-
-  const handleBack = () => {
-    const pathParts = pathname.split("/");
-    delete pathParts[pathParts.length - 1];
-    replacePath(`/${pathParts.join("")}`);
-  };
 
   return (
     <SessionProvider session={session}>
@@ -45,17 +36,6 @@ const MyApp: AppType<{ session: Session | null }> = ({
           </Link>
           <Header />
 
-          {pathname !== "/" && (
-            <Button
-              appearance="ghost"
-              size="xs"
-              className={styles.backButton}
-              onClick={handleBack}
-            >
-              ⮪ Back
-            </Button>
-          )}
-
           <Component {...pageProps} />
           <Footer />
         </div>
@@ -64,4 +44,4 @@ const MyApp: AppType<{ session: Session | null }> = ({
   );
 };
 
-export default api.withTRPC(MyApp);
+export default MyApp;

@@ -14,7 +14,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   const redirectNoDirectAccess = requireSSRTransition(context);
   if (redirectNoDirectAccess) return redirectNoDirectAccess;
 
-  const articles = await fetch(`${env.SSR_HOST}/api/resources/articles/getall`)
+  const articles = await fetch(`${env.SSR_HOST}/api/resources`)
     .then((res) => res.json())
     .then((res) => res.articles)
     .catch((err) => {
@@ -60,6 +60,7 @@ function ResourceHome({ articles }) {
             return (
               <Panel
                 collapsible
+                defaultExpanded
                 header={<div className={styles.header}>{category}</div>}
                 bordered
                 className={styles.resourceCategory}

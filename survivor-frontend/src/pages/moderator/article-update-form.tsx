@@ -1,12 +1,13 @@
 import dynamic from "next/dynamic";
-import { useEffect, useState } from "react";
-import { fetchArticleById, updateArticleById } from "../../articles-helpers";
 import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
 
+import { GetServerSideProps } from "next";
 import "react-quill/dist/quill.snow.css";
 import { Button, Form } from "rsuite";
 import { requireAuth } from "../../server/requireAuth";
-import { GetServerSideProps } from "next";
+import { fetchJsonApi } from "../../utils/helpers";
+import { env } from "../../env/env.mjs";
 
 const QuillNoSSRWrapper = dynamic(import("react-quill"), {
   ssr: false,
@@ -51,18 +52,18 @@ export default function ArticleSubmissionForm() {
     const id = Array.isArray(router.query.articleId)
       ? router.query.articleId[0]
       : router.query.articleId;
-    updateArticleById(id, formData);
+
+    fetchJsonApi(`${env.SSR_HOST}/resources/${id}`, {
+      method: "PATCH",
+      body: JSON.stringify(formData),
+      headers: { "Content-Type": "application/json" },
+    });
   };
 
   const loadArticle = (id: string) => {
-    fetchArticleById(id).then((data) => {
-      console.log("data", data);
-      if (data.error) {
-        setError(data.error);
-      } else {
-        setFormData(data.article);
-      }
-    });
+    fetchJsonApi(`${env.SSR_HOST}/resources/${id}`)
+      .then((res) => setFormData(res.article))
+      .catch((err) => setError(err));
   };
 
   useEffect(() => {

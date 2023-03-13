@@ -1,12 +1,13 @@
 import dynamic from "next/dynamic";
+import { useRouter } from "next/router";
 import { useState } from "react";
-import { postResourceForm } from "../../articles-helpers";
-import Router from "next/router";
 
+import { GetServerSideProps } from "next";
 import "react-quill/dist/quill.snow.css";
 import { Button, Form } from "rsuite";
 import { requireAuth } from "../../server/requireAuth";
-import { GetServerSideProps } from "next";
+import { fetchJsonApi } from "../../utils/helpers";
+import { env } from "../../env/env.mjs";
 
 const QuillNoSSRWrapper = dynamic(import("react-quill"), {
   ssr: false,
@@ -37,6 +38,7 @@ export const getServerSideProps: GetServerSideProps = (context) =>
   requireAuth(context, "moderator");
 
 export default function ArticleSubmissionForm() {
+  const router = useRouter();
   const [formData, setFormData] = useState({
     title: "",
     category: "",
@@ -45,15 +47,11 @@ export default function ArticleSubmissionForm() {
 
   const submitHandler = (event: React.FormEvent<EventTarget>): void => {
     event.preventDefault();
-    postResourceForm(formData).then((data) => {
-      if (data?.error) {
-        console.log(data?.error);
-        // setValues({ ...values, error: data.error });
-      } else {
-        console.log("article created");
-        Router.push("/moderator/resources");
-      }
-    });
+    fetchJsonApi(`${env.SSR_HOST}/api/resources`, {
+      method: "POST",
+      body: JSON.stringify(formData),
+      headers: { "Content-Type": "application/json" },
+    }).then(() => router.replace("/moderator/resources"));
   };
 
   return (

@@ -5,17 +5,17 @@ import { app } from "../src/app";
 import Article from "../src/models/Article";
 
 const request = supertest(app);
-describe("GET /articles", () => {
-  test("returns no articles when none exist", async () => {
+describe("GET /resources", () => {
+  test("returns no resources when none exist", async () => {
     await request
-      .get("/articles/getall")
+      .get("/resources")
       .expect(200)
       .then((res) => {
         expect(res.body).toEqual({ error: false, articles: [] });
       });
   });
 
-  test("returns articles when they do exist", async () => {
+  test("returns resources when they do exist", async () => {
     const id = new mongoose.Types.ObjectId();
     await Article.create({
       _id: id,
@@ -25,7 +25,7 @@ describe("GET /articles", () => {
     });
 
     await request
-      .get("/articles/getall")
+      .get("/resources")
       .expect(200)
       .then((res) => {
         expect(res.body).toEqual({
@@ -42,9 +42,9 @@ describe("GET /articles", () => {
       });
   });
 
-  test("returns no article titles when none exist", async () => {
+  test("returns no resource titles when none exist", async () => {
     await request
-      .get("/articles/getalltitles")
+      .get("/resources/titles")
       .expect(200)
       .then((res) => {
         expect(res.body).toEqual({ error: false, articles: [] });
@@ -61,7 +61,7 @@ describe("GET /articles", () => {
     });
 
     await request
-      .get("/articles/getalltitles")
+      .get("/resources/titles")
       .expect(200)
       .then((res) => {
         expect(res.body).toEqual({
@@ -77,16 +77,16 @@ describe("GET /articles", () => {
       });
   });
 
-  test("returns no articles by category when none exist", async () => {
+  test("returns no resources by category when none exist", async () => {
     await request
-      .get("/articles/getbycategory?category=Test")
+      .get("/resources?category=Test")
       .expect(200)
       .then((res) => {
         expect(res.body).toEqual({ error: false, articles: [] });
       });
   });
 
-  test("returns articles by category when they do exist", async () => {
+  test("returns resources by category when they do exist", async () => {
     const id = new mongoose.Types.ObjectId();
     await Article.create({
       _id: id,
@@ -96,7 +96,7 @@ describe("GET /articles", () => {
     });
 
     await request
-      .get("/articles/getbycategory?category=Test")
+      .get("/resources?category=Test")
       .expect(200)
       .then((res) => {
         expect(res.body).toEqual({
@@ -114,14 +114,14 @@ describe("GET /articles", () => {
   });
 });
 
-describe("GET /articles/:id", () => {
+describe("GET /resources/:id", () => {
   test("rejects invalid IDs", async () => {
-    await request.get("/articles/get/1").expect(400);
+    await request.get("/resources/1").expect(400);
   });
 
   test("returns 404 when article does not exist", async () => {
     await request
-      .get(`/articles/get/${new mongoose.Types.ObjectId()}`)
+      .get(`/resources/${new mongoose.Types.ObjectId()}`)
       .expect(404);
   });
 
@@ -135,7 +135,7 @@ describe("GET /articles/:id", () => {
     });
 
     await request
-      .get(`/articles/get/${id.toString()}`)
+      .get(`/resources/${id.toString()}`)
       .expect(200)
       .then((res) => {
         expect(res.body).toEqual({
@@ -153,9 +153,9 @@ describe("GET /articles/:id", () => {
 
 describe("POST /articles", () => {
   test("rejects empty fields", async () => {
-    await request.post("/articles/create").expect(400);
+    await request.post("/moderator/resources").expect(400);
     await request
-      .post("/articles/create")
+      .post("/moderator/resources")
       .send({
         title: "Test",
         body: "Test",
@@ -163,7 +163,7 @@ describe("POST /articles", () => {
       })
       .expect(400);
     await request
-      .post("/articles/create")
+      .post("/moderator/resources")
       .send({
         title: "Test",
         category: "Test",
@@ -173,7 +173,7 @@ describe("POST /articles", () => {
 
   test("creates valid article", async () => {
     await request
-      .post("/articles/create")
+      .post("/moderator/resources")
       .send({
         title: "Test",
         body: "Test",
@@ -191,12 +191,12 @@ describe("POST /articles", () => {
 
 describe("PATCH /articles/:id", () => {
   test("rejects invalid IDs", async () => {
-    await request.patch("/articles/update/1").expect(400);
+    await request.patch("/moderator/resources/1").expect(400);
   });
 
   test("returns 404 when article does not exist", async () => {
     await request
-      .patch(`/articles/update/${new mongoose.Types.ObjectId()}`)
+      .patch(`/moderator/resources/${new mongoose.Types.ObjectId()}`)
       .expect(404);
   });
 
@@ -210,7 +210,7 @@ describe("PATCH /articles/:id", () => {
     });
 
     await request
-      .patch(`/articles/update/${id}`)
+      .patch(`/moderator/resources/${id}`)
       .send({
         title: "Test Updated",
       })
@@ -225,12 +225,12 @@ describe("PATCH /articles/:id", () => {
 
 describe("DELETE /articles/:id", () => {
   test("rejects invalid IDs", async () => {
-    await request.delete("/articles/delete/1").expect(400);
+    await request.delete("/moderator/resources/1").expect(400);
   });
 
   test("returns 404 when article does not exist", async () => {
     await request
-      .delete(`/articles/delete/${new mongoose.Types.ObjectId()}`)
+      .delete(`/moderator/resources/${new mongoose.Types.ObjectId()}`)
       .expect(404);
   });
 
@@ -243,7 +243,7 @@ describe("DELETE /articles/:id", () => {
       category: "Test",
     });
 
-    await request.delete(`/articles/delete/${id}`).expect(200);
+    await request.delete(`/moderator/resources/${id}`).expect(200);
     const article = await Article.findById(id);
     expect(article).toBeNull();
   });

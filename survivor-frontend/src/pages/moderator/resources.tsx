@@ -1,18 +1,15 @@
-import React, { useEffect, useState } from "react";
-import {
-  fetchAllArticleTitles,
-  deleteArticleById,
-} from "../../articles-helpers";
 import Link from "next/link";
+import { useEffect, useState } from "react";
 
-import Router from "next/router";
-import { Article } from "../../articles-interfaces";
-import { Button, Panel } from "rsuite";
 import Head from "next/head";
+import { Button, Panel } from "rsuite";
+import { Article } from "../../articles-interfaces";
 
-import styles from "../../styles/ModeratorResources.module.css";
-import { requireAuth } from "../../server/requireAuth";
 import { GetServerSideProps } from "next";
+import { requireAuth } from "../../server/requireAuth";
+import styles from "../../styles/ModeratorResources.module.css";
+import { fetchJsonApi } from "../../utils/helpers";
+import { env } from "../../env/env.mjs";
 
 export const getServerSideProps: GetServerSideProps = (context) =>
   requireAuth(context, "moderator");
@@ -22,29 +19,30 @@ function AdminDashboard() {
     error: "",
     articles: [],
   });
+
   const loadAllArticleTitles = () => {
-    fetchAllArticleTitles().then((data) => {
-      console.log("data", data.articles);
-      if (data.error) {
-        setValues({ ...values, error: data.error });
-      } else {
+    fetchJsonApi(`${env.SSR_HOST}/resources/titles`)
+      .then((res) => {
         setValues({
           ...values,
-          articles: data.articles,
+          articles: res.articles,
         });
-      }
-    });
+      })
+      .catch((err) => {
+        console.log(err);
+        setValues({ ...values, error: err });
+      });
   };
 
   const deleteArticle = (id: string) => {
-    deleteArticleById(id).then((data) => {
-      if (data.error) {
-        setValues({ ...values, error: data.error });
-      } else {
-        console.log("article deleted");
-        Router.reload();
-      }
-    });
+    fetchJsonApi(`${env.SSR_HOST}/resources/${id}`, {
+      method: "DELETE",
+      headers: { "Content-Type": "application/json" },
+    })
+      .then((res) => loadAllArticleTitles())
+      .catch((err) => {
+        setValues({ ...values, error: err });
+      });
   };
 
   useEffect(() => {

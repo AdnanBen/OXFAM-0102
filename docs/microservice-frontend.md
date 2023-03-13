@@ -1,0 +1,1 @@
+The frontend is a [Next.JS](https://nextjs.org/) app which heavily uses Server Side Rendering (SSR) for survivor-facing pages. The frontend also includes moderator-only pages at paths prefixed by `/moderator`.

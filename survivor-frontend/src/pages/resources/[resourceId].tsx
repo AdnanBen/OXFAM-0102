@@ -13,7 +13,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   if (redirectNoDirectAccess) return redirectNoDirectAccess;
 
   const article = await fetch(
-    `${env.SSR_HOST}/api/resources/articles/get/${context.query.resourceId}`
+    `${env.SSR_HOST}/api/resources/${context.query.resourceId}`
   )
     .then((res) => res.json())
     .then((res) => res.article)

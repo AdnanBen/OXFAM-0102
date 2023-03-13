@@ -3,15 +3,13 @@ import controller from "../controllers/Article";
 
 const router = express.Router();
 
-router.post("/create", controller.createArticle);
+router.get("/resources", controller.getAll);
+router.get("/resources/titles", controller.getAllTitles);
+router.get("/resources/:articleId", controller.getArticle);
 
-router.get("/get/:articleId", controller.getArticle);
-router.get("/getall", controller.getAll);
+router.post("/moderator/resources", controller.createArticle);
 
-router.get("/getalltitles", controller.getAllTitles);
-router.get("/getbycategory", controller.getByCategory);
-
-router.patch("/update/:articleId", controller.updateArticle);
-router.delete("/delete/:articleId", controller.deleteArticle);
+router.patch("/moderator/resources/:articleId", controller.updateArticle);
+router.delete("/moderator/resources/:articleId", controller.deleteArticle);
 
 export default router;

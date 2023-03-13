@@ -9,10 +9,6 @@ import articleRoutes from "./routes/Article";
 const app = express();
 const port = config.server.port;
 
-app.get("/", (req: Request, res: Response) => {
-  res.send("Hello World!");
-});
-
 if (process.env.NODE_ENV !== "test") {
   app.listen(port, "0.0.0.0", () => {
     return console.log(`Express is listening at http://localhost:${port}`);
@@ -30,5 +26,5 @@ mongoose
   });
 
 app.use(express.json());
-app.use("/articles", articleRoutes);
+app.use("/", articleRoutes);
 export { app };
