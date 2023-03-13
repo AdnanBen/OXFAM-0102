@@ -6,6 +6,7 @@ services:
     depends_on:
       - mongo
     restart: unless-stopped
+    env_file: .env
 
   mongo:
     image: mongo:6
