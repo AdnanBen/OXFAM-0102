@@ -75,7 +75,7 @@ const Header = () => {
             active={router.pathname.startsWith("/report")}
           />
 
-          {session ? (
+          {!!session && (
             <>
               <Link
                 href="/moderator"
@@ -89,13 +89,6 @@ const Header = () => {
                 <Trans>Sign out</Trans>
               </a>
             </>
-          ) : (
-            <a
-              className={styles.authLink}
-              onClick={() => signIn("azure-ad-b2c")}
-            >
-              <Trans>Login as moderator</Trans>
-            </a>
           )}
         </div>
       )}
