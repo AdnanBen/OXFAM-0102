@@ -54,23 +54,6 @@ button {
   font-weight: bold;
 }
 
-.PanicButton {
-  padding: 0.1rem 0.7rem;
-  font-weight: bold;
-  color: white;
-  position: fixed;
-  left: 50%;
-  transform: translate(-50%, -80%);
-  background: blue;
-  border-radius: 5px;
-}
-
-.rootContainer {
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-}
-
 main {
   flex: auto;
 }

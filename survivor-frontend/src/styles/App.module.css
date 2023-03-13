@@ -1,0 +1,25 @@
+.container {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.panicButton {
+  padding: 0.1rem 0.7rem;
+  font-weight: bold;
+  color: white;
+  position: fixed;
+  left: 50%;
+  transform: translate(-50%, -80%);
+  background: blue;
+  border-radius: 5px;
+}
+
+.backButton {
+  border-color: var(--accent-color);
+  color: var(--primary-text-color);
+  width: 100px;
+  margin: auto;
+  margin-top: 10px;
+  margin-bottom: 20px;
+}

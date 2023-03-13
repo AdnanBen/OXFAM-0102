@@ -32,24 +32,6 @@ const HeaderLink = (props: {
 const Header = () => {
   const router = useRouter();
   const { data: session } = useSession();
-  const [hideTopNavBar, setHideTopNavBar] = useState(true);
-
-  // Hide the top navigation bar on the hompage when on mobile
-  useEffect(() => {
-    const set = () => {
-      const isMobileScreen =
-        window?.matchMedia?.("(max-width: 768px)")?.matches;
-      return setHideTopNavBar(
-        window.location.pathname === "/" && isMobileScreen
-      );
-    };
-
-    set();
-    window.addEventListener("resize", set);
-    return () => window.removeEventListener("resize", set);
-  }, []);
-
-  console.log(hideTopNavBar);
 
   if (window.location.pathname === "/index") {
     return (
@@ -83,47 +65,46 @@ const Header = () => {
       <Link href="/" className={styles.name} replace>
         <Trans>Oxfam Survivors Community</Trans>
       </Link>
-      {!hideTopNavBar && (
-        <div className={styles.links}>
-          <HeaderLink
-            text={t`Forum`}
-            pathname="/forum"
-            active={router.pathname.startsWith("/forum")}
-          />
-          <HeaderLink
-            text={t`Chat`}
-            pathname="/chat"
-            active={router.pathname.startsWith("/chat")}
-          />
-          <HeaderLink
-            text={t`Resources`}
-            pathname="/resources"
-            active={router.pathname.startsWith("/resources")}
-          />
-          <HeaderLink
-            text={t`Report`}
-            pathname="/report"
-            active={router.pathname.startsWith("/report")}
-          />
 
-          {!!session && (
-            <>
-              <Link
-                href="/moderator"
-                className={
-                  router.pathname.startsWith("/moderator") ? styles.active : ""
-                }
-                replace
-              >
-                <Trans>Moderator</Trans>
-              </Link>
-              <a className={styles.authLink} onClick={() => signOut()}>
-                <Trans>Sign out</Trans>
-              </a>
-            </>
-          )}
-        </div>
-      )}
+      <div className={styles.links}>
+        <HeaderLink
+          text={t`Forum`}
+          pathname="/forum"
+          active={router.pathname.startsWith("/forum")}
+        />
+        <HeaderLink
+          text={t`Chat`}
+          pathname="/chat"
+          active={router.pathname.startsWith("/chat")}
+        />
+        <HeaderLink
+          text={t`Resources`}
+          pathname="/resources"
+          active={router.pathname.startsWith("/resources")}
+        />
+        <HeaderLink
+          text={t`Report`}
+          pathname="/report"
+          active={router.pathname.startsWith("/report")}
+        />
+
+        {!!session && (
+          <>
+            <Link
+              href="/moderator"
+              className={
+                router.pathname.startsWith("/moderator") ? styles.active : ""
+              }
+              replace
+            >
+              <Trans>Moderator</Trans>
+            </Link>
+            <a className={styles.authLink} onClick={() => signOut()}>
+              <Trans>Sign out</Trans>
+            </a>
+          </>
+        )}
+      </div>
     </nav>
   );
 };

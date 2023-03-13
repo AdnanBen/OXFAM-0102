@@ -50,7 +50,6 @@ type BoardProps = {
 const Board: NextPage<BoardProps> = ({ posts, boardName }) => {
   return (
     <main>
-      <Link href="/forum">Back to Forums</Link>
       <h2 className={styles.boardHeader}>Forum: {boardName}</h2>
       {posts ? (
         <>

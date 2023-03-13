@@ -37,9 +37,6 @@
   }
 
   .links {
-    font-size: 0.6em;
-    flex-wrap: wrap;
-    justify-content: center;
-    row-gap: 0;
+    display: none;
   }
 }
