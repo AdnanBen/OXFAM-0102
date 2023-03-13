@@ -35,3 +35,9 @@ This is an [Express](https://expressjs.com/) API connecting to a [PostgreSQL dat
 - `DELETE /moderator/comments/:id` -- deletes the given comment `id` (soft-delete)
 - `DELETE /moderator/posts/:id/flags` -- dismisses the post `id`'s flags (resets the counter to 0)
 - `DELETE /moderator/posts/:id` -- deletes the given post `id`'s (soft-delete)
+
+## Tests
+
+The API exposed by this microservice is unit-tested using [Jest](https://jestjs.io/).
+
+To sufficiently test the functionality, the database is not mocked, but a test instance is spun up in a Docker container and thrown away afterwards. A unique PostgreSQL schema is used per test file, and the database is truncated (cleared) after every test so that each test is independent.
