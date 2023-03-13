@@ -30,5 +30,3 @@ services:
       - mongo
     image: ghcr.io/adnanben/oxfam-0102/trends:main
     env_file: ./.env
-    ports:
-      - 127.0.0.1:${PROXY_PORT}:${PORT}
