@@ -20,7 +20,11 @@ const HeaderLink = (props: {
   pathname: string;
   active: boolean;
 }) => (
-  <Link href={props.pathname} className={props.active ? styles.active : ""} replace>
+  <Link
+    href={props.pathname}
+    className={`${styles.link} ${props.active ? styles.active : ""}`}
+    replace
+  >
     {props.text}
   </Link>
 );
@@ -47,7 +51,7 @@ const Header = () => {
 
   console.log(hideTopNavBar);
 
-  if (window.location.pathname === '/index'){
+  if (window.location.pathname === "/index") {
     return (
       <nav className={styles.header}>
         {session ? (
@@ -70,10 +74,9 @@ const Header = () => {
             <Trans>Login as moderator</Trans>
           </a>
         )}
-
       </nav>
     );
-  };
+  }
 
   return (
     <nav className={styles.header}>

@@ -1,3 +1,8 @@
+:root {
+  --primary-text-color: #44841a;
+  --accent-color: #f16e22;
+}
+
 html,
 body {
   padding: 10px;
@@ -23,6 +28,15 @@ nav a {
 img {
   max-width: 100%;
   height: auto;
+}
+
+h1,
+h2 {
+  color: var(--primary-text-color);
+}
+
+h2 {
+  font-size: 2em;
 }
 
 h1,
@@ -64,4 +78,19 @@ footer {
   display: flex;
   align-items: center;
   gap: 30px
+}
+
+.rs-btn-primary {
+  background-color: var(--accent-color);
+  font-weight: bold;
+}
+
+.rs-btn-primary:hover {
+  background-color: var(--primary-text-color);
+  font-weight: bold;
+}
+
+a:hover,
+a:active {
+  color: var(--primary-text-color);
 }

@@ -11,6 +11,7 @@
   font-weight: bold;
   text-align: center;
   margin-bottom: 1em;
+  color: var(--accent-color);
 }
 
 .links {
@@ -21,19 +22,27 @@
   grid-template-columns: repeat(2, 1fr);
 }
 
-.links>* {
+.link {
   display: flex;
   width: 100%;
   font-size: 1.1em;
+  background-color: var(--primary-text-color);
+  color: white;
+}
+
+.link:hover {
+  color: white;
 }
 
 .links .linkHeader {
   font-weight: bold;
   font-size: 1.3em;
+  color: white;
 }
 
 .icon {
   margin-right: 10px;
+  font-size: 1.3em;
 }
 
 @media screen and (max-width: 768px) {
@@ -43,5 +52,6 @@
 
   .intro {
     font-size: 1.3em;
+    width: 95%;
   }
 }

@@ -2,7 +2,9 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  font-size: 2em;
+  font-size: 2.1em;
+  color: var(--primary-text-color);
+  font-weight: bold;
 }
 
 .links {
@@ -13,6 +15,12 @@
 
 .active {
   text-decoration: underline;
+  color: var(--accent-color) !important;
+}
+
+.link:hover,
+.link:active {
+  color: var(--accent-color);
 }
 
 .authLink {
