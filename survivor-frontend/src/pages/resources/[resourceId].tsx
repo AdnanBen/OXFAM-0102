@@ -34,13 +34,9 @@ export default function ArticlePage({ article }) {
   if (article) {
     return (
       <main>
-        <div className={styles.articleContainer}>
-          <div className={styles.articleTitle}>{article.title}</div>
-          <div>{article.category}</div>
-          <div
-            dangerouslySetInnerHTML={{ __html: sanitizeHTML(article.body) }}
-          />
-        </div>
+        <h2>{article.title}</h2>
+        <div className={styles.category}>{article.category}</div>
+        <div dangerouslySetInnerHTML={{ __html: sanitizeHTML(article.body) }} />
       </main>
     );
   }

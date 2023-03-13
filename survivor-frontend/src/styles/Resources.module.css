@@ -1,5 +1,8 @@
 .header {
   text-transform: capitalize;
+  color: white;
+  font-weight: bold;
+  font-size: 1.25em;
 }
 
 .resourceTitle {
@@ -9,13 +12,18 @@
 }
 
 .articleAnchor {
-  text-decoration: none;
-  color: black;
+  text-decoration: underline;
+  color: white;
 }
 
 .articleContainer {
   height: 40px;
   padding: 10px;
+}
+
+.resourceCategory {
+  background-color: var(--primary-text-color);
+  color: white;
 }
 
 .resourceCategory+.resourceCategory {

@@ -97,3 +97,7 @@ a:hover,
 a:active {
   color: var(--primary-text-color);
 }
+
+.rs-panel .rs-icon {
+  color: white !important;
+}
