@@ -9,18 +9,20 @@ import { GetServerSideProps } from "next";
 import { requireAuth } from "../../server/requireAuth";
 import styles from "../../styles/ModeratorResources.module.css";
 import { fetchJsonApi } from "../../utils/helpers";
+import { useRouter } from "next/router";
 
 export const getServerSideProps: GetServerSideProps = (context) =>
   requireAuth(context, "moderator");
 
 function AdminDashboard() {
+  const router = useRouter();
   const [values, setValues] = useState({
     error: "",
     articles: [],
   });
 
-  const loadAllArticleTitles = () => {
-    fetchJsonApi(`/api/resources/titles`)
+  const loadAllArticles = () => {
+    fetchJsonApi(`/api/resources`)
       .then((res) => {
         setValues({
           ...values,
@@ -38,14 +40,14 @@ function AdminDashboard() {
       method: "DELETE",
       headers: { "Content-Type": "application/json" },
     })
-      .then((res) => loadAllArticleTitles())
+      .then((res) => loadAllArticles())
       .catch((err) => {
         setValues({ ...values, error: err });
       });
   };
 
   useEffect(() => {
-    loadAllArticleTitles();
+    loadAllArticles();
   }, []);
 
   return (
@@ -76,15 +78,20 @@ function AdminDashboard() {
                 shaded
               >
                 <p>Category: {article.category}</p>
-                <p className={styles.resourceBodyPreview}>
-                  Body: {article.body}
-                </p>
+                <p
+                  className={styles.resourceBodyPreview}
+                  dangerouslySetInnerHTML={{ __html: article.body }}
+                />
 
                 <div className={styles.resourceActions}>
                   <Button
                     size="sm"
                     appearance="ghost"
-                    onClick={() => deleteArticle(article._id)}
+                    onClick={() =>
+                      router.push(
+                        `/moderator/article-update-form?articleId=${article._id}`
+                      )
+                    }
                   >
                     Edit?
                   </Button>
