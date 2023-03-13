@@ -132,6 +132,40 @@ describe("GET /posts/:id", () => {
       });
   });
 
+  test("returns post data if it exists with comments", async () => {
+    const created = new Date();
+
+    await prisma.post.create({
+      data: {
+        body: "<p>test</p>",
+        title: "Test",
+        created,
+        board: { create: { name: "test" } },
+        comments: { create: { body: "Test", created } },
+      },
+    });
+
+    await request
+      .get("/posts/1")
+      .expect(200)
+      .then((res) => {
+        expect(res.body.error).toEqual(false);
+        expect(res.body.post).toEqual({
+          body: "<p>test</p>",
+          title: "Test",
+          created: created.toISOString(),
+          comments: [
+            {
+              parent_comment: null,
+              body: "Test",
+              created: created.toISOString(),
+            },
+          ],
+          id: 1,
+        });
+      });
+  });
+
   test("returns 404 if post deleted", async () => {
     const created = new Date();
 

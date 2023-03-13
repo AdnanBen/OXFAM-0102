@@ -107,7 +107,9 @@ app.get(
     const post = await prisma.post.findFirst({
       where: { id: +postId, deleted: false },
       select: {
-        comments: { select: { parent_comment: true } },
+        comments: {
+          select: { parent_comment: true, body: true, created: true },
+        },
         body: true,
         id: true,
         title: true,
