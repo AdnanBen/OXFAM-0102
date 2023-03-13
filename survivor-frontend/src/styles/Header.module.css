@@ -1,10 +1,13 @@
 .header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
   font-size: 2.1em;
   color: var(--primary-text-color);
   font-weight: bold;
+}
+
+.nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .links {
@@ -31,6 +34,12 @@
   text-align: center;
 }
 
+.backButton {
+  border-color: var(--accent-color);
+  color: var(--primary-text-color);
+  width: 70px;
+}
+
 @media (max-width: 991.98px) {
   .header {
     flex-direction: column;
@@ -38,5 +47,11 @@
 
   .links {
     display: none;
+  }
+
+  .backButton {
+    margin: auto;
+    display: block;
+    margin: 10px auto;
   }
 }
