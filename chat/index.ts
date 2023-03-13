@@ -32,6 +32,9 @@ const MODERATOR_ACCEPT_CHAT_EVENT = "accept chat";
 const MODERATOR_ACCEPT_CALL_EVENT = "accept call";
 const CHAT_MESSAGE_EVENT = "private message";
 const CHAT_DISCONNECT_EVENT = "chat disconnected";
+
+const END_CALL_NOTIFICATION = "call ended notification";
+
 const CHAT_STARTED_EVENT = "chat started";
 
 const sessions = {}; // Session ID => User ID
@@ -133,6 +136,13 @@ io.on("connection", (socket) => {
     });
   });
 
+  socket.on(END_CALL_NOTIFICATION, (payload) => {
+    console.log("Call ended, sending notification to peer");
+    console.log(payload);
+    console.log(payload.peer_id);
+    io.to(payload.peer_id).emit("call ended");
+  });
+
   if (socket.isModerator) {
     // A moderator has connected
     numModeratorsConnected++;
@@ -156,11 +166,6 @@ io.on("connection", (socket) => {
       socket.emit("call accepted", {
         userId: payload.userId,
       });
-      // socket.join(`chat-${payload.userId}`);
-      // io.to(`chat-${payload.userId}`).emit(CHAT_STARTED_EVENT, {
-      //   userId: payload.userId,
-      // });
-      // deleteChatRequestAndSendUpdate(payload.userId);
 
       console.log("should remove " + payload.userId);
 
@@ -192,6 +197,11 @@ io.on("connection", (socket) => {
     socket.on(USER_REQUEST_CHAT_EVENT, () => {
       console.log("Sending chat request event to moderator room");
       addChatRequest(socket.userId);
+    });
+
+    socket.on(USER_REQUEST_CALL_EVENT, () => {
+      console.log("Sending call request event to moderator room");
+      addCallRequest(socket.id);
     });
 
     socket.on(USER_REQUEST_CALL_EVENT, () => {

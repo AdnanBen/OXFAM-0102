@@ -17,7 +17,8 @@ const ModeratorChat = ({
   const [callRequests, setCallRequests] = useState({});
 
   const [activeCall, setActiveCall] = useState<any>(null);
-  const [audioStream, setAudioStream] = useState<any>(null);
+
+  const [callEnded, setCallEnded] = useState<any>(false);
 
   const [isListening, setIsListening] = useState(false);
   const [chattingWithUser, setChattingWithUser] = useState(null);
@@ -32,6 +33,11 @@ const ModeratorChat = ({
 
   const EndCall = () => {
     activeCall.close();
+  };
+
+  const CleanUpCall = () => {
+    alert("call ended");
+    window.location.reload();
   };
 
   // FIXME, this won't always run, race condition because of having to spawn peerjs
@@ -68,7 +74,6 @@ const ModeratorChat = ({
 
     socket.on("call accepted", (payload) => {
       // setChattingWithUser(payload.userId);
-      console.log("inside call method");
       callPeer(payload.userId);
     });
 
@@ -99,16 +104,19 @@ const ModeratorChat = ({
 
             // create a new <audio> element and attach the remote stream to it
             const audioElement = document.createElement("audio");
-            setAudioStream(audioElement);
             audioElement.srcObject = remoteStream;
             audioElement.play();
             document.body.appendChild(audioElement);
 
+            socket.on("call ended", () => {
+              setCallEnded(true);
+            });
+
             // handle errors that can occur during the call
             call.on("close", () => {
-              localStream.getTracks().forEach((track) => track.stop());
-              audioElement.srcObject = null;
-              setActiveCall(null);
+              let peer_id = call.peer;
+              socket.emit("call ended notification", { peer_id });
+              CleanUpCall();
             });
           });
 
@@ -123,6 +131,24 @@ const ModeratorChat = ({
     }
   }, []);
 
+  if (callEnded) {
+    return (
+      <div>
+        Call Ended
+        <div>
+          <button onClick={EndCall}>Press here to clean up</button>
+        </div>
+      </div>
+    );
+  }
+
+  if (activeCall)
+    return (
+      <div>
+        <button onClick={EndCall}>End Call</button>
+      </div>
+    );
+
   return (
     <div>
       <h2>Chat requests</h2>
@@ -132,11 +158,6 @@ const ModeratorChat = ({
           <p>Chatting with user: {chattingWithUser}</p>
           <Chat socket={socket} chatWithUserId={chattingWithUser} />
         </>
-      )}
-      {activeCall && (
-        <div>
-          <button onClick={EndCall}>End Call</button>
-        </div>
       )}
 
       {isListening && (
@@ -202,7 +223,7 @@ const ModeratorDashboard: NextPage = () => {
         // Do your stuff here
         const peer = new Peer(socket.id, {
           host: window.location.host,
-          port: 80,
+          port: 433,
           path: "/api/voiceserver",
         });
 
