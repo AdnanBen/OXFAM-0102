@@ -10,8 +10,6 @@ dotenv.config();
 const app = express();
 const server = http.createServer(app);
 
-const port = parseInt(process.env.PORT);
-
 const io = new Server(server, {
   path: "/api/chat",
 });

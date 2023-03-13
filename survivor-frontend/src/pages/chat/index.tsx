@@ -67,7 +67,6 @@ const UserChat = ({
 
   const EndCall = () => {
     activeCall.close();
-    setActiveCall(null);
   };
 
   const RepeatingRequestCall = () => {
@@ -139,7 +138,8 @@ const UserChat = ({
             // handle errors that can occur during the call
             call.on("close", () => {
               mediaStream.getTracks().forEach((track) => track.stop());
-              audioStream.remove();
+              audioStream.srcObject = null;
+              setActiveCall(null);
               setAudioStream(null);
             });
 

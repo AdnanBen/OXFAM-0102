@@ -32,7 +32,6 @@ const ModeratorChat = ({
 
   const EndCall = () => {
     activeCall.close();
-    setActiveCall(null);
   };
 
   // FIXME, this won't always run, race condition because of having to spawn peerjs
@@ -109,7 +108,8 @@ const ModeratorChat = ({
           // handle errors that can occur during the call
           call.on("close", () => {
             localStream.getTracks().forEach((track) => track.stop());
-            audioStream.remove();
+            audioStream.srcObject = null;
+            setActiveCall(null);
             setAudioStream(null);
           });
 
