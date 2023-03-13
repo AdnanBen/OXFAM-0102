@@ -5,10 +5,10 @@ import { app } from "../src/app";
 import Article from "../src/models/Article";
 
 const request = supertest(app);
-describe("GET /articles", () => {
+describe("GET /", () => {
   test("returns no articles when none exist", async () => {
     await request
-      .get("/articles/getall")
+      .get("/")
       .expect(200)
       .then((res) => {
         expect(res.body).toEqual({ error: false, articles: [] });
@@ -25,7 +25,7 @@ describe("GET /articles", () => {
     });
 
     await request
-      .get("/articles/getall")
+      .get("/")
       .expect(200)
       .then((res) => {
         expect(res.body).toEqual({
@@ -44,7 +44,7 @@ describe("GET /articles", () => {
 
   test("returns no article titles when none exist", async () => {
     await request
-      .get("/articles/getalltitles")
+      .get("/titles")
       .expect(200)
       .then((res) => {
         expect(res.body).toEqual({ error: false, articles: [] });
@@ -61,7 +61,7 @@ describe("GET /articles", () => {
     });
 
     await request
-      .get("/articles/getalltitles")
+      .get("/titles")
       .expect(200)
       .then((res) => {
         expect(res.body).toEqual({
@@ -79,7 +79,7 @@ describe("GET /articles", () => {
 
   test("returns no articles by category when none exist", async () => {
     await request
-      .get("/articles/getbycategory?category=Test")
+      .get("/?category=Test")
       .expect(200)
       .then((res) => {
         expect(res.body).toEqual({ error: false, articles: [] });
@@ -96,7 +96,7 @@ describe("GET /articles", () => {
     });
 
     await request
-      .get("/articles/getbycategory?category=Test")
+      .get("/?category=Test")
       .expect(200)
       .then((res) => {
         expect(res.body).toEqual({
@@ -116,13 +116,11 @@ describe("GET /articles", () => {
 
 describe("GET /articles/:id", () => {
   test("rejects invalid IDs", async () => {
-    await request.get("/articles/get/1").expect(400);
+    await request.get("/1").expect(400);
   });
 
   test("returns 404 when article does not exist", async () => {
-    await request
-      .get(`/articles/get/${new mongoose.Types.ObjectId()}`)
-      .expect(404);
+    await request.get(`/${new mongoose.Types.ObjectId()}`).expect(404);
   });
 
   test("returns article when it exists", async () => {
@@ -135,7 +133,7 @@ describe("GET /articles/:id", () => {
     });
 
     await request
-      .get(`/articles/get/${id.toString()}`)
+      .get(`/${id.toString()}`)
       .expect(200)
       .then((res) => {
         expect(res.body).toEqual({
@@ -153,9 +151,9 @@ describe("GET /articles/:id", () => {
 
 describe("POST /articles", () => {
   test("rejects empty fields", async () => {
-    await request.post("/articles/create").expect(400);
+    await request.post("/").expect(400);
     await request
-      .post("/articles/create")
+      .post("/")
       .send({
         title: "Test",
         body: "Test",
@@ -163,7 +161,7 @@ describe("POST /articles", () => {
       })
       .expect(400);
     await request
-      .post("/articles/create")
+      .post("/")
       .send({
         title: "Test",
         category: "Test",
@@ -173,7 +171,7 @@ describe("POST /articles", () => {
 
   test("creates valid article", async () => {
     await request
-      .post("/articles/create")
+      .post("/")
       .send({
         title: "Test",
         body: "Test",
@@ -191,13 +189,11 @@ describe("POST /articles", () => {
 
 describe("PATCH /articles/:id", () => {
   test("rejects invalid IDs", async () => {
-    await request.patch("/articles/update/1").expect(400);
+    await request.patch("/1").expect(400);
   });
 
   test("returns 404 when article does not exist", async () => {
-    await request
-      .patch(`/articles/update/${new mongoose.Types.ObjectId()}`)
-      .expect(404);
+    await request.patch(`/${new mongoose.Types.ObjectId()}`).expect(404);
   });
 
   test("updates partial fields", async () => {
@@ -210,7 +206,7 @@ describe("PATCH /articles/:id", () => {
     });
 
     await request
-      .patch(`/articles/update/${id}`)
+      .patch(`/${id}`)
       .send({
         title: "Test Updated",
       })
@@ -225,13 +221,11 @@ describe("PATCH /articles/:id", () => {
 
 describe("DELETE /articles/:id", () => {
   test("rejects invalid IDs", async () => {
-    await request.delete("/articles/delete/1").expect(400);
+    await request.delete("/1").expect(400);
   });
 
   test("returns 404 when article does not exist", async () => {
-    await request
-      .delete(`/articles/delete/${new mongoose.Types.ObjectId()}`)
-      .expect(404);
+    await request.delete(`/${new mongoose.Types.ObjectId()}`).expect(404);
   });
 
   test("deletes existing article", async () => {
@@ -243,7 +237,7 @@ describe("DELETE /articles/:id", () => {
       category: "Test",
     });
 
-    await request.delete(`/articles/delete/${id}`).expect(200);
+    await request.delete(`/${id}`).expect(200);
     const article = await Article.findById(id);
     expect(article).toBeNull();
   });

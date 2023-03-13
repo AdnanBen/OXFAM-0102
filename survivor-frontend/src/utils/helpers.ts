@@ -2,7 +2,7 @@ export const fetcher = (...args) => fetch(...args).then((res) => res.json());
 
 export const fetchJsonApi = (
   url: string,
-  options: RequestInit
+  options: RequestInit = { method: "GET" }
 ): Promise<Response> =>
   fetch(url, options)
     .then((res) => {

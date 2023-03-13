@@ -43,7 +43,9 @@ const getArticle = (req: Request, res: Response, next: NextFunction) => {
 };
 
 const getAll = (req: Request, res: Response, next: NextFunction) => {
-  return Article.find()
+  const category = req.query?.category;
+  const query = category ? Article.find({ category }) : Article.find();
+  return query
     .then((articles) => res.status(200).json({ error: false, articles }))
     .catch((error) => res.status(500).json({ error }));
 };
@@ -51,14 +53,6 @@ const getAll = (req: Request, res: Response, next: NextFunction) => {
 const getAllTitles = (req: Request, res: Response, next: NextFunction) => {
   return Article.find({})
     .select("_id title category")
-    .then((articles) => res.status(200).json({ error: false, articles }))
-    .catch((error) => res.status(500).json({ error }));
-};
-
-const getByCategory = (req: Request, res: Response, next: NextFunction) => {
-  const categoryParam = req.query?.category;
-
-  return Article.find({ category: categoryParam })
     .then((articles) => res.status(200).json({ error: false, articles }))
     .catch((error) => res.status(500).json({ error }));
 };
@@ -109,7 +103,6 @@ export default {
   getArticle,
   getAll,
   getAllTitles,
-  getByCategory,
   updateArticle,
   deleteArticle,
 };
