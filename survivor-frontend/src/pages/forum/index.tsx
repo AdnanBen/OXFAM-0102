@@ -1,6 +1,5 @@
-import { t, Trans } from "@lingui/macro";
+import { Trans } from "@lingui/macro";
 import { GetServerSideProps, type NextPage } from "next";
-import { useEffect, useState } from "react";
 import Head from "next/head";
 import Link from "next/link";
 import { Button, Message } from "rsuite";
@@ -104,8 +103,11 @@ const Feed: NextPage<FeedProps> = ({ boards }) => {
                   replace
                   className={styles.board_wrapper}
                 >
-                  <div className={styles.board_button}>{b.name}</div>
-                  <p>{b.description}</p>
+                  <div>
+                    <div className={styles.board_button}>{b.name}</div>
+                    <p>{b.description}</p>
+                  </div>
+                  <span className={styles.arrow}>⮞</span>
                 </Link>
               );
             })}

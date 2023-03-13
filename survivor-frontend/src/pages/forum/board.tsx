@@ -5,6 +5,7 @@ import { Message } from "rsuite";
 import { env } from "../../env/env.mjs";
 import requireSSRTransition from "../../server/requireSSRTransition";
 import { Post, PostType } from "./index";
+import styles from "../../styles/Forum.module.css";
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   // Only allow access through the homepage, not directly
@@ -48,19 +49,15 @@ type BoardProps = {
 
 const Board: NextPage<BoardProps> = ({ posts, boardName }) => {
   return (
-    <>
+    <main>
       <Link href="/forum">Back to Forums</Link>
-      <div>{boardName}</div>
+      <h2 className={styles.boardHeader}>Forum: {boardName}</h2>
       {posts ? (
         <>
           {posts?.map((p) => (
             <Post post={p} />
           ))}
-          {!posts?.length && (
-            <div>
-              <Trans>There are no posts yet.</Trans>
-            </div>
-          )}
+          {!posts?.length && <Trans>There are no posts yet.</Trans>}
         </>
       ) : (
         <Message type="error">
@@ -69,7 +66,7 @@ const Board: NextPage<BoardProps> = ({ posts, boardName }) => {
           </Trans>
         </Message>
       )}
-    </>
+    </main>
   );
 };
 

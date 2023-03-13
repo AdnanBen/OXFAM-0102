@@ -1,8 +1,8 @@
-import { Trans } from "@lingui/macro";
+import { t, Trans } from "@lingui/macro";
 import RemindOutlineIcon from "@rsuite/icons/RemindOutline";
 import { GetServerSideProps, type NextPage } from "next";
 import { useState } from "react";
-import { IconButton, Loader, Message, Modal } from "rsuite";
+import { Button, IconButton, Input, Loader, Message, Modal } from "rsuite";
 import sanitizeHTML from "sanitize-html";
 import { env } from "../../env/env.mjs";
 import { getServerAuthSession } from "../../server/auth";
@@ -164,15 +164,19 @@ const Post: NextPage = ({ post }) => {
                   }
                 }}
               >
-                <label>
+                <label className={styles.newCommentLabel}>
                   <Trans>Comment</Trans>:
                   <br />
-                  <textarea name="body"></textarea>
+                  <Input
+                    as="textarea"
+                    name="body"
+                    placeholder={t`Please enter your comment`}
+                  />
                 </label>
                 <br />
-                <button type="submit">
+                <Button type="submit" appearance="primary">
                   <Trans>Post comment</Trans>
-                </button>
+                </Button>
               </form>
             </Modal.Body>
           </Modal.Header>
@@ -182,7 +186,9 @@ const Post: NextPage = ({ post }) => {
       {post ? (
         <>
           <div className={styles.postHeader}>
-            <h3>{post.title}</h3>
+            <h2>{post.title}</h2>
+          </div>
+          <div className={styles.postHeaderInfo}>
             <i className={styles.timestamp}>
               {new Date(post.created).toUTCString()}
             </i>
@@ -198,15 +204,23 @@ const Post: NextPage = ({ post }) => {
             </IconButton>
           </div>
           <h3>{post.tag}</h3>
-          <p dangerouslySetInnerHTML={{ __html: sanitizeHTML(post.body) }} />
+          <p
+            dangerouslySetInnerHTML={{ __html: sanitizeHTML(post.body) }}
+            className={styles.body}
+          />
 
           <div className={styles.commentsWrapper}>
-            <strong>
+            <h5>
               <Trans>Replies</Trans>
-            </strong>{" "}
-            <button onClick={() => setShowCommentDialog(true)}>
-              <Trans>add comment</Trans>
-            </button>
+              <Button
+                appearance="primary"
+                size="sm"
+                className={styles.addCommentBtn}
+                onClick={() => setShowCommentDialog(true)}
+              >
+                <Trans>add comment?</Trans>
+              </Button>
+            </h5>
             {renderComments(post.comments)}
             {isRefresing && <Loader center />}
           </div>
