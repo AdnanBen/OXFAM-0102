@@ -38,5 +38,6 @@ docker network connect $net chat-api-1
 docker network connect $net auth-api-1
 docker network connect $net forum-api-1
 docker network connect $net trends-api-1
+docker network connect $net trends-rabbitmq-1
 docker network connect $net survivor-frontend-web-1
 docker network connect $net gateway-proxy-1
