@@ -2,6 +2,7 @@
   "compilerOptions": {
     "target": "es2017",
     "lib": ["esnext"],
+    "module": "CommonJS",
     "allowJs": true,
     "skipLibCheck": true,
     "strict": true,
