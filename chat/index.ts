@@ -199,9 +199,9 @@ io.on("connection", (socket) => {
       addChatRequest(socket.userId);
     });
 
-    socket.on(USER_REQUEST_CALL_EVENT, () => {
+    socket.on(USER_REQUEST_CALL_EVENT, (payload) => {
       console.log("Sending call request event to moderator room");
-      addCallRequest(socket.id);
+      addCallRequest(payload.peerjsID);
     });
 
     socket.on(USER_REQUEST_CALL_EVENT, () => {

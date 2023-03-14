@@ -31,6 +31,8 @@ const UserChat = ({
 
   const [callEnded, setCallEnded] = useState<any>(false);
 
+  const [peerjsID, setPeerjsID] = useState<any>(null);
+
   const [chatRequestTimerId, setChatRequestTimerId] = useState<
     string | number | NodeJS.Timeout | undefined
   >(null);
@@ -59,7 +61,7 @@ const UserChat = ({
 
   const InitialCallRequest = () => {
     console.log("requesting call");
-    socket.emit("request call");
+    socket.emit("request call", { peerjsID });
 
     const timerId = setInterval(RepeatingRequestCall, 5000);
     setCallRequestTimerId(timerId);
@@ -70,7 +72,7 @@ const UserChat = ({
   const RepeatingRequestCall = () => {
     console.log("outside");
     console.log(activeCall);
-    socket.emit("request call");
+    socket.emit("request call", { peerjsID });
   };
 
   const EndCall = () => {
@@ -115,6 +117,7 @@ const UserChat = ({
 
     peerjsConn.on("open", function (id) {
       console.log("My peer ID is: " + id);
+      setPeerjsID(id);
 
       // answer incoming calls and create a media stream for the call
       peerjsConn.on("call", (call) => {
