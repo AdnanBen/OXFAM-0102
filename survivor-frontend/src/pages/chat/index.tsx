@@ -251,7 +251,7 @@ const ChatPage: NextPage = () => {
   }, []);
 
   useEffect(() => {
-    if (socket?.connected) {
+    if (socket) {
       console.log(socket);
       import("peerjs").then(({ default: Peer }) => {
         // Do your stuff here
@@ -281,7 +281,7 @@ const ChatPage: NextPage = () => {
         <h2>
           <Trans>Chat</Trans>
         </h2>
-        {socket?.connected && peerjsConn ? (
+        {socket && peerjsConn ? (
           <UserChat socket={socket} peerjsConn={peerjsConn} />
         ) : (
           <Loader center backdrop />

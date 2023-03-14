@@ -217,7 +217,7 @@ const ModeratorDashboard: NextPage = () => {
   }, []);
 
   useEffect(() => {
-    if (socket?.connected) {
+    if (socket) {
       console.log(socket);
       import("peerjs").then(({ default: Peer }) => {
         // Do your stuff here
@@ -237,7 +237,7 @@ const ModeratorDashboard: NextPage = () => {
     };
   }, [socket]);
 
-  return socket?.connected && peerjsConn ? (
+  return socket && peerjsConn ? (
     <ModeratorChat socket={socket} peerjsConn={peerjsConn} />
   ) : (
     <Loader center backdrop />
