@@ -23,8 +23,8 @@ export default function ReportsView() {
     <main className={styles.reportsmodpage}>
       <h3>Reports</h3>
 
-      <div>
-        <table className="table table-hover">
+      <div className={styles.table_container}>
+        <table className={styles.table_layout}>
           <thead>
             <tr>
               <th className="text-center">Report ID</th>
@@ -39,7 +39,7 @@ export default function ReportsView() {
                   <tr>
                     <td className="text-center">{x._id}</td>
                     <td className="text-center">{x.name}</td>
-                    <td className="text-center">{x.body}</td>
+                    <td className="text-center">{x.situation}</td>
                   </tr>
                 );
               })}

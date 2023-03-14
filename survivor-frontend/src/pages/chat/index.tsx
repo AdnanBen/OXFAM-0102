@@ -61,7 +61,7 @@ const UserChat = ({
 
   const InitialCallRequest = () => {
     console.log("requesting call");
-    socket.emit("request call", { peerjsID });
+    socket.emit("request call");
 
     const timerId = setInterval(RepeatingRequestCall, 5000);
     setCallRequestTimerId(timerId);
@@ -72,7 +72,7 @@ const UserChat = ({
   const RepeatingRequestCall = () => {
     console.log("outside");
     console.log(activeCall);
-    socket.emit("request call", { peerjsID });
+    socket.emit("request call");
   };
 
   const EndCall = () => {
@@ -85,7 +85,9 @@ const UserChat = ({
   };
 
   useEffect(() => {
-    console.log("effect", socket);
+    console.log("sending mod check");
+    socket.emit("moderator availability check");
+
     socket.on("session", (payload) => {
       console.log("session event", payload);
       window.sessionStorage.setItem("sessionId", payload.sessionId);
@@ -118,6 +120,8 @@ const UserChat = ({
     peerjsConn.on("open", function (id) {
       console.log("My peer ID is: " + id);
       setPeerjsID(id);
+      console.log("emitting" + id);
+      socket.emit("peerjs-id", { id });
 
       // answer incoming calls and create a media stream for the call
       peerjsConn.on("call", (call) => {
@@ -218,14 +222,19 @@ const UserChat = ({
 
   if (moderatorsAvailable) {
     return (
-      <div>
-        <button onClick={InitialRequestChat}>
-          <Trans>Request Chat</Trans>
-        </button>
-        <button onClick={InitialCallRequest}>
-          <Trans>Request Call</Trans>
-        </button>
-      </div>
+      <>
+        <div>
+          <button onClick={InitialRequestChat}>
+            <Trans>🖊️ Request Chat</Trans>
+          </button>
+        </div>
+        <br />
+        <div>
+          <button onClick={InitialCallRequest}>
+            <Trans>📞 Request Call</Trans>
+          </button>
+        </div>
+      </>
     );
   }
 
@@ -258,7 +267,7 @@ const ChatPage: NextPage = () => {
       console.log(socket);
       import("peerjs").then(({ default: Peer }) => {
         // Do your stuff here
-        const peer = new Peer(socket.id, {
+        const peer = new Peer({
           host: window.location.host,
           port: 443,
           path: "/api/voiceserver",

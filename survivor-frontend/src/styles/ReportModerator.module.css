@@ -1,3 +1,37 @@
 .reportsmodpage h3 {
   text-align: center;
 }
+
+.table_container {
+  display: flex;
+  justify-content: center;
+}
+
+.table_layout {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+.table_layout th,
+.table_layout td {
+  text-align: left;
+  padding: 8px;
+}
+
+.table_layout th {
+  background-color: #f2f2f2;
+  color: #333;
+  font-weight: bold;
+}
+
+.table_layout tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+.table_layout tr:hover {
+  background-color: #ddd;
+}
+
+.table_layout td {
+  border-bottom: 1px solid #ddd;
+}
