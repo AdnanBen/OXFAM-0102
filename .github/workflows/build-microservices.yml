@@ -55,7 +55,7 @@ jobs:
         with:
           filters: |
             microservice_changed:
-              - './${{ matrix.microservice }}/**''
+              - './${{ matrix.microservice }}/**'
 
       - name: Log in to the GitHub Container registry
         if: steps.filter.outputs.microservice_changed == 'true'
