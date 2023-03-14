@@ -237,7 +237,7 @@ const ModeratorDashboard: NextPage = () => {
     };
   }, [socket]);
 
-  return socket && peerjsConn ? (
+  return socket?.connected && peerjsConn ? (
     <ModeratorChat socket={socket} peerjsConn={peerjsConn} />
   ) : (
     <Loader center backdrop />

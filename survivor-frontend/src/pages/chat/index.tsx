@@ -281,7 +281,7 @@ const ChatPage: NextPage = () => {
         <h2>
           <Trans>Chat</Trans>
         </h2>
-        {socket && peerjsConn ? (
+        {socket?.connected && peerjsConn ? (
           <UserChat socket={socket} peerjsConn={peerjsConn} />
         ) : (
           <Loader center backdrop />
