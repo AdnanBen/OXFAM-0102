@@ -251,7 +251,7 @@ const ChatPage: NextPage = () => {
   }, []);
 
   useEffect(() => {
-    if (socket) {
+    if (socket?.connected) {
       console.log(socket);
       import("peerjs").then(({ default: Peer }) => {
         // Do your stuff here
