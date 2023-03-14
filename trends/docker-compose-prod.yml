@@ -7,8 +7,7 @@ services:
       - 127.0.0.1:5672:5672
       # - 127.0.0.1:15672:15672
     volumes:
-      - ./docker-volumes/rabbitmq/data:/var/lib/rabbitmq
-      - ./docker-volumes/rabbitmq/log:/var/log/rabbitmq
+      - rabbitmq:/var/lib/rabbitmq
 
   mongo:
     image: mongo:6
@@ -29,3 +28,6 @@ services:
       - mongo
     image: ghcr.io/adnanben/oxfam-0102/trends:main
     env_file: ./.env
+
+volumes:
+  rabbitmq:
