@@ -5,10 +5,12 @@
   align-items: flex-end;
   width: 50%;
   max-width: 500px;
+  padding-left: 10px;
+  padding-right: 10px;
   height: 300px;
   border-left: 4px solid transparent;
   border-bottom: 2px solid black; 
-  margin-bottom: 10px; 
+  margin-bottom: 100px; 
 }
 
 .barItem {
@@ -16,6 +18,8 @@
   justify-content: center;
   align-items: flex-end;
   width: 100px;
+  padding-left: 10px;
+  padding-right: 10px;
   border-top: 2px solid transparent;
   border-right: 10px solid transparent;
   border-left: 10px solid transparent;
@@ -26,19 +30,19 @@
 
 
 .barItem:nth-child(1) {
-  background-color: lightpink;
+  background-color: rgba(76, 156, 82, 0.983);
 }
 
 .barItem:nth-child(2) {
-  background-color: lightgreen;
+  background-color: rgb(83, 112, 83);
 }
 
 .barItem:nth-child(3) {
-  background-color: plum;
+  background-color: rgb(16, 128, 14);
 }
   
 .barItem:hover {
-  background-color: #54d6da;
+  background-color: #44841A;
 }
 
 .barLabel{
@@ -47,5 +51,7 @@
   border-top: 2px solid transparent;
   width: 500px;
   left: 10%;
-  color: darkred;
+  color: rgb(36, 0, 0);
+  font-weight: bold;
+  margin-left: 200px;
 }

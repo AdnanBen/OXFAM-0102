@@ -44,8 +44,9 @@ export default function BarItem(){
                     >
                       {x.views_all_time}
                     </div>
+                    <div className={styles.barLabel}>resource_id: {x.resource_id}</div>
                   </div>
-                  <div className={styles.barLabel}>resource_id: {x.resource_id}</div>
+                  
                 </div>
               );
             })}
