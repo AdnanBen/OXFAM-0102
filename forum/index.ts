@@ -4,7 +4,8 @@ import bodyParser from "body-parser";
 import sanitizeHTML from "sanitize-html";
 
 import prisma from "./db";
-import { APIError } from "./helpers";
+import { APIError, requirecaptcha } from "./helpers";
+
 
 function catchErrors(fn) {
   return function (req, res, next) {
@@ -40,6 +41,8 @@ app.use((err: Error, req: Request, res: Response, next: any) => {
 app.post(
   "/posts",
   catchErrors(async (req: Request, res: Response) => {
+    requirecaptcha(req);
+
     // Don't allow any HTML for Title
     const title = sanitizeHTML(req.body.title ?? "", {
       allowedTags: [],
@@ -128,6 +131,8 @@ app.get(
 app.post(
   "/posts/:postId/flags",
   catchErrors(async (req: Request, res: Response) => {
+    requirecaptcha(req);
+
     const { postId } = req.params;
 
     const post = await prisma.post.findFirst({
@@ -154,6 +159,8 @@ app.post(
 app.post(
   "/posts/:postId/comments",
   catchErrors(async (req: Request, res: Response) => {
+    requirecaptcha(req);
+
     const { postId } = req.params;
     const post = await prisma.post.findFirst({ where: { id: +postId } });
 
@@ -184,6 +191,8 @@ app.post(
 app.post(
   "/comments/:commentId/flags",
   catchErrors(async (req: Request, res: Response) => {
+    requirecaptcha(req);
+
     const { commentId } = req.params;
 
     const comment = await prisma.comment.findFirst({

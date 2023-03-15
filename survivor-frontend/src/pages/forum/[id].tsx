@@ -11,6 +11,8 @@ import styles from "../../styles/Forum.module.css";
 import { fetchJsonApi } from "../../utils/helpers";
 import useRouterRefresh from "../../utils/useRouterRefresh";
 import useToaster from "../../utils/useToaster";
+import { Turnstile } from "@marsidev/react-turnstile";
+import { useRef } from 'react'
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   // Only allow access through the homepage, not directly
@@ -38,12 +40,21 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 const Post: NextPage = ({ post }) => {
   const toaster = useToaster();
   const [refresh, isRefresing] = useRouterRefresh(post);
+  const [cftokennewcomment, setcftokennewcomment] = useState();
+  const [cftokenreportpost, setcftokenreportpost] = useState();
+  const [cftokenreportcomment, setcftokenreportcomment] = useState();
   const [showCommentDialog, setShowCommentDialog] = useState(false);
   const [replyToComment, setReplyToComment] = useState(null);
+  const newcommentref = useRef(null);
+  const reportcommentref = useRef(null);
+  const reportpostref = useRef(null);
 
   const reportPost = async () => {
+    console.log(cftokenreportpost);
     await fetchJsonApi(`/api/forum/posts/${post.id}/flags`, {
       method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({cftoken: cftokenreportpost}),
     })
       .then(() => {
         toaster.push(
@@ -62,11 +73,14 @@ const Post: NextPage = ({ post }) => {
           </Message>
         );
       });
+    //reportpostref.current?.reset();
   };
 
   const reportComment = async (commentId: string) => {
     await fetchJsonApi(`/api/forum/comments/${commentId}/flags`, {
       method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({cftoken: cftokenreportcomment}),
     })
       .then(() => {
         toaster.push(
@@ -85,6 +99,7 @@ const Post: NextPage = ({ post }) => {
           </Message>
         );
       });
+    //reportcommentref.current?.reset();
   };
 
   const renderComments = (comments) => {
@@ -113,8 +128,10 @@ const Post: NextPage = ({ post }) => {
                 >
                   ↲
                 </span>
+                <Turnstile siteKey='0x4AAAAAAADFU0upW0ILDjJG' onSuccess={setcftokenreportcomment}/>
                 <IconButton
                   className={styles.reportBtn}
+                  disabled={!cftokenreportcomment}
                   icon={<RemindOutlineIcon />}
                   style={{ float: "right" }}
                   appearance="ghost"
@@ -153,7 +170,7 @@ const Post: NextPage = ({ post }) => {
                     {
                       method: "POST",
                       headers: { "Content-Type": "application/json" },
-                      body: JSON.stringify(data),
+                      body: JSON.stringify({...data, cftoken: cftokennewcomment}),
                     }
                   ).then((res) => res.json());
 
@@ -174,7 +191,8 @@ const Post: NextPage = ({ post }) => {
                   />
                 </label>
                 <br />
-                <Button type="submit" appearance="primary">
+                <Turnstile siteKey='0x4AAAAAAADFU0upW0ILDjJG' onSuccess={setcftokennewcomment}/>
+                <Button type="submit" appearance="primary" disabled={!cftokennewcomment}>
                   <Trans>Post comment</Trans>
                 </Button>
               </form>
@@ -192,8 +210,10 @@ const Post: NextPage = ({ post }) => {
             <i className={styles.timestamp}>
               {new Date(post.created).toUTCString()}
             </i>
+            <Turnstile siteKey='0x4AAAAAAADFU0upW0ILDjJG' onSuccess={setcftokenreportpost}/>
             <IconButton
               className={styles.reportBtn}
+              disabled={!cftokenreportpost}
               icon={<RemindOutlineIcon />}
               appearance="ghost"
               size="xs"
