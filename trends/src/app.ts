@@ -168,7 +168,7 @@ app.get("/reportkeywords", (req, res) => {
   res.json(data);
 });
 
-app.listen(port, () => {
+app.listen(port, "0.0.0.0", () => {
   console.log(config.mongo.url);
   return console.log(`Express is listening at http://localhost:${port}`);
 });

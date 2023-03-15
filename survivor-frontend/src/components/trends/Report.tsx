@@ -6,7 +6,7 @@ export default function Report() {
   const [incompleteReports, setIncompleteReports] = useState({});
 
   useEffect(() => {
-    fetch("http://localhost:3000/api/incompletereports")
+    fetch("/api/trends/incompletereports")
       .then((response) => response.json())
       .then((json) => setIncompleteReports(json));
   }, []);

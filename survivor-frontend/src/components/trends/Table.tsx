@@ -6,7 +6,7 @@ export default function Table() {
   const [reportkeywords, setReportKeywords] = useState({});
 
   useEffect(() => {
-    fetch("http://localhost:3000/api/reportkeywords")
+    fetch("/api/trends/reportkeywords")
       .then((response) => response.json())
       .then((json) => setReportKeywords(json));
   }, []);
