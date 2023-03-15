@@ -14,6 +14,14 @@ class PuppeteerEnvironment extends NodeEnvironment {
     this.global.baseUrl = "http://localhost";
     this.global.browser = browser;
     this.global.page = await browser.newPage();
+    this.global.databasePorts = {
+      trends: 27017,
+      forum: 5432,
+      chat: 27018,
+      reports: 27019,
+      resources: 27020,
+      auth: 27021,
+    };
   }
 
   async teardown() {
@@ -24,8 +32,19 @@ class PuppeteerEnvironment extends NodeEnvironment {
 
 module.exports = PuppeteerEnvironment;
 
+type MicroserviceDatabases =
+  | "trends"
+  | "forum"
+  | "chat"
+  | "reports"
+  | "resources"
+  | "auth";
+
 declare global {
   var baseUrl: string;
   var page: Page;
   var browser: Browser;
+  var ports: {
+    [K in MicroserviceDatabases]: number;
+  };
 }

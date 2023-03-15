@@ -27,4 +27,6 @@ services:
       MONGO_URL: mongodb://USER:PASS@mongo:27017/reportdata
       PORT: 3000
       RABBITMQ_HOSTNAME: localhost
+    ports:
+      - 127.0.0.1:${E2E_DB_PORT}:27017
 

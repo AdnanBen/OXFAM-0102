@@ -1,16 +1,14 @@
 {
   "presets": [
-    // [
-    //   "next/babel",
-    //   {
-    //     "preset-env": {},
-    //     "transform-runtime": {},
-    //     "styled-jsx": {},
-    //     "class-properties": {}
-    //   }
-    // ],
-    ["@babel/preset-env", { "targets": { "node": "current" } }],
-    "@babel/preset-typescript"
+    [
+      "next/babel",
+      {
+        "preset-env": {},
+        "transform-runtime": {},
+        "styled-jsx": {},
+        "class-properties": {}
+      }
+    ]
   ],
   "plugins": ["macros"]
 }

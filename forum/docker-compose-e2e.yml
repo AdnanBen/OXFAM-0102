@@ -20,3 +20,5 @@ services:
       POSTGRES_DB: forum
       POSTGRES_USER: forum
       POSTGRES_PASSWORD: forum
+    ports:
+      - 127.0.0.1:${E2E_DB_PORT}:5432

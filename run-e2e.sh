@@ -1,25 +1,33 @@
+# XXX: Ensure any ports updated here are also updated in survivor-frontend/tests/end-to-end/environment.ts
+
 echo 'Starting trends'
-cd trends && docker-compose -f docker-compose-e2e.yml up -d --build --remove-orphans
+cd trends
+E2E_DB_PORT=27017 docker-compose -f docker-compose-e2e.yml up -d --build --remove-orphans
 cd ..
 
 echo 'Starting forum'
-cd forum && docker-compose -f docker-compose-e2e.yml up -d --build --remove-orphans
+cd forum
+E2E_DB_PORT=5432 docker-compose -f docker-compose-e2e.yml up -d --build --remove-orphans
 cd ..
 
 echo 'Starting chat'
-cd chat && docker-compose -f docker-compose-e2e.yml up -d --build --remove-orphans
+cd chat
+E2E_DB_PORT=27018 docker-compose -f docker-compose-e2e.yml up -d --build --remove-orphans
 cd ..
 
 echo 'Starting reports'
-cd reports && docker-compose -f docker-compose-e2e.yml up -d --build --remove-orphans
+cd reports
+E2E_DB_PORT=27019 docker-compose -f docker-compose-e2e.yml up -d --build --remove-orphans
 cd ..
 
 echo 'Starting resources'
-cd resources && docker-compose -f docker-compose-e2e.yml up -d --build --remove-orphans
+cd resources
+E2E_DB_PORT=27020 docker-compose -f docker-compose-e2e.yml up -d --build --remove-orphans
 cd ..
 
 echo 'Starting auth'
-cd auth && docker-compose -f docker-compose-e2e.yml up -d --build --remove-orphans
+cd auth
+E2E_DB_PORT=27021 docker-compose -f docker-compose-e2e.yml up -d --build --remove-orphans
 cd ..
 
 echo 'Starting survivor frontend'

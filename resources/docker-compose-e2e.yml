@@ -26,3 +26,5 @@ services:
       DATABASE_NAME: resources
       MONGO_URL: mongodb://USER:PASS@mongo:27017/resources
       PORT: 3000
+    ports:
+      - 127.0.0.1:${E2E_DB_PORT}:27017
