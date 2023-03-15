@@ -1,5 +1,11 @@
 {
+<<<<<<< HEAD
 	"devDependencies": {
 		"docsify-cli": "^4.4.4"
 	}
+=======
+  "dependencies": {
+    "@types/react-table": "^7.7.14"
+  }
+>>>>>>> 9e52c07810cde45a317b2d4eef4877e50ed38a9f
 }

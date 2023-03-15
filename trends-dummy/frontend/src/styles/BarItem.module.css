@@ -1,0 +1,51 @@
+.barGraph {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: flex-end;
+  width: 50%;
+  max-width: 500px;
+  height: 300px;
+  border-left: 4px solid transparent;
+  border-bottom: 2px solid black; 
+  margin-bottom: 10px; 
+}
+
+.barItem {
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  width: 100px;
+  border-top: 2px solid transparent;
+  border-right: 10px solid transparent;
+  border-left: 10px solid transparent;
+  background-color: #f2f2f2;
+  text-align: center;
+  flex-grow: 1;
+}
+
+
+.barItem:nth-child(1) {
+  background-color: lightpink;
+}
+
+.barItem:nth-child(2) {
+  background-color: lightgreen;
+}
+
+.barItem:nth-child(3) {
+  background-color: plum;
+}
+  
+.barItem:hover {
+  background-color: #54d6da;
+}
+
+.barLabel{
+  position: absolute;
+  text-align: center;
+  border-top: 2px solid transparent;
+  width: 500px;
+  left: 10%;
+  color: darkred;
+}
