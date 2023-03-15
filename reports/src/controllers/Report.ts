@@ -3,9 +3,9 @@ import mongoose from "mongoose";
 import Report from "../models/Report";
 
 const createReport = (req: Request, res: Response, next: NextFunction) => {
-  const { name, gender, body, category } = req.body;
+  const { name, gender, situation, category } = req.body;
 
-  if (!name || !gender || !body) {
+  if (!name || !situation) {
     return res
       .status(400)
       .json({ error: true, message: "Invalid data provided" });
@@ -14,8 +14,7 @@ const createReport = (req: Request, res: Response, next: NextFunction) => {
   const report = new Report({
     _id: new mongoose.Types.ObjectId(),
     name,
-    gender,
-    body,
+    situation,
   });
 
   return report

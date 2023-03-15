@@ -9,11 +9,11 @@ import { t, Trans } from "@lingui/macro";
 import { Button } from "rsuite";
 import requireSSRTransition from "../../server/requireSSRTransition";
 import { GetServerSideProps } from "next";
+import styles from "../../styles/Report.module.css";
 
 interface Values {
   name: string;
-  gender: string;
-  body: string;
+  situation: string;
 }
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
@@ -69,7 +69,7 @@ function FormPage(data: Values) {
     var requestOptions = {
       method: "POST",
       headers: myHeaders,
-      body: raw,
+      situation: raw,
     };
 
     const response = fetch(
@@ -97,73 +97,55 @@ function FormPage(data: Values) {
         <title>OXFAM Survivors Community | Report</title>
       </Head>
 
-      <main>
-        <h2>
-          <Trans>Make a Report</Trans>
-        </h2>
+      <main className={styles.reportspage}>
+        <h3>Make a Report</h3>
 
-        <div>
-          <Formik
-            innerRef={formRef}
-            initialValues={{
-              name: "",
-              gender: "",
-              body: "",
-            }}
-            onSubmit={(
-              values: Values,
-              { setSubmitting }: FormikHelpers<Values>
-            ) => {
-              setTimeout(() => {
-                alert(JSON.stringify(values, null));
-                submitForm(values);
-                setSubmitting(false);
-              }, 500);
-            }}
-          >
-            <Form>
-              <p>
-                <label htmlFor="firstName">
-                  <Trans>Name</Trans>
-                  <br />
-                  <Field name="name" />
-                </label>
-              </p>
+        <div className={styles.main_container}>
+          <div className={styles.form_container}>
+            <Formik
+              innerRef={formRef}
+              initialValues={{
+                name: "",
+                situation: "",
+              }}
+              onSubmit={(
+                values: Values,
+                { setSubmitting }: FormikHelpers<Values>
+              ) => {
+                setTimeout(() => {
+                  alert(JSON.stringify(values, null));
+                  submitForm(values);
+                  setSubmitting(false);
+                }, 500);
+              }}
+            >
+              <Form>
+                <p>
+                  <label htmlFor="firstName">
+                    <Trans>Name</Trans>
+                    <br />
+                    <Field name="name" />
+                  </label>
+                </p>
 
-              <p>
-                <label htmlFor="gender">
-                  <Trans>Gender</Trans>
-                  <br />
-                  <Field as="select" name="gender">
-                    <option value="" label={t`Select a gender`} />
-                    <option value="M">
-                      <Trans>Male</Trans>
-                    </option>
-                    <option value="F">
-                      <Trans>Female</Trans>
-                    </option>
-                    <option value="O">
-                      <Trans>Other</Trans>
-                    </option>
-                  </Field>
-                </label>
-              </p>
+                <p>
+                  <label htmlFor="situation">
+                    <Trans>Situation</Trans>
+                    <br />
+                    <Field name="situation" component="textarea" />
+                  </label>
+                </p>
 
-              <p>
-                <label htmlFor="body">
-                  <Trans>Situation</Trans>
-                  <br />
-                  <Field name="body" component="textarea" />
-                </label>
-              </p>
+                <br />
 
-              <br />
-
-              <Button type="submit" appearance="primary">
-                <Trans>Submit</Trans>
-              </Button>
-            </Form>
-          </Formik>
+                <div className={styles.button_container}>
+                  <Button type="submit" appearance="primary">
+                    <Trans>Submit</Trans>
+                  </Button>
+                </div>
+              </Form>
+            </Formik>
+          </div>
         </div>
       </main>
     </>

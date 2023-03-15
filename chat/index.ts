@@ -68,6 +68,7 @@ io.use((socket, next) => {
 
 const sendLatestModeratorAvailability = () => {
   // Update all users on moderator availability
+  console.log("Sending latest mod availability");
   io.to(USER_ROOM_NAME).emit(MODERATOR_AVAILABILITY_EVENT, {
     areModeratorsAvailable: numModeratorsConnected > 0,
   });
@@ -136,11 +137,27 @@ io.on("connection", (socket) => {
     });
   });
 
-  socket.on(END_CALL_NOTIFICATION, (payload) => {
+  socket.on(END_CALL_NOTIFICATION, async (payload) => {
     console.log("Call ended, sending notification to peer");
-    console.log(payload);
-    console.log(payload.peer_id);
-    io.to(payload.peer_id).emit("call ended");
+    console.log("looking for " + payload.peer_id);
+
+    // return all Socket instances of the main namespace
+    const sockets = await io.fetchSockets();
+    sockets.forEach((socket) => {
+      console.log(socket);
+      if (socket.peerjs_id == payload.peer_id) {
+        console.log("found peer");
+        socket.emit("call ended");
+      }
+    });
+
+    // io.to(payload.peer_id).emit("call ended");
+  });
+
+  socket.on("peerjs-id", (payload) => {
+    let peerjs_id = payload.id;
+    socket.peerjs_id = peerjs_id;
+    console.log("got peerjs id " + socket.peerjs_id);
   });
 
   if (socket.isModerator) {
@@ -164,12 +181,12 @@ io.on("connection", (socket) => {
     socket.on(MODERATOR_ACCEPT_CALL_EVENT, (payload) => {
       console.log("sending call accepted msg");
       socket.emit("call accepted", {
-        userId: payload.userId,
+        peerjs_id: payload.peerjs_id,
       });
 
-      console.log("should remove " + payload.userId);
+      console.log("should remove " + payload.peerjs_id);
 
-      deleteCallRequestAndSendUpdate(payload.userId);
+      deleteCallRequestAndSendUpdate(payload.peerjs_id);
     });
 
     socket.on("disconnect", () => {
@@ -190,8 +207,14 @@ io.on("connection", (socket) => {
     socket.join(`chat-${socket.userId}`);
 
     // Update this new user on current moderator availability
-    socket.emit(MODERATOR_AVAILABILITY_EVENT, {
-      areModeratorsAvailable: numModeratorsConnected > 0,
+    // socket.emit(MODERATOR_AVAILABILITY_EVENT, {
+    //   areModeratorsAvailable: numModeratorsConnected > 0,
+    // });
+
+    socket.on("moderator availability check", () => {
+      socket.emit(MODERATOR_AVAILABILITY_EVENT, {
+        areModeratorsAvailable: numModeratorsConnected > 0,
+      });
     });
 
     socket.on(USER_REQUEST_CHAT_EVENT, () => {
@@ -201,17 +224,12 @@ io.on("connection", (socket) => {
 
     socket.on(USER_REQUEST_CALL_EVENT, (payload) => {
       console.log("Sending call request event to moderator room");
-      addCallRequest(payload.peerjsID);
-    });
-
-    socket.on(USER_REQUEST_CALL_EVENT, () => {
-      console.log("Sending call request event to moderator room");
-      addCallRequest(socket.id);
+      addCallRequest(socket.peerjs_id);
     });
 
     socket.on("disconnect", () => {
       deleteChatRequestAndSendUpdate(socket.userId);
-      deleteCallRequestAndSendUpdate(socket.id);
+      deleteCallRequestAndSendUpdate(socket.peerjs_id);
 
       // Inform of disconnection to all members (moderators) of this chat room
       io.to(`chat-${socket.userId}`).emit(CHAT_DISCONNECT_EVENT);

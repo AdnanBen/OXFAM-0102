@@ -1,0 +1,10 @@
+.graphWrapper {
+  display: grid;
+  column-gap: 15px;
+  row-gap: 15px;
+  grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+}
+
+.barGraph {
+  width: 100%;
+}

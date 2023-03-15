@@ -20,8 +20,7 @@ describe("GET /reports/completereports", () => {
     await Report.create({
       _id: id,
       name: "Test",
-      gender: "M",
-      body: "Test",
+      situation: "Test",
     });
 
     await request
@@ -34,8 +33,7 @@ describe("GET /reports/completereports", () => {
             {
               _id: id.toString(),
               name: "Test",
-              gender: "M",
-              body: "Test",
+              situation: "Test",
             },
           ],
         });
@@ -59,8 +57,7 @@ describe("GET /reports/completereports/:id", () => {
     await Report.create({
       _id: id,
       name: "Test",
-      gender: "M",
-      body: "Test",
+      situation: "Test",
     });
 
     await request
@@ -72,8 +69,7 @@ describe("GET /reports/completereports/:id", () => {
           report: {
             _id: id.toString(),
             name: "Test",
-            gender: "M",
-            body: "Test",
+            situation: "Test",
           },
         });
       });
@@ -87,15 +83,13 @@ describe("POST /reports/completereports", () => {
       .post("/reports/completereports/create")
       .send({
         name: "Test",
-        gender: "Test",
-        body: "",
+        situation: "",
       })
       .expect(400);
     await request
       .post("/reports/completereports/create")
       .send({
         name: "Test",
-        gender: "Test",
       })
       .expect(400);
   });
@@ -105,16 +99,14 @@ describe("POST /reports/completereports", () => {
       .post("/reports/completereports/create")
       .send({
         name: "Test",
-        body: "Test",
-        gender: "F",
+        situation: "Test",
       })
       .expect(201);
 
     const reports = await Report.find();
     expect(reports.length).toEqual(1);
     expect(reports[0].name).toEqual("Test");
-    expect(reports[0].body).toEqual("Test");
-    expect(reports[0].gender).toEqual("F");
+    expect(reports[0].situation).toEqual("Test");
   });
 });
 
@@ -136,8 +128,7 @@ describe("DELETE /reports/completereports/:id", () => {
     await Report.create({
       _id: id,
       name: "Test",
-      gender: "M",
-      body: "Test",
+      situation: "Test",
     });
 
     await request.delete(`/reports/completereports/delete/${id}`).expect(200);
