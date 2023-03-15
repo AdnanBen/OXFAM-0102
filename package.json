@@ -1,0 +1,5 @@
+{
+  "dependencies": {
+    "@types/react-table": "^7.7.14"
+  }
+}
