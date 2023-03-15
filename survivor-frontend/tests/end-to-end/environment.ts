@@ -44,7 +44,7 @@ declare global {
   var baseUrl: string;
   var page: Page;
   var browser: Browser;
-  var ports: {
+  var databasePorts: {
     [K in MicroserviceDatabases]: number;
   };
 }

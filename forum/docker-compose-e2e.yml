@@ -7,10 +7,10 @@ services:
       - postgres
     restart: unless-stopped
     environment:
-      POSTGRES_USERNAME: forum
-      POSTGRES_PASSWORD: forum
+      POSTGRES_USERNAME: USER
+      POSTGRES_PASSWORD: PASS
       DATABASE_NAME: forum
-      DATABASE_URL: "postgresql://forum:forum@postgres:5432/forum"
+      DATABASE_URL: "postgresql://USER:PASS@postgres:5432/forum"
       PORT: 3000
 
   postgres:
@@ -18,7 +18,7 @@ services:
     restart: unless-stopped
     environment:
       POSTGRES_DB: forum
-      POSTGRES_USER: forum
-      POSTGRES_PASSWORD: forum
+      POSTGRES_USER: USER
+      POSTGRES_PASSWORD: PASS
     ports:
       - 127.0.0.1:${E2E_DB_PORT}:5432

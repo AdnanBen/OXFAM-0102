@@ -108,7 +108,7 @@ app.get(
       where: { id: +postId, deleted: false },
       select: {
         comments: {
-          select: { parent_comment: true, body: true, created: true },
+          select: { id: true, parent_comment: true, body: true, created: true },
         },
         body: true,
         id: true,
