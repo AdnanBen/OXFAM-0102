@@ -21,7 +21,7 @@ export default function Trends() {
           <h2>Incomplete Reports</h2>
           <Report />
         </div>
-        {/*
+        
         <div className={styles.barChartContainer}> 
           <h2>Popular Resources</h2>
           <text className={styles.pink}>pink</text><text> - views in last week </text> <br />
@@ -39,7 +39,7 @@ export default function Trends() {
           <h2>Report Keywords</h2>
           <Table />
         </div>
-        */}
+        
       </main>
     </>
   )
