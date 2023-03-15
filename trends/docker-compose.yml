@@ -9,7 +9,6 @@ services:
       - 15672:15672
     volumes:
       - ./docker-volumes/rabbitmq/data/:/var/lib/rabbitmq/
-      - ./docker-volumes/rabbitmq/log/:/var/log/rabbitmq
 
   mongo:
     image: mongo:6

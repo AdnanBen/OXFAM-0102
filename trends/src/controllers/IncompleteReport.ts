@@ -16,6 +16,12 @@ const createIncompleteReport = (body: string) => {
   return incompleteReport.save();
 };
 
+const getAll = (req: Request, res: Response, next: NextFunction) => {
+  return IncompleteReport.find()
+    .then((incompleteReports) => res.status(201).json({ incompleteReports }))
+    .catch((error) => res.status(500).json({ error }));
+};
+
 export default {
   createIncompleteReport,
 };
