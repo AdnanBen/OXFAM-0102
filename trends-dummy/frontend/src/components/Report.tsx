@@ -39,8 +39,9 @@ export default function Report(){
                         <tr>
                             <td>{x.report_id}</td>
                             {x.report_data.map((y) => {
+                                const keys = Object.keys(y)
                                 return (
-                                    <td>{y[1]}</td>
+                                    <td>{y[keys[0]]}</td>
                                 );
                             })}
                         </tr>

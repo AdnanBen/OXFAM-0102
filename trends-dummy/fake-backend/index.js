@@ -45,14 +45,14 @@ app.get("/api/popularresources", (req, res) => {
   const data = [
     {
       resource_id: "1",
-      views_in_last_week: "200",
-      views_in_last_month: "500",
+      views_in_last_week: "100",
+      views_in_last_month: "400",
       views_all_time: "2000",
     },
 
     {
       resource_id: "2",
-      views_in_last_week: "200",
+      views_in_last_week: "300",
       views_in_last_month: "500",
       views_all_time: "3000",
     },
@@ -60,14 +60,14 @@ app.get("/api/popularresources", (req, res) => {
     {
       resource_id: "3",
       views_in_last_week: "200",
-      views_in_last_month: "500",
+      views_in_last_month: "700",
       views_all_time: "4000",
     },
 
     {
       resource_id: "4",
-      views_in_last_week: "200",
-      views_in_last_month: "500",
+      views_in_last_week: "400",
+      views_in_last_month: "600",
       views_all_time: "5000",
     },
   ];
