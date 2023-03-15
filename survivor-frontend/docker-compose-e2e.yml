@@ -1,0 +1,13 @@
+version: '3.8'
+
+services:
+ web:
+   build: .
+   environment:
+    NEXT_PUBLIC_PANIC_URL_PATH: /l.html
+    PORT: 3000
+    SSR_HOST: "http://host.docker.internal"
+    NEXTAUTH_SECRET: secret
+    NEXTAUTH_URL: "http://localhost"
+   extra_hosts:
+     - "host.docker.internal:host-gateway"

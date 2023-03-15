@@ -1,0 +1,8 @@
+version: "3.8"
+
+services:
+  api:
+    build: .
+    restart: unless-stopped
+    environment:
+      PORT: 3000

@@ -111,7 +111,11 @@ const Feed: NextPage<FeedProps> = ({ boards }) => {
                 </Link>
               );
             })}
-            {!boards?.length && <Trans>There are no boards yet.</Trans>}
+            {!boards?.length && (
+              <div>
+                <Trans>There are no boards yet.</Trans>
+              </div>
+            )}
           </>
         ) : (
           <Message type="error">

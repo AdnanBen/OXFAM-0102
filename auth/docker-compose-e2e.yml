@@ -1,0 +1,32 @@
+version: "3.8"
+
+services:
+  api:
+    build: .
+    depends_on:
+      - mongo
+    restart: unless-stopped
+    environment:
+      MONGO_ROOT_USERNAME: root
+      MONGO_ROOT_PASSWORD: root
+      MONGO_USERNAME: USER
+      MONGO_PASSWORD: PASS
+      DATABASE_NAME: auth
+      MONGO_URL: mongodb://USER:PASS@mongo:27017/auth
+      PORT: 3000
+      BASE_URL: http://localhost
+    ports:
+      - 127.0.0.1:${E2E_DB_PORT}:27017
+
+  mongo:
+    image: mongo:6
+    restart: unless-stopped
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: root
+      MONGO_USERNAME: USER
+      MONGO_PASSWORD: PASS
+      MONGO_INITDB_DATABASE: auth
+    command: --noscripting
+    volumes:
+      - ./mongo-init.sh:/docker-entrypoint-initdb.d/mongo-init.sh:ro
