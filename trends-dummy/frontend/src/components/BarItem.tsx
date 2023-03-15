@@ -30,19 +30,22 @@ export default function BarItem(){
                       className={styles.barItem}
                       style={{ height: `${(x.views_in_last_week / maxViews) * 100}%` }}
                     >
-                      {x.views_in_last_week}
+                      {x.views_in_last_week} - 
+                      Last week
                     </div>
                     <div
                       className={styles.barItem}
                       style={{ height: `${(x.views_in_last_month / maxViews) * 100}%` }}
                     >
-                      {x.views_in_last_month}
+                      {x.views_in_last_month} - 
+                      Last month
                     </div>
                     <div
                       className={styles.barItem}
                       style={{ height: `${(x.views_all_time / maxViews) * 100}%` }}
                     >
-                      {x.views_all_time}
+                      {x.views_all_time} - 
+                      All time
                     </div>
                     <div className={styles.barLabel}>resource_id: {x.resource_id}</div>
                   </div>

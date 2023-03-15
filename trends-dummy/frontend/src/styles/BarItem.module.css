@@ -9,8 +9,9 @@
   padding-right: 10px;
   height: 300px;
   border-left: 4px solid transparent;
-  border-bottom: 2px solid black; 
-  margin-bottom: 100px; 
+  border-bottom: 2px solid black;
+   
+  margin-bottom: 50px; 
 }
 
 .barItem {
@@ -34,7 +35,7 @@
 }
 
 .barItem:nth-child(2) {
-  background-color: rgb(83, 112, 83);
+  background-color: rgb(81, 129, 81);
 }
 
 .barItem:nth-child(3) {

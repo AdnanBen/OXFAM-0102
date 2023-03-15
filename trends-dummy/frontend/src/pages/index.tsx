@@ -24,9 +24,7 @@ export default function Trends() {
 
         <div className={styles.barChartContainer}>
           <h2>Popular Resources</h2>
-          <text className={styles.pink}>pink</text><text> - views in last week </text> <br />
-          <text className={styles.green}>green</text><text> - views in last month </text> <br />
-          <text className={styles.purple}>purple</text><text> - views all time </text> <br />
+          
           <input className={styles.search}
             type="text"
             placeholder={'Search Resource ID'}
