@@ -1,0 +1,58 @@
+.wrapper {
+  display: flex;
+  row-gap: 10px;
+  flex-direction: column;
+}
+
+.header {
+  margin-bottom: 10px;
+}
+
+.search {
+  padding: 6px 10px;
+  margin-top: 8px;
+  background: #ddd;
+  font-size: 17px;
+  border: solid black;
+  cursor: pointer;
+}
+
+.pink {
+  font-size: 16px;
+  color: lightpink;
+}
+
+.green {
+  font-size: 16px;
+  color: lightgreen;
+}
+
+.purple {
+  font-size: 16px;
+  color: plum;
+}
+
+.table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+.table th,
+.table td {
+  border: 1px solid #ddd;
+  text-align: left;
+  padding: 8px;
+  font-size: 16px;
+}
+
+.table tr:hover {
+  background-color: #ddd;
+}
+
+.table th {
+  padding-top: 12px;
+  padding-bottom: 12px;
+  text-align: left;
+  background-color: #44841a;
+  color: white;
+}

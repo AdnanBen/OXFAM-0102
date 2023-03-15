@@ -14,6 +14,7 @@ specifiers:
   '@typescript-eslint/eslint-plugin': ^5.47.1
   '@typescript-eslint/parser': ^5.47.1
   babel-plugin-macros: ^3.1.0
+  chart.js: ^4.2.1
   cross-env: ^7.0.3
   eslint: ^8.30.0
   eslint-config-next: 13.1.6
@@ -23,6 +24,7 @@ specifiers:
   peerjs: ^1.4.7
   po-csv: ^1.0.3
   react: 18.2.0
+  react-chartjs-2: ^5.2.0
   react-dom: 18.2.0
   react-quill: 2.0.0
   rsuite: ^5.26.0
@@ -39,12 +41,14 @@ dependencies:
   '@lingui/core': 3.17.2
   '@lingui/react': 3.17.2_react@18.2.0
   '@tanstack/react-query': 4.24.4_biqbaboplfbrettd7655fr4n2y
+  chart.js: 4.2.1
   formik: 2.2.9_react@18.2.0
   next: 13.1.6_kkcfeymwl5j7dlmofmanydspyi
   next-auth: 4.19.2_3vryta7zmbcsw4rrqf4axjqggm
   peerjs: 1.4.7
   po-csv: 1.0.3
   react: 18.2.0
+  react-chartjs-2: 5.2.0_t5yjg6ab35jnsudnh2qdighszm
   react-dom: 18.2.0_react@18.2.0
   react-quill: 2.0.0_biqbaboplfbrettd7655fr4n2y
   rsuite: 5.26.0_biqbaboplfbrettd7655fr4n2y
@@ -393,6 +397,10 @@ packages:
 
   /@juggle/resize-observer/3.4.0:
     resolution: {integrity: sha512-dfLbk+PwWvFzSxwk3n5ySL0hfBog779o8h68wK/7/APo/7cgyWp5jcXockbxdk5kFRkbeXWm4Fbi9FrdN381sA==}
+    dev: false
+
+  /@kurkle/color/0.3.2:
+    resolution: {integrity: sha512-fuscdXJ9G1qb7W8VdHi+IwRqij3lBkosAm4ydQtEmbY58OzHXqQhvlxqEkoz0yssNVn38bcpRWgA9PP+OGoisw==}
     dev: false
 
   /@lingui/babel-plugin-extract-messages/3.17.2_bb6asccdcsowz6e3kyqpllx74i:
@@ -1248,6 +1256,13 @@ packages:
   /chardet/0.7.0:
     resolution: {integrity: sha512-mT8iDcrh03qDGRRmoA2hmBJnxpllMR+0/0qlzjqZES6NdiWDcZkCNAk4rPFZ9Q85r27unkiNNg8ZOiwZXBHwcA==}
     dev: true
+
+  /chart.js/4.2.1:
+    resolution: {integrity: sha512-6YbpQ0nt3NovAgOzbkSSeeAQu/3za1319dPUQTXn9WcOpywM8rGKxJHrhS8V8xEkAlk8YhEfjbuAPfUyp6jIsw==}
+    engines: {pnpm: ^7.0.0}
+    dependencies:
+      '@kurkle/color': 0.3.2
+    dev: false
 
   /chokidar/3.5.1:
     resolution: {integrity: sha512-9+s+Od+W0VJJzawDma/gvBNQqkTiqYTWLuZoyAsivsI4AaWTCzHG06/TMjsf1cYe9Cb97UCEhjz7HvnPk2p/tw==}
@@ -3344,6 +3359,16 @@ packages:
   /ramda/0.27.2:
     resolution: {integrity: sha512-SbiLPU40JuJniHexQSAgad32hfwd+DRUdwF2PlVuI5RZD0/vahUco7R8vD86J/tcEKKF9vZrUVwgtmGCqlCKyA==}
     dev: true
+
+  /react-chartjs-2/5.2.0_t5yjg6ab35jnsudnh2qdighszm:
+    resolution: {integrity: sha512-98iN5aguJyVSxp5U3CblRLH67J8gkfyGNbiK3c+l1QI/G4irHMPQw44aEPmjVag+YKTyQ260NcF82GTQ3bdscA==}
+    peerDependencies:
+      chart.js: ^4.1.1
+      react: ^16.8.0 || ^17.0.0 || ^18.0.0
+    dependencies:
+      chart.js: 4.2.1
+      react: 18.2.0
+    dev: false
 
   /react-dom/18.2.0_react@18.2.0:
     resolution: {integrity: sha512-6IMTriUmvsjHUjNtEDudZfuDQUoWXVxKHhlEGSk81n4YFS+r/Kl99wXiwlVXtPBtJenozv2P+hxDsw9eA7Xo6g==}
