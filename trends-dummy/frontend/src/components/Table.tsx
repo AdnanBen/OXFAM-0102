@@ -25,12 +25,14 @@ export default function Table(){
                 </tr>
             </thead>
             <tbody>
-                {Object.values(reportkeywords).map((x) => {
+            {Object.values(reportkeywords)
+                .sort((a, b) => b.frequency - a.frequency) // sort in descending order of frequency
+                .map((x) => {
                     return (
-                        <tr>
-                            <td>{x.word}</td>
-                            <td>{x.frequency}</td>
-                        </tr>
+                    <tr key={x.word}>
+                        <td>{x.word}</td>
+                        <td>{x.frequency}</td>
+                    </tr>
                     );
                 })}
             </tbody>

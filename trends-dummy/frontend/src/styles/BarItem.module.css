@@ -1,40 +1,39 @@
 .barGraph {
-  position: relative;
-  vertical-align: bottom;
-  display: table-cell;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: flex-end;
   width: 50%;
   max-width: 500px;
   height: 300px;
-  padding-right: 50px;
-  margin-right: 50px;
   border-left: 4px solid transparent;
+  border-bottom: 2px solid black; 
+  margin-bottom: 10px; 
 }
 
 .barItem {
-  position: relative;
-  vertical-align: top;
-  display: table-cell;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
   width: 100px;
-  border-top: 2px solid black;
-  border-right: 10px solid black;
+  border-top: 2px solid transparent;
+  border-right: 10px solid transparent;
   border-left: 10px solid transparent;
-  left: 50%;
   background-color: #f2f2f2;
   text-align: center;
+  flex-grow: 1;
 }
 
+
 .barItem:nth-child(1) {
-  height: 25px;
   background-color: lightpink;
 }
 
 .barItem:nth-child(2) {
-  height: 100px;
   background-color: lightgreen;
 }
 
 .barItem:nth-child(3) {
-  height: 150px;
   background-color: plum;
 }
   
@@ -45,7 +44,7 @@
 .barLabel{
   position: absolute;
   text-align: center;
-  border-top: 2px solid black;
+  border-top: 2px solid transparent;
   width: 500px;
   left: 10%;
   color: darkred;
