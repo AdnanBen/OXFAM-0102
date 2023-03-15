@@ -24,9 +24,9 @@ export default function Report() {
                     })}
                     */}
             <th>Report ID</th>
-            <th>Data 1</th>
-            <th>Data 2</th>
-            <th>Data 3</th>
+            <th>Question 1</th>
+            <th>Question 2</th>
+            <th>Question 3</th>
           </tr>
         </thead>
         <tbody>
