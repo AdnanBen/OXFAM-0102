@@ -9,7 +9,7 @@ import incompleteReportController from "./controllers/IncompleteReport";
 import incompleteReportRoutes from "./routes/IncompleteReport";
 
 const app = express();
-const port = 8006;
+const port = config.server.port;
 
 app.use(express.json());
 app.use(cors());
