@@ -4,7 +4,7 @@ import { GetServerSideProps, type NextPage } from "next";
 import { useState } from "react";
 import { Button, IconButton, Input, Loader, Message, Modal } from "rsuite";
 import sanitizeHTML from "sanitize-html";
-import { env } from "../../env/env.mjs";
+import { env } from "../../env/env";
 import { getServerAuthSession } from "../../server/auth";
 import requireSSRTransition from "../../server/requireSSRTransition";
 import styles from "../../styles/Forum.module.css";
@@ -93,14 +93,14 @@ const Post: NextPage = ({ post }) => {
         {comments.map((c) => {
           return (
             <>
-              <div className={styles.commentWrapper} key={`comment-${c.id}`}>
+              <div className={styles.commentWrapper} key={`comment-${c.id}`} data-testid="comment-body">
                 {c.parent_comment && (
                   <div className={styles.parentComment}>
-                    <i>
+                    <i  data-testid="parent-comment-date">
                       <Trans comment="e.g., on [date]">on</Trans>{" "}
                       {new Date(c.parent_comment.created).toUTCString()}
                     </i>
-                    <p>{c.parent_comment.body}</p>
+                    <p data-testid="parent-comment-body">{c.parent_comment.body}</p>
                   </div>
                 )}
                 {c.body}{" "}
@@ -121,6 +121,7 @@ const Post: NextPage = ({ post }) => {
                   size="xs"
                   color="red"
                   onClick={() => reportComment(c.id)}
+                  data-testid="report-comment-btn"
                 >
                   Report comment?
                 </IconButton>
@@ -186,10 +187,10 @@ const Post: NextPage = ({ post }) => {
       {post ? (
         <>
           <div className={styles.postHeader}>
-            <h2>{post.title}</h2>
+            <h2 data-testid = "post-title" >{post.title}</h2>
           </div>
           <div className={styles.postHeaderInfo}>
-            <i className={styles.timestamp}>
+            <i className={styles.timestamp} data-testid = "post-date">
               {new Date(post.created).toUTCString()}
             </i>
             <IconButton
@@ -203,10 +204,11 @@ const Post: NextPage = ({ post }) => {
               Report post?
             </IconButton>
           </div>
-          <h3>{post.tag}</h3>
+          <h3 data-testid="post-tag">{post.tag}</h3>
           <p
             dangerouslySetInnerHTML={{ __html: sanitizeHTML(post.body) }}
             className={styles.body}
+            data-testid="post-body"
           />
 
           <div className={styles.commentsWrapper}>
@@ -217,6 +219,7 @@ const Post: NextPage = ({ post }) => {
                 size="sm"
                 className={styles.addCommentBtn}
                 onClick={() => setShowCommentDialog(true)}
+                data-testid="add-comment-button"
               >
                 <Trans>add comment?</Trans>
               </Button>

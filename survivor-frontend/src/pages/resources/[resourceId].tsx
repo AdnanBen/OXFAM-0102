@@ -2,7 +2,7 @@ import { Trans } from "@lingui/macro";
 import { GetServerSideProps } from "next";
 import { Message } from "rsuite";
 import sanitizeHTML from "sanitize-html";
-import { env } from "../../env/env.mjs";
+import { env } from "../../env/env";
 import { getServerAuthSession } from "../../server/auth";
 import requireSSRTransition from "../../server/requireSSRTransition";
 import styles from "../../styles/ArticlePage.module.css";
@@ -34,9 +34,14 @@ export default function ArticlePage({ article }) {
   if (article) {
     return (
       <main>
-        <h2>{article.title}</h2>
-        <div className={styles.category}>{article.category}</div>
-        <div dangerouslySetInnerHTML={{ __html: sanitizeHTML(article.body) }} />
+        <h2 data-testid="article-title">{article.title}</h2>
+        <div className={styles.category} data-testid="article-category">
+          {article.category}
+        </div>
+        <div
+          dangerouslySetInnerHTML={{ __html: sanitizeHTML(article.body) }}
+          data-testid="article-body"
+        />
       </main>
     );
   }
@@ -44,7 +49,9 @@ export default function ArticlePage({ article }) {
     <main>
       <Message type="error">
         <Trans>
-          There was an error loading the resource. Please try again later.
+          <div data-testid="no-article">
+            There was an error loading the resource. Please try again later.
+          </div>
         </Trans>
       </Message>
     </main>

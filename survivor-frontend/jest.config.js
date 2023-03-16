@@ -6,5 +6,12 @@ module.exports = {
       testEnvironment: "<rootDir>/tests/end-to-end/environment.ts",
       testMatch: ["<rootDir>/tests/end-to-end/**/*.test.ts"],
     },
+    {
+      testMatch: ["<rootDir>/tests/frontend/**/*.test.tsx"],
+      testEnvironment: 'jsdom',
+      moduleNameMapper: {
+        "\\.css$": "identity-obj-proxy",
+      },
+    },
   ],
 };
