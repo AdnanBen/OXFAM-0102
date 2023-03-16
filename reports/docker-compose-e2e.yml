@@ -13,7 +13,10 @@ services:
     command: --noscripting
     volumes:
       - ./mongo-init.sh:/docker-entrypoint-initdb.d/mongo-init.sh:ro
-
+    ports:
+      - 127.0.0.1:${E2E_DB_PORT}:27017
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
   api:
     build: .
     depends_on:
@@ -27,6 +30,4 @@ services:
       MONGO_URL: mongodb://USER:PASS@mongo:27017/reportdata
       PORT: 3000
       RABBITMQ_HOSTNAME: localhost
-    ports:
-      - 127.0.0.1:${E2E_DB_PORT}:27017
 

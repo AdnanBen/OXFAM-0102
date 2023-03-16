@@ -113,7 +113,6 @@ function FormPage(data: Values) {
                 { setSubmitting }: FormikHelpers<Values>
               ) => {
                 setTimeout(() => {
-                  alert(JSON.stringify(values, null));
                   submitForm(values);
                   setSubmitting(false);
                 }, 500);
