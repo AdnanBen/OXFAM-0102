@@ -5,7 +5,7 @@ import {
   type NextAuthOptions,
 } from "next-auth";
 import AzureADB2CProvider from "next-auth/providers/azure-ad-b2c";
-import { env } from "../env/env.mjs";
+import { env } from "../env/env";
 
 async function getAzureGraphAccessToken() {
   const params = new URLSearchParams({
