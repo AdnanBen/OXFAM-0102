@@ -1,5 +1,6 @@
 # XXX: Ensure any ports updated here are also updated in survivor-frontend/tests/end-to-end/environment.ts
 
+set -e
 echo 'Starting trends'
 cd trends
 E2E_DB_PORT=27017 docker-compose -f docker-compose-e2e.yml up -d --build --remove-orphans
@@ -38,6 +39,7 @@ echo 'Starting HAProxy Gateway'
 cd gateway && docker-compose -f docker-compose-e2e.yml up -d --build --remove-orphans
 cd ..
 
+set +e
 net=oxfamsurvivorscommunity
 docker network create $net
 docker network connect $net reports-api-1
@@ -49,3 +51,5 @@ docker network connect $net trends-api-1
 docker network connect $net trends-rabbitmq-1
 docker network connect $net survivor-frontend-web-1
 docker network connect $net gateway-proxy-1
+
+exit 0;
