@@ -47,7 +47,7 @@ describe("reports", () => {
   });
 
   test("cannot navigate to reports directly", async () => {
-    await page.goto(`${baseUrl}/reports`, { waitUntil: "networkidle0" });
+    await page.goto(`${baseUrl}/report`, { waitUntil: "networkidle0" });
     expect(page.url()).toContain("google.com");
     document = await getDocument(page);
     expect(await queryByText(document, "Oxfam Survivors Community")).toBe(null);
@@ -61,7 +61,7 @@ describe("reports", () => {
 
     const submitBtn = await findByText(document, "Submit");
     await submitBtn.click();
-    await new Promise((resolve) => setTimeout(resolve, 500));
+    await new Promise((resolve) => setTimeout(resolve, 1000));
 
     const reports = await client
       .db("reportdata")

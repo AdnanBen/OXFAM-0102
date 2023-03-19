@@ -29,5 +29,5 @@ services:
       DATABASE_NAME: reportdata
       MONGO_URL: mongodb://USER:PASS@mongo:27017/reportdata
       PORT: 3000
-      RABBITMQ_HOSTNAME: localhost
+      RABBITMQ_HOSTNAME: trends-rabbitmq-1
 
