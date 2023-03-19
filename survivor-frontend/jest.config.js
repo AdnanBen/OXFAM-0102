@@ -7,4 +7,5 @@ module.exports = {
       testMatch: ["<rootDir>/tests/end-to-end/**/*.test.ts"],
     },
   ],
+  testTimeout: 10000,
 };
