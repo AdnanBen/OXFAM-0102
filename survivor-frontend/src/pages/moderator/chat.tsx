@@ -5,6 +5,7 @@ import { Loader, Button } from "rsuite";
 import io, { Socket } from "socket.io-client";
 import Chat from "../../components/Chat";
 import { useRouter } from "next/router";
+import { requireAuth } from "../../server/requireAuth";
 
 export const getServerSideProps: GetServerSideProps = (context) =>
   requireAuth(context, "moderator");

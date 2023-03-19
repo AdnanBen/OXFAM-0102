@@ -32,7 +32,7 @@ beforeEach(async () => {
 
 describe("moderator resources", () => {
   test("loads successfully", async () => {
-    await findByText(document, "Create new resources", { exact: false });
+    await findByText(document, "Create new resource", { exact: false });
     await findByText(document, "View resources", { exact: false });
   });
 

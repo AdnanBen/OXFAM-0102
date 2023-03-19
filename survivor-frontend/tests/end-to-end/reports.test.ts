@@ -68,7 +68,6 @@ describe("reports", () => {
       .collection("reports")
       .find()
       .toArray();
-    console.log(reports);
 
     expect(reports).toHaveLength(1);
     expect(reports[0]!._id).toBeTruthy();
