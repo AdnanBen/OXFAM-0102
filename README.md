@@ -1,4 +1,6 @@
 # OXFAM-0102
+[![Build](https://github.com/AdnanBen/OXFAM-0102/actions/workflows/build-microservices.yml/badge.svg)](https://github.com/AdnanBen/OXFAM-0102/actions/workflows/build-microservices.yml)
+[![Deployment](https://github.com/AdnanBen/OXFAM-0102/actions/workflows/deploy.yml/badge.svg)](https://github.com/AdnanBen/OXFAM-0102/actions/workflows/deploy.yml)
 
 ## Developing locally
 
