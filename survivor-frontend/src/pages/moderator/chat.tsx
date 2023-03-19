@@ -6,6 +6,9 @@ import io, { Socket } from "socket.io-client";
 import Chat from "../../components/Chat";
 import { useRouter } from "next/router";
 
+export const getServerSideProps: GetServerSideProps = (context) =>
+  requireAuth(context, "moderator");
+
 // TODO: when auth is working, as soon as moderator logs in, they should be 'listening'
 const ModeratorChat = ({
   socket,
