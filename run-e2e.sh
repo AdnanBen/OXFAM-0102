@@ -39,6 +39,8 @@ echo 'Starting HAProxy Gateway'
 cd gateway && docker-compose -f docker-compose-e2e.yml up -d --build --remove-orphans
 cd ..
 
+docker ps
+
 set +e
 net=oxfamsurvivorscommunity
 docker network create $net
