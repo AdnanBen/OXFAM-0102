@@ -1,4 +1,3 @@
-import { getDocument, queries } from "pptr-testing-library";
 import {
   afterAll,
   beforeAll,
@@ -7,17 +6,12 @@ import {
   expect,
   test,
 } from "@jest/globals";
-import { ElementHandle } from "puppeteer";
 import { MongoClient } from "mongodb";
+import { getDocument, queries } from "pptr-testing-library";
+import { ElementHandle } from "puppeteer";
 import { login } from "../helpers";
 
-const {
-  findByText,
-  findAllByText,
-  queryByText,
-  queryAllByText,
-  findAllByRole,
-} = queries;
+const { findByText, findAllByRole } = queries;
 
 const client = new MongoClient(
   `mongodb://USER:PASS@localhost:${databasePorts.resources}/resources`
@@ -137,7 +131,7 @@ describe("moderator resources", () => {
     const inputs = await findAllByRole(document, "textbox");
     await inputs[0]!.type("Test Resource Title");
     await inputs[1]!.type("Violence");
-    
+
     const bodyInput = await page.$("[contenteditable=true]");
     expect(bodyInput).toBeTruthy();
     await bodyInput!.type("Test Resource Body");

@@ -1,14 +1,14 @@
-import { getDocument, queries } from "pptr-testing-library";
 import {
   afterAll,
   beforeAll,
   beforeEach,
   describe,
   expect,
-  test,
+  test
 } from "@jest/globals";
-import { ElementHandle } from "puppeteer";
 import { MongoClient } from "mongodb";
+import { getDocument, queries } from "pptr-testing-library";
+import { ElementHandle } from "puppeteer";
 
 const {
   findByText,

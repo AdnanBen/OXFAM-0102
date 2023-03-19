@@ -1,13 +1,5 @@
+import { beforeEach, describe, expect, jest, test } from "@jest/globals";
 import { getDocument, queries } from "pptr-testing-library";
-import {
-  afterAll,
-  beforeAll,
-  beforeEach,
-  describe,
-  expect,
-  jest,
-  test,
-} from "@jest/globals";
 import { ElementHandle } from "puppeteer";
 import { login } from "./helpers";
 

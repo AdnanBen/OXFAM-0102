@@ -1,4 +1,3 @@
-import { getDocument, queries } from "pptr-testing-library";
 import {
   afterAll,
   beforeAll,
@@ -7,11 +6,11 @@ import {
   expect,
   test,
 } from "@jest/globals";
-import { ElementHandle } from "puppeteer";
 import { MongoClient } from "mongodb";
+import { getDocument, queries } from "pptr-testing-library";
+import { ElementHandle } from "puppeteer";
 
-const { findByText, findAllByText, queryByText, queryAllByText, findByRole } =
-  queries;
+const { findByText, findAllByText, queryByText, queryAllByText } = queries;
 
 const client = new MongoClient(
   `mongodb://USER:PASS@localhost:${databasePorts.resources}/resources`

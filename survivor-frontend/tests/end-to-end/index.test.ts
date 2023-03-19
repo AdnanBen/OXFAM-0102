@@ -1,5 +1,5 @@
-import { getDocument, queries, waitFor } from "pptr-testing-library";
 import { beforeEach, describe, expect, test } from "@jest/globals";
+import { getDocument, queries } from "pptr-testing-library";
 import { ElementHandle } from "puppeteer";
 const { findByText, findAllByText, queryAllByText } = queries;
 
