@@ -240,10 +240,14 @@ const ModeratorDashboard: NextPage = () => {
     };
   }, [socket]);
 
-  return socket && peerjsConn ? (
-    <ModeratorChat socket={socket} peerjsConn={peerjsConn} />
-  ) : (
-    <Loader center backdrop />
+  return (
+    <main>
+      {socket && peerjsConn ? (
+        <ModeratorChat socket={socket} peerjsConn={peerjsConn} />
+      ) : (
+        <Loader center backdrop />
+      )}
+    </main>
   );
 };
 
