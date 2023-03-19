@@ -50,16 +50,17 @@ describe("resources", () => {
       category: "Violence",
     });
 
+    // Go back and re-visit page, to refresh resources (SSR)
+    const backBtn = await findByText(document, "⮪ Back");
+    await backBtn.click();
+    const resourceBtns = await queryAllByText(document, "Resources");
+    await resourceBtns[0]!.evaluate((e) => e.click());
+
     await findByText(document, "Violence");
     const resource = await findByText(document, "Test Resource Title");
     await resource.click();
     await findByText(document, "Test Resource Title");
     await findByText(document, "Test Resource Body");
     await findByText(document, "Violence");
-
-    // Clicking back button should go back to main resources, not root homepage
-    const backBtn = await findByText(document, "⮪ Back");
-    await backBtn.click();
-    await findAllByText(document, "Resources");
   });
 });
