@@ -1,31 +1,22 @@
-# OXFAM-0102
+# Oxfam Survivors Community
+
 [![Build](https://github.com/AdnanBen/OXFAM-0102/actions/workflows/build-microservices.yml/badge.svg)](https://github.com/AdnanBen/OXFAM-0102/actions/workflows/build-microservices.yml)
 [![Deployment](https://github.com/AdnanBen/OXFAM-0102/actions/workflows/deploy.yml/badge.svg)](https://github.com/AdnanBen/OXFAM-0102/actions/workflows/deploy.yml)
 
-## Developing locally
+<img src="./.github/images/oxfam.png" align="right"
+alt="Oxfam logo" width="20%" style="margin-left:10px">
 
-1. Start all the databases for all the microservices, and Next.js server:
+Survivors of domestic abuse can often feel isolated and lonely. Oxfam Survivors Community is a privacy-oriented online platform for victims of domestic abuse in Malawi. We target Malawi specifically because it has one of the highest rates of domestic abuse in the world and education surrounding abuse is not prevalent in Malawi.
 
-   ```bash
-   ./run.sh
-   ```
+This project was designed in collaboration with [Oxfam](https://www.oxfam.org/en).
 
-2. In a new shell, change to your microservice's directory:
+The platform uses a microservice architecture and full documentation (inc. testing and deployment) can be found at [the documentation site](https://adnanben.github.io/OXFAM-0102/), or within the [`./docs`](./docs) folder.
 
-   ```bash
-   cd [microservice]
-   ```
+## Features
 
-3. Update your `.env` file to make sure any URLs say `localhost` and update the database port to be the one hardcoded in [`./run.sh`](./run.sh) for your microservice
-
-4. Run your individual microservice API using:
-
-   ```bash
-   docker-compose up -d
-   ```
-
-5. Access the frontend at [http://localhost](http://localhost)
-
-For each microservice you want to test locally, you will need to run their own API in a new shell!
-
-**DO NOT COMMIT CHANGES TO `.env` UNLESS YOU NEED TO.**
+- Anonymous forum for survivors to voice concerns, engage in discussions, & receive feedback from the community without needing to register or leave a trace.
+- Live one-to-one text/voice chatting with trained Oxfam-appointed moderators to receive advice.
+- Self-reporting functionality to record details about issues along with personal details so action can be taken by moderators and administrators.
+- Free self-help and educational resources to help survivors tackle and recover from abuse.
+- Trend monitoring to collect anonymised location metadata & report statistics to detect temporal/geographic spikes in abuse to help Oxfam focus relief efforts.
+- Panic button to immediately leave the website in emergencies.
