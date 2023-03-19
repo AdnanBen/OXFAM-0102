@@ -71,11 +71,20 @@ jobs:
         with:
           node-version: 18
 
+      - uses: dorny/paths-filter@v2
+        id: filter
+        with:
+          filters: |
+            microservice_changed:
+              - './${{ matrix.microservice }}/**'
+
       - name: Install dependencies
+        if: steps.filter.outputs.microservice_changed == 'true'
         working-directory: ./${{ matrix.microservice }}
         run: npm install
 
       - name: Run tests
+        if: steps.filter.outputs.microservice_changed == 'true'
         working-directory: ./${{ matrix.microservice }}
         run: npm run test
 
