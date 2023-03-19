@@ -104,4 +104,24 @@ describe("home page", () => {
     // Should go back to homepage after clicking Back
     await findByText(document, "a safe-space for survivors", { exact: false });
   });
+
+  [
+    "",
+    "/forum-flags",
+    "/article-submission-form",
+    "/resources",
+    "/chat",
+    "/reports",
+  ].forEach((path) => {
+    test(`cannot navigate to moderator page: ${path}`, async () => {
+      await page.goto(`${baseUrl}/moderator${path}`, {
+        waitUntil: "networkidle0",
+      });
+      expect(!page.url().includes("moderator"));
+      document = await getDocument(page);
+      await findByText(document, "a safe-space for survivors", {
+        exact: false,
+      });
+    });
+  });
 });
