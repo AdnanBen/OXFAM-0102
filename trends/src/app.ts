@@ -7,7 +7,9 @@ import amqplib from "amqplib";
 import { config } from "./config/config";
 
 import incompleteReportController from "./controllers/IncompleteReport";
+import resourceViewController from "./controllers/ResourceView";
 import incompleteReportRoutes from "./routes/IncompleteReport";
+import resourceViewRoutes from "./routes/ResourceView";
 
 const app = express();
 const port = config.server.port;
@@ -36,12 +38,18 @@ function consumeIncompleteReportData(msg: any) {
   incompleteReportController.createIncompleteReport(msg.content);
 }
 
+function consumeResourceViewsData(msg: any) {
+  console.log("Received", msg.content);
+  resourceViewController.createResourceView(msg.content);
+}
+
 async function listen() {
   const conn = await amqplib.connect("amqp://localhost");
   const channel = await conn.createChannel();
 
   // Declare the queues you want to consume from
   await channel.assertQueue("incomplete_reports", { durable: false });
+  await channel.assertQueue("resource_views", { durable: false });
   // await channel.assertQueue("my_queue_2", { durable: false });
 
   console.log("Waiting for messages...");
@@ -50,6 +58,10 @@ async function listen() {
   await channel.consume(
     "incomplete_reports",
     consumeIncompleteReportData.bind({ channel })
+  );
+  await channel.consume(
+    "resource_views",
+    consumeResourceViewsData.bind({ channel })
   );
   // await channel.consume(
   //   "queue_2",
@@ -168,6 +180,8 @@ app.get("/reportkeywords", (req, res) => {
   ];
   res.json(data);
 });
+
+app.use("/resourceViews", resourceViewRoutes);
 
 app.listen(port, "0.0.0.0", () => {
   console.log(config.mongo.url);

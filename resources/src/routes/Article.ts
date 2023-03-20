@@ -6,6 +6,7 @@ const router = express.Router();
 router.get("/resources", controller.getAll);
 router.get("/resources/titles", controller.getAllTitles);
 router.get("/resources/:articleId", controller.getArticle);
+router.post('/resources/:articleId/view', controller.recordView);
 
 router.post("/moderator/resources", controller.createArticle);
 

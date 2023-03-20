@@ -1,11 +1,15 @@
+import React, { useEffect } from "react";
 import { Trans } from "@lingui/macro";
 import { GetServerSideProps } from "next";
 import { Message } from "rsuite";
 import sanitizeHTML from "sanitize-html";
 import { env } from "../../env/env";
 import { getServerAuthSession } from "../../server/auth";
+import { fetchJsonApi } from "../../utils/helpers";
 import requireSSRTransition from "../../server/requireSSRTransition";
 import styles from "../../styles/ArticlePage.module.css";
+
+const ARTICLE_VIEW_TIMER_SECONDS = 10;
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   // Only allow access through the homepage, not directly
@@ -31,6 +35,19 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 };
 
 export default function ArticlePage({ article }) {
+  const handleView = async () => {
+    fetchJsonApi(`/api/resources/${article._id}/view`, {
+      method: "POST",
+    }).catch((err) => {
+      console.log('Failed to record view', err);
+    });
+  }
+
+  useEffect(() => {
+    const timeout = setTimeout(handleView, ARTICLE_VIEW_TIMER_SECONDS*1000)
+    return () => clearTimeout(timeout)
+  }, []);
+
   if (article) {
     return (
       <main>
