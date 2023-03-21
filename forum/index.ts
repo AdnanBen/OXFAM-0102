@@ -1,3 +1,4 @@
+import * as appInsights from "applicationinsights"
 import express, { Request, Response } from "express";
 import dotenv from "dotenv";
 import bodyParser from "body-parser";
@@ -13,6 +14,23 @@ function catchErrors(fn) {
 }
 
 dotenv.config();
+appInsights.setup(process.env.APPLICATIONINSIGHTS_CONNECTION_STRING)
+.setAutoDependencyCorrelation(true)
+.setAutoCollectRequests(true)
+.setAutoCollectPerformance(true, true)
+.setAutoCollectExceptions(true)
+.setAutoCollectDependencies(true)
+.setAutoCollectConsole(true, true)
+.setUseDiskRetryCaching(true)
+.setAutoCollectPreAggregatedMetrics(true)
+.setSendLiveMetrics(false)
+.setAutoCollectHeartbeat(false)
+.setAutoCollectIncomingRequestAzureFunctions(true)
+.setInternalLogging(true, true)
+.setDistributedTracingMode(appInsights.DistributedTracingModes.AI_AND_W3C)
+.enableWebInstrumentation(false)
+.start();
+
 const app = express();
 
 app.use(bodyParser.json());
