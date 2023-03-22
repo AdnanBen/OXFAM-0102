@@ -48,13 +48,15 @@ const Post: NextPage = ({ post }) => {
   const newcommentref = useRef(null);
   const reportcommentref = useRef(null);
   const reportpostref = useRef(null);
+  const [reportcommentclicked, setreportcommentclicked] = useState(false);
+  const [reportpostclicked, setreportpostclicked] = useState(false);
+  const [newcommentclicked, setnewcommentclicked] = useState(false);
 
   const reportPost = async () => {
-    console.log(cftokenreportpost);
     await fetchJsonApi(`/api/forum/posts/${post.id}/flags`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({cftoken: cftokenreportpost}),
+      body: JSON.stringify({cftoken: cftokenreportpost, validated: reportpostclicked}),
     })
       .then(() => {
         toaster.push(
@@ -73,14 +75,16 @@ const Post: NextPage = ({ post }) => {
           </Message>
         );
       });
-    //reportpostref.current?.reset();
+    // Remove turnstile widget after first validation and set a state variable to ensure we aren't doing any extra CAPTCHA validations unneccesarily
+    reportpostref.current?.remove();
+    setreportpostclicked(true);
   };
 
   const reportComment = async (commentId: string) => {
     await fetchJsonApi(`/api/forum/comments/${commentId}/flags`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({cftoken: cftokenreportcomment}),
+      body: JSON.stringify({cftoken: cftokenreportcomment, validated: reportcommentclicked}),
     })
       .then(() => {
         toaster.push(
@@ -99,10 +103,15 @@ const Post: NextPage = ({ post }) => {
           </Message>
         );
       });
-    //reportcommentref.current?.reset();
+    reportcommentref.current?.remove();
+    setreportcommentclicked(true);
   };
 
   const renderComments = (comments) => {
+    // If there are comments to render the report post button does not play nicely with turnstile so we forcibly remove and rerender it to ensure it works
+    reportpostref.current?.remove();
+    reportpostref.current?.render();
+    
     return (
       <div>
         {comments.map((c) => {
@@ -128,7 +137,7 @@ const Post: NextPage = ({ post }) => {
                 >
                   ↲
                 </span>
-                <Turnstile siteKey='0x4AAAAAAADFU0upW0ILDjJG' onSuccess={setcftokenreportcomment}/>
+                <Turnstile ref={reportcommentref} siteKey='0x4AAAAAAADFU0upW0ILDjJG' onSuccess={(cftokenreportcomment) => setcftokenreportcomment(cftokenreportcomment)}/>
                 <IconButton
                   className={styles.reportBtn}
                   disabled={!cftokenreportcomment}
@@ -164,20 +173,21 @@ const Post: NextPage = ({ post }) => {
                   const formData = new FormData(e.currentTarget);
                   const data = { body: formData.get("body") };
                   if (replyToComment) data.parentCommentId = replyToComment;
-
+                  console.log("")
                   const res = await fetch(
                     `/api/forum/posts/${post.id}/comments`,
                     {
                       method: "POST",
                       headers: { "Content-Type": "application/json" },
-                      body: JSON.stringify({...data, cftoken: cftokennewcomment}),
+                      body: JSON.stringify({...data, cftoken: cftokennewcomment, validated: newcommentclicked}),
                     }
                   ).then((res) => res.json());
-
                   if (!res.error) {
                     setShowCommentDialog(false);
                     setReplyToComment(null);
                     refresh();
+                    setnewcommentclicked(true);
+                    newcommentref.current?.remove();
                   }
                 }}
               >
@@ -191,7 +201,7 @@ const Post: NextPage = ({ post }) => {
                   />
                 </label>
                 <br />
-                <Turnstile siteKey='0x4AAAAAAADFU0upW0ILDjJG' onSuccess={setcftokennewcomment}/>
+                <Turnstile ref={newcommentref} siteKey='0x4AAAAAAADFU0upW0ILDjJG' onSuccess={(cftokennewcomment) => setcftokennewcomment(cftokennewcomment)}/>
                 <Button type="submit" appearance="primary" disabled={!cftokennewcomment}>
                   <Trans>Post comment</Trans>
                 </Button>
@@ -210,7 +220,7 @@ const Post: NextPage = ({ post }) => {
             <i className={styles.timestamp}>
               {new Date(post.created).toUTCString()}
             </i>
-            <Turnstile siteKey='0x4AAAAAAADFU0upW0ILDjJG' onSuccess={setcftokenreportpost}/>
+            <Turnstile ref={reportpostref} siteKey='0x4AAAAAAADFU0upW0ILDjJG' onSuccess={(cftokenreportpost) => setcftokenreportpost(cftokenreportpost)}/>
             <IconButton
               className={styles.reportBtn}
               disabled={!cftokenreportpost}

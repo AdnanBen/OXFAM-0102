@@ -86,7 +86,7 @@ const NewPost: NextPage<NewPostProps> = ({ boards }) => {
           fetch("/api/forum/posts", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({...formData, cftoken}),
+            body: JSON.stringify({...formData, cftoken: cftoken}),
           })
             .then((res) => res.json())
             .then((res) => {
