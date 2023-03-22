@@ -1,3 +1,4 @@
+import * as appInsights from "applicationinsights";
 import express, { Request, Response, Router } from "express";
 import http from "http";
 import mongoose from "mongoose";
@@ -5,6 +6,23 @@ import mongoose from "mongoose";
 import { config } from "./config/config";
 
 import articleRoutes from "./routes/Article";
+
+appInsights.setup(process.env.APPLICATIONINSIGHTS_CONNECTION_STRING)
+.setAutoDependencyCorrelation(true)
+.setAutoCollectRequests(true)
+.setAutoCollectPerformance(true, true)
+.setAutoCollectExceptions(true)
+.setAutoCollectDependencies(true)
+.setAutoCollectConsole(true, true)
+.setUseDiskRetryCaching(true)
+.setAutoCollectPreAggregatedMetrics(true)
+.setSendLiveMetrics(false)
+.setAutoCollectHeartbeat(false)
+.setAutoCollectIncomingRequestAzureFunctions(true)
+.setInternalLogging(true, true)
+.setDistributedTracingMode(appInsights.DistributedTracingModes.AI_AND_W3C)
+.enableWebInstrumentation(false)
+.start();
 
 const app = express();
 const port = config.server.port;

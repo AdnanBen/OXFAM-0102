@@ -14,7 +14,7 @@ services:
     volumes:
       - ./mongo-init.sh:/docker-entrypoint-initdb.d/mongo-init.sh:ro
     ports:
-      - 127.0.0.1:${E2E_DB_PORT}:27017
+      - ${E2E_DB_PORT}:27017
     extra_hosts:
       - "host.docker.internal:host-gateway"
   api:
@@ -29,5 +29,5 @@ services:
       DATABASE_NAME: reportdata
       MONGO_URL: mongodb://USER:PASS@mongo:27017/reportdata
       PORT: 3000
-      RABBITMQ_HOSTNAME: localhost
+      RABBITMQ_HOSTNAME: trends-rabbitmq-1
 

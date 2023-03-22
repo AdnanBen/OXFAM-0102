@@ -1,3 +1,4 @@
+import * as appInsights from "applicationinsights";
 import express, { Request, Response, Router } from "express";
 import mongoose from "mongoose";
 import cors from "cors";

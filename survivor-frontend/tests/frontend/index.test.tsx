@@ -11,6 +11,7 @@ describe("Home Testing", () => {
     jest.resetModules();
     jest.resetAllMocks();
   });
+
   it("Should render the descriptions and options correctly", () => {
     render(<Home />, { wrapper: ReactTestingLibraryProvider });
 

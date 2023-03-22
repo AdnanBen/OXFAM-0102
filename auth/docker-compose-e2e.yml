@@ -16,7 +16,7 @@ services:
       PORT: 3000
       BASE_URL: http://localhost
     ports:
-      - 127.0.0.1:${E2E_DB_PORT}:27017
+      - ${E2E_DB_PORT}:27017
 
   mongo:
     image: mongo:6

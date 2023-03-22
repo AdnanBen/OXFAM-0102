@@ -11,6 +11,7 @@ describe("Resources Article Testing", () => {
     jest.resetModules();
     jest.resetAllMocks();
   });
+
   it("Should render article correctly.", () => {
     const articleMock = {
       title: "article one",

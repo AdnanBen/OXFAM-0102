@@ -7,10 +7,12 @@ import Board from '../../src/pages/forum/board';
 jest.mock("../../src/server/auth", () => ({}));
 
 describe("Board Testing", () => {
+
   afterAll(() => {
     jest.resetModules();
     jest.resetAllMocks();
   });
+
   it("Should render posts and the board name correctly.", () => {
     const postMock = [
         {

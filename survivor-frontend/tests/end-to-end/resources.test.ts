@@ -1,4 +1,3 @@
-import { getDocument, queries } from "pptr-testing-library";
 import {
   afterAll,
   beforeAll,
@@ -7,11 +6,11 @@ import {
   expect,
   test,
 } from "@jest/globals";
-import { ElementHandle } from "puppeteer";
 import { MongoClient } from "mongodb";
+import { getDocument, queries } from "pptr-testing-library";
+import { ElementHandle } from "puppeteer";
 
-const { findByText, findAllByText, queryByText, queryAllByText, findByRole } =
-  queries;
+const { findByText, findAllByText, queryByText, queryAllByText } = queries;
 
 const client = new MongoClient(
   `mongodb://USER:PASS@localhost:${databasePorts.resources}/resources`
@@ -51,16 +50,17 @@ describe("resources", () => {
       category: "Violence",
     });
 
+    // Go back and re-visit page, to refresh resources (SSR)
+    const backBtn = await findByText(document, "⮪ Back");
+    await backBtn.click();
+    const resourceBtns = await queryAllByText(document, "Resources");
+    await resourceBtns[0]!.evaluate((e) => e.click());
+
     await findByText(document, "Violence");
     const resource = await findByText(document, "Test Resource Title");
     await resource.click();
     await findByText(document, "Test Resource Title");
     await findByText(document, "Test Resource Body");
     await findByText(document, "Violence");
-
-    // Clicking back button should go back to main resources, not root homepage
-    const backBtn = await findByText(document, "⮪ Back");
-    await backBtn.click();
-    await findAllByText(document, "Resources");
   });
 });

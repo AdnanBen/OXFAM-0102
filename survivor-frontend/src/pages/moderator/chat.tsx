@@ -5,6 +5,10 @@ import { Loader, Button } from "rsuite";
 import io, { Socket } from "socket.io-client";
 import Chat from "../../components/Chat";
 import { useRouter } from "next/router";
+import { requireAuth } from "../../server/requireAuth";
+
+export const getServerSideProps: GetServerSideProps = (context) =>
+  requireAuth(context, "moderator");
 
 // TODO: when auth is working, as soon as moderator logs in, they should be 'listening'
 const ModeratorChat = ({
@@ -240,10 +244,14 @@ const ModeratorDashboard: NextPage = () => {
     };
   }, [socket]);
 
-  return socket && peerjsConn ? (
-    <ModeratorChat socket={socket} peerjsConn={peerjsConn} />
-  ) : (
-    <Loader center backdrop />
+  return (
+    <main>
+      {socket && peerjsConn ? (
+        <ModeratorChat socket={socket} peerjsConn={peerjsConn} />
+      ) : (
+        <Loader center backdrop />
+      )}
+    </main>
   );
 };
 

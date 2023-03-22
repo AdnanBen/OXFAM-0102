@@ -8,10 +8,12 @@ import { ReactTestingLibraryProvider } from "./helpers";
 jest.mock("../../src/server/auth", () => ({}));
 
 describe("Forum Testing", () => {
+
   afterAll(() => {
     jest.resetModules();
     jest.resetAllMocks();
   });
+
   it("Should render create post button correctly.", () => {
     const boardsMock = [
       {

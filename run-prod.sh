@@ -1,3 +1,4 @@
+set -e
 echo 'Starting forum'
 cd forum && docker-compose -f docker-compose-prod.yml pull && docker-compose -f docker-compose-prod.yml up -d --remove-orphans
 cd ..
@@ -30,6 +31,7 @@ echo 'Starting HAProxy Gateway'
 cd gateway && docker-compose -f docker-compose-prod.yml up -d --remove-orphans
 cd ..
 
+set +e
 net=oxfamsurvivorscommunity
 docker network create $net
 docker network connect $net reports-api-1
@@ -41,3 +43,5 @@ docker network connect $net trends-api-1
 docker network connect $net trends-rabbitmq-1
 docker network connect $net survivor-frontend-web-1
 docker network connect $net gateway-proxy-1
+
+exit 0;

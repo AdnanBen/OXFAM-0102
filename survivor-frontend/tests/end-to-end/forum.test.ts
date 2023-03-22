@@ -1,4 +1,3 @@
-import { getDocument, queries } from "pptr-testing-library";
 import {
   afterAll,
   beforeAll,
@@ -7,8 +6,9 @@ import {
   expect,
   test,
 } from "@jest/globals";
-import { ElementHandle } from "puppeteer";
 import { Client } from "pg";
+import { getDocument, queries } from "pptr-testing-library";
+import { ElementHandle } from "puppeteer";
 
 const { findByText, findAllByText, queryByText, queryAllByText, findByRole } =
   queries;
