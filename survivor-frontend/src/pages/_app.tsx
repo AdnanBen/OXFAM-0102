@@ -17,7 +17,7 @@ import styles from "../styles/App.module.css";
 
 const ApplicationInsightsConnectionString = process.env.NEXT_PUBLIC_AZURE_APPLICATIONINSIGHTS_CONNECTION_STRING
 if (ApplicationInsightsConnectionString == undefined) {
-  throw new Error("NEXT_PUBLIC_AZURE_APPLICATIONINSIGHTS_CONNECTION_STRING environment variable missing");
+  console.error("NEXT_PUBLIC_AZURE_APPLICATIONINSIGHTS_CONNECTION_STRING environment variable missing");
 }
 
 
