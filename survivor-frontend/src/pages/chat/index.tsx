@@ -8,6 +8,7 @@ import { Peer } from "peerjs";
 import Chat from "../../components/Chat";
 import requireSSRTransition from "../../server/requireSSRTransition";
 import { callbackify } from "util";
+import { useRouter } from "next/router";
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   // Only allow access through the homepage, not directly
@@ -24,6 +25,7 @@ const UserChat = ({
   socket: Socket;
   peerjsConn: any;
 }) => {
+  const router = useRouter();
   const [chatRequestSent, setChatRequestSent] = useState(false);
   const [callRequestSent, setCallRequestSent] = useState(false);
 
@@ -61,7 +63,7 @@ const UserChat = ({
 
   const InitialCallRequest = () => {
     console.log("requesting call");
-    socket.emit("request call", { peerjsID });
+    socket.emit("request call");
 
     const timerId = setInterval(RepeatingRequestCall, 5000);
     setCallRequestTimerId(timerId);
@@ -72,7 +74,7 @@ const UserChat = ({
   const RepeatingRequestCall = () => {
     console.log("outside");
     console.log(activeCall);
-    socket.emit("request call", { peerjsID });
+    socket.emit("request call");
   };
 
   const EndCall = () => {
@@ -81,11 +83,13 @@ const UserChat = ({
 
   const CleanUpCall = () => {
     alert("call ended");
-    window.location.reload();
+    router.replace("/");
   };
 
   useEffect(() => {
-    console.log("effect", socket);
+    console.log("sending mod check");
+    socket.emit("moderator availability check");
+
     socket.on("session", (payload) => {
       console.log("session event", payload);
       window.sessionStorage.setItem("sessionId", payload.sessionId);
@@ -118,6 +122,8 @@ const UserChat = ({
     peerjsConn.on("open", function (id) {
       console.log("My peer ID is: " + id);
       setPeerjsID(id);
+      console.log("emitting" + id);
+      socket.emit("peerjs-id", { id });
 
       // answer incoming calls and create a media stream for the call
       peerjsConn.on("call", (call) => {
@@ -218,14 +224,19 @@ const UserChat = ({
 
   if (moderatorsAvailable) {
     return (
-      <div>
-        <button onClick={InitialRequestChat}>
-          <Trans>Request Chat</Trans>
-        </button>
-        <button onClick={InitialCallRequest}>
-          <Trans>Request Call</Trans>
-        </button>
-      </div>
+      <>
+        <div>
+          <button onClick={InitialRequestChat}>
+            <Trans>🖊️ Request Chat</Trans>
+          </button>
+        </div>
+        <br />
+        <div>
+          <button onClick={InitialCallRequest}>
+            <Trans>📞 Request Call</Trans>
+          </button>
+        </div>
+      </>
     );
   }
 
@@ -249,6 +260,7 @@ const ChatPage: NextPage = () => {
     );
 
     return () => {
+      console.log("unmount socket");
       socket?.close();
     };
   }, []);
@@ -258,7 +270,7 @@ const ChatPage: NextPage = () => {
       console.log(socket);
       import("peerjs").then(({ default: Peer }) => {
         // Do your stuff here
-        const peer = new Peer(socket.id, {
+        const peer = new Peer({
           host: window.location.host,
           port: 443,
           path: "/api/voiceserver",
@@ -269,6 +281,7 @@ const ChatPage: NextPage = () => {
     }
     return () => {
       if (peerjsConn) {
+        console.log("unmount peerjs");
         peerjsConn.destroy();
       }
     };

@@ -4,7 +4,7 @@ services:
   rabbitmq:
     image: rabbitmq:3-management-alpine
     ports:
-      - 127.0.0.1:5672:5672
+      - 5672:5672
 
   mongo:
     image: mongo:6
@@ -33,4 +33,4 @@ services:
       DATABASE_PORT: 27017
       PORT: 3000
     ports:
-      - 127.0.0.1:${E2E_DB_PORT}:27017
+      - ${E2E_DB_PORT}:27017

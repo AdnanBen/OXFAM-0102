@@ -19,6 +19,6 @@ export const config = {
     url: MONGO_URL,
   },
   server: {
-    port: SERVER_PORT,
+    port: +SERVER_PORT!,
   },
 };

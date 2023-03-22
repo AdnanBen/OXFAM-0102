@@ -4,6 +4,11 @@ import React, { useEffect, useRef, useState } from "react";
 import { Loader, Button } from "rsuite";
 import io, { Socket } from "socket.io-client";
 import Chat from "../../components/Chat";
+import { useRouter } from "next/router";
+import { requireAuth } from "../../server/requireAuth";
+
+export const getServerSideProps: GetServerSideProps = (context) =>
+  requireAuth(context, "moderator");
 
 // TODO: when auth is working, as soon as moderator logs in, they should be 'listening'
 const ModeratorChat = ({
@@ -13,6 +18,7 @@ const ModeratorChat = ({
   socket: Socket;
   peerjsConn: any;
 }) => {
+  const router = useRouter();
   const [chatRequests, setChatRequests] = useState({});
   const [callRequests, setCallRequests] = useState({});
 
@@ -27,8 +33,8 @@ const ModeratorChat = ({
     socket.emit("accept chat", { userId });
   };
 
-  const acceptCall = (userId) => {
-    socket.emit("accept call", { userId });
+  const acceptCall = (peerjs_id) => {
+    socket.emit("accept call", { peerjs_id });
   };
 
   const EndCall = () => {
@@ -37,7 +43,7 @@ const ModeratorChat = ({
 
   const CleanUpCall = () => {
     alert("call ended");
-    window.location.reload();
+    router.replace("/");
   };
 
   // FIXME, this won't always run, race condition because of having to spawn peerjs
@@ -74,12 +80,13 @@ const ModeratorChat = ({
 
     socket.on("call accepted", (payload) => {
       // setChattingWithUser(payload.userId);
-      callPeer(payload.userId);
+      callPeer(payload.peerjs_id);
     });
 
     // wait for the 'open' event to be emitted, indicating that the connection is ready
-    peerjsConn.on("open", (peerId) => {
-      console.log(`Connected with ID ${peerId}`);
+    peerjsConn.on("open", (id) => {
+      console.log(`Connected with ID ${id}`);
+      socket.emit("peerjs-id", { id });
     });
 
     // get user media
@@ -179,14 +186,14 @@ const ModeratorChat = ({
       )}
       {isListening && (
         <ul>
-          {Object.keys(callRequests).map((userId) => (
-            <li key={`chat-request-${userId}`}>
-              {userId}{" "}
+          {Object.keys(callRequests).map((peerjs_id) => (
+            <li key={`chat-request-${peerjs_id}`}>
+              {peerjs_id}{" "}
               <Button
                 size="xs"
                 appearance="ghost"
                 color="green"
-                onClick={() => acceptCall(userId)}
+                onClick={() => acceptCall(peerjs_id)}
               >
                 Accept Call
               </Button>
@@ -221,7 +228,7 @@ const ModeratorDashboard: NextPage = () => {
       console.log(socket);
       import("peerjs").then(({ default: Peer }) => {
         // Do your stuff here
-        const peer = new Peer(socket.id, {
+        const peer = new Peer({
           host: window.location.host,
           port: 443,
           path: "/api/voiceserver",
@@ -237,10 +244,14 @@ const ModeratorDashboard: NextPage = () => {
     };
   }, [socket]);
 
-  return socket && peerjsConn ? (
-    <ModeratorChat socket={socket} peerjsConn={peerjsConn} />
-  ) : (
-    <Loader center backdrop />
+  return (
+    <main>
+      {socket && peerjsConn ? (
+        <ModeratorChat socket={socket} peerjsConn={peerjsConn} />
+      ) : (
+        <Loader center backdrop />
+      )}
+    </main>
   );
 };
 

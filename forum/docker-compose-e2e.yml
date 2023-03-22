@@ -21,4 +21,4 @@ services:
       POSTGRES_USER: USER
       POSTGRES_PASSWORD: PASS
     ports:
-      - 127.0.0.1:${E2E_DB_PORT}:5432
+      - ${E2E_DB_PORT}:5432

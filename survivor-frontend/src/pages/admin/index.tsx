@@ -5,8 +5,8 @@ import { Button, Panel } from "rsuite";
 import { requireAuth } from "../../server/requireAuth";
 import styles from "../../styles/ModeratorDashboard.module.css";
 
-export const getServerSideProps: GetServerSideProps = (context) =>
-  requireAuth(context, "administrator");
+// export const getServerSideProps: GetServerSideProps = (context) =>
+//   requireAuth(context, "administrator");
 
 const AdminDashboard: NextPage = () => {
   return (

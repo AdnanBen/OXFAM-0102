@@ -1,4 +1,3 @@
-import { getDocument, queries } from "pptr-testing-library";
 import {
   afterAll,
   beforeAll,
@@ -7,8 +6,9 @@ import {
   expect,
   test,
 } from "@jest/globals";
-import { ElementHandle } from "puppeteer";
 import { Client } from "pg";
+import { getDocument, queries } from "pptr-testing-library";
+import { ElementHandle } from "puppeteer";
 
 const { findByText, findAllByText, queryByText, queryAllByText, findByRole } =
   queries;
@@ -43,9 +43,6 @@ describe("forum", () => {
     await findByText(document, "Please select a category to find support", {
       exact: false,
     });
-
-    const posts = await client.query("SELECT * FROM posts");
-    console.log(posts);
   });
 
   test("cannot navigate to forum directly", async () => {
@@ -93,7 +90,7 @@ describe("forum", () => {
       .then((res) => res.rows);
     expect(posts).toHaveLength(1);
     expect(posts[0].title).toEqual("Post Title");
-    expect(posts[0].body).toEqual("Test Body");
+    expect(posts[0].body).toEqual("<p>Test Body</p>");
     expect(posts[0].board_id).toEqual(1);
   });
 
