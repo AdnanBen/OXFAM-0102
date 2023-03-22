@@ -7,6 +7,10 @@ import Home from "../../src/pages";
 import { ReactTestingLibraryProvider } from "./helpers";
 
 describe("Home Testing", () => {
+  afterAll(() => {
+    jest.resetModules();
+    jest.resetAllMocks();
+  });
   it("Should render the descriptions and options correctly", () => {
     render(<Home />, { wrapper: ReactTestingLibraryProvider });
 

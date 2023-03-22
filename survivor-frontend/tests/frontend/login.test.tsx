@@ -6,6 +6,10 @@ import Login from "../../src/pages/login";
 import { ReactTestingLibraryProvider } from "./helpers";
 
 describe("Login Testing", () => {
+  afterAll(() => {
+    jest.resetModules();
+    jest.resetAllMocks();
+  });
   it("Should render the login button correctly", () => {
     render(<Login />, { wrapper: ReactTestingLibraryProvider });
     const loginButton = screen.getByTestId("login-button");
