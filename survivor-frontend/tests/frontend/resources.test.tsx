@@ -7,6 +7,12 @@ import { ReactTestingLibraryProvider } from "./helpers";
 jest.mock("../../src/server/auth", () => ({}));
 
 describe("Resources Testing", () => {
+
+  afterAll(() => {
+    jest.resetModules();
+    jest.resetAllMocks();
+  });
+
   it("Should render articles correctly.", () => {
     const articlesMock = [
       {

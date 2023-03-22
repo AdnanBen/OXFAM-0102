@@ -9,6 +9,7 @@ import CredentialsProvider from "next-auth/providers/credentials";
 import { env } from "../env/env.mjs";
 
 
+
 async function getAzureGraphAccessToken() {
   const params = new URLSearchParams({
     client_id: env.AZURE_AD_B2C_CLIENT_ID,

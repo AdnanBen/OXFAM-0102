@@ -12,6 +12,13 @@ describe("Forum Testing", () => {
   beforeEach(() => {
     useRouterRefresh.mockReturnValue("");
   });
+
+
+  afterAll(() => {
+    jest.resetModules();
+    jest.resetAllMocks();
+  });
+
   it("Should render post and its properties correctly.", () => {
     const postMock = {
       id: 1,
