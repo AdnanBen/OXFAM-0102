@@ -156,6 +156,7 @@ describe("GET /posts/:id", () => {
           created: created.toISOString(),
           comments: [
             {
+              id: 1,
               parent_comment: null,
               body: "Test",
               created: created.toISOString(),

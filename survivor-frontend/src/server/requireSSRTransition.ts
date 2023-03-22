@@ -1,6 +1,6 @@
 import { GetServerSidePropsContext, PreviewData, Redirect } from "next";
 import { ParsedUrlQuery } from "querystring";
-import { env } from "../env/env.mjs";
+import { env } from "../env/env";
 
 export default (
   context: GetServerSidePropsContext<ParsedUrlQuery, PreviewData>

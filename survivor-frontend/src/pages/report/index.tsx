@@ -98,7 +98,7 @@ function FormPage(data: Values) {
       </Head>
 
       <main className={styles.reportspage}>
-        <h3>Make a Report</h3>
+        <h3 data-testid="report-header">Make a Report</h3>
 
         <div className={styles.main_container}>
           <div className={styles.form_container}>
@@ -113,14 +113,13 @@ function FormPage(data: Values) {
                 { setSubmitting }: FormikHelpers<Values>
               ) => {
                 setTimeout(() => {
-                  alert(JSON.stringify(values, null));
                   submitForm(values);
                   setSubmitting(false);
                 }, 500);
               }}
             >
               <Form>
-                <p>
+                <p data-testid="report-name-input">
                   <label htmlFor="firstName">
                     <Trans>Name</Trans>
                     <br />
@@ -128,7 +127,7 @@ function FormPage(data: Values) {
                   </label>
                 </p>
 
-                <p>
+                <p data-testid="report-situation-input">
                   <label htmlFor="situation">
                     <Trans>Situation</Trans>
                     <br />
@@ -138,7 +137,7 @@ function FormPage(data: Values) {
 
                 <br />
 
-                <div className={styles.button_container}>
+                <div className={styles.button_container} data-testid="submit-report-btn">
                   <Button type="submit" appearance="primary">
                     <Trans>Submit</Trans>
                   </Button>

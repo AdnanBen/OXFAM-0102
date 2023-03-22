@@ -4,6 +4,11 @@ import React, { useEffect, useRef, useState } from "react";
 import { Loader, Button } from "rsuite";
 import io, { Socket } from "socket.io-client";
 import Chat from "../../components/Chat";
+import { useRouter } from "next/router";
+import { requireAuth } from "../../server/requireAuth";
+
+export const getServerSideProps: GetServerSideProps = (context) =>
+  requireAuth(context, "moderator");
 
 // TODO: when auth is working, as soon as moderator logs in, they should be 'listening'
 const ModeratorChat = ({
@@ -13,6 +18,7 @@ const ModeratorChat = ({
   socket: Socket;
   peerjsConn: any;
 }) => {
+  const router = useRouter();
   const [chatRequests, setChatRequests] = useState({});
   const [callRequests, setCallRequests] = useState({});
 
@@ -37,7 +43,7 @@ const ModeratorChat = ({
 
   const CleanUpCall = () => {
     alert("call ended");
-    window.location.reload();
+    router.replace("/");
   };
 
   // FIXME, this won't always run, race condition because of having to spawn peerjs
@@ -238,10 +244,14 @@ const ModeratorDashboard: NextPage = () => {
     };
   }, [socket]);
 
-  return socket && peerjsConn ? (
-    <ModeratorChat socket={socket} peerjsConn={peerjsConn} />
-  ) : (
-    <Loader center backdrop />
+  return (
+    <main>
+      {socket && peerjsConn ? (
+        <ModeratorChat socket={socket} peerjsConn={peerjsConn} />
+      ) : (
+        <Loader center backdrop />
+      )}
+    </main>
   );
 };
 

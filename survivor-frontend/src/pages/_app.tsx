@@ -6,6 +6,7 @@ import { I18nProvider } from "@lingui/react";
 import { type Session } from "next-auth";
 import { SessionProvider } from "next-auth/react";
 import { type AppType } from "next/app";
+import { ApplicationInsights } from '@microsoft/applicationinsights-web'
 
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -14,12 +15,27 @@ import Footer from "../components/Footer";
 import Header from "../components/Header";
 import styles from "../styles/App.module.css";
 
+const ApplicationInsightsConnectionString = process.env.NEXT_PUBLIC_AZURE_APPLICATIONINSIGHTS_CONNECTION_STRING
+if (ApplicationInsightsConnectionString == undefined) {
+  console.error("NEXT_PUBLIC_AZURE_APPLICATIONINSIGHTS_CONNECTION_STRING environment variable missing");
+}
+
+
 const MyApp: AppType<{ session: Session | null }> = ({
   Component,
   pageProps: { session, ...pageProps },
 }) => {
   const { locale } = useRouter();
+  // load logging on browser
+  useEffect(() => {
+    const importApplicationInsights = async () => {
+        const appInsights: ApplicationInsights = await (await import("../logging/AzureAppInsights")).getAppInsightsObject(ApplicationInsightsConnectionString!);
+        appInsights.trackPageView();
+    };
+    importApplicationInsights();
+  }, []);
 
+  // load locales on browser
   useEffect(() => {
     const activeLocale = locale ?? "en";
     import(`../locales/${activeLocale}/messages`)

@@ -10,9 +10,11 @@ const port = process.env.PORT;
 
 app.use(express.json());
 
-app.listen(port, () => {
-  return console.log(`Express is listening at http://localhost:${port}`);
-});
+if (process.env.NODE_ENV !== "test") {
+  app.listen(port, () => {
+    return console.log(`Express is listening at http://localhost:${port}`);
+  });
+}
 
 mongoose
   .connect(process.env.MONGO_URL!, { retryWrites: true, w: "majority" })
@@ -24,10 +26,10 @@ mongoose
     console.log("Not Connected", err);
   });
 
-app.use(express.json());
-
 app.post("/pendingRegistrations", controllers.createPendingRegistration);
 app.post(
   "/pendingRegistrations/approve/:token",
   controllers.acceptPendingRegistration
 );
+
+export { app };

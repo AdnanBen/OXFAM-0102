@@ -5,7 +5,7 @@ import { useRouter } from "next/router";
 import { useState } from "react";
 import "react-quill/dist/quill.snow.css";
 import { Button, Form, SelectPicker } from "rsuite";
-import { env } from "../../env/env.mjs";
+import { env } from "../../env/env";
 import { getServerAuthSession } from "../../server/auth";
 import requireSSRTransition from "../../server/requireSSRTransition";
 import { BoardType } from "./index";
@@ -55,7 +55,6 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     },
   };
 };
-
 
 type NewPostProps = {
   boards: BoardType[];

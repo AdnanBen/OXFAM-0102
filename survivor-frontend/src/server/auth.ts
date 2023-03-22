@@ -5,7 +5,10 @@ import {
   type NextAuthOptions,
 } from "next-auth";
 import AzureADB2CProvider from "next-auth/providers/azure-ad-b2c";
+import CredentialsProvider from "next-auth/providers/credentials";
 import { env } from "../env/env.mjs";
+
+
 
 async function getAzureGraphAccessToken() {
   const params = new URLSearchParams({
@@ -104,6 +107,33 @@ export const authOptions: NextAuthOptions = {
     },
   },
 };
+
+// There's no great way to test authentication
+// https://github.com/nextauthjs/next-auth/discussions/2053#discussioncomment-1191016
+// We create a Credentials Provider which accepts any email address to login as a moderator
+// This ONLY exists in test environments
+if (env.NODE_ENV === "test") {
+  authOptions.providers.push(
+    CredentialsProvider({
+      name: "credentials",
+      credentials: {
+        email: {
+          label: "Email",
+          type: "Email",
+        },
+      },
+      authorize() {
+        return {
+          id: "test",
+          email: "test@example.com",
+          name: "Name",
+          role: "Moderator",
+          image: null,
+        };
+      },
+    })
+  );
+}
 
 /**
  * Wrapper for `getServerSession` so that you don't need to import the

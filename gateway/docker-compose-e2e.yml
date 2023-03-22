@@ -1,0 +1,14 @@
+version: "3.8"
+
+services:
+  proxy:
+    image: haproxytech/haproxy-alpine:2.7
+    restart: unless-stopped
+    ports:
+      - "80:80"
+    environment:
+      JWT_SECRET: secret
+    volumes:
+      - ./haproxy-e2e.cfg:/usr/local/etc/haproxy/haproxy.cfg:ro
+    extra_hosts:
+      - "host.docker.internal:host-gateway"

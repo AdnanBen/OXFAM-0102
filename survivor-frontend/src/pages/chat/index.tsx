@@ -8,6 +8,7 @@ import { Peer } from "peerjs";
 import Chat from "../../components/Chat";
 import requireSSRTransition from "../../server/requireSSRTransition";
 import { callbackify } from "util";
+import { useRouter } from "next/router";
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   // Only allow access through the homepage, not directly
@@ -24,6 +25,7 @@ const UserChat = ({
   socket: Socket;
   peerjsConn: any;
 }) => {
+  const router = useRouter();
   const [chatRequestSent, setChatRequestSent] = useState(false);
   const [callRequestSent, setCallRequestSent] = useState(false);
 
@@ -81,7 +83,7 @@ const UserChat = ({
 
   const CleanUpCall = () => {
     alert("call ended");
-    window.location.reload();
+    router.replace("/");
   };
 
   useEffect(() => {
@@ -258,6 +260,7 @@ const ChatPage: NextPage = () => {
     );
 
     return () => {
+      console.log("unmount socket");
       socket?.close();
     };
   }, []);
@@ -278,6 +281,7 @@ const ChatPage: NextPage = () => {
     }
     return () => {
       if (peerjsConn) {
+        console.log("unmount peerjs");
         peerjsConn.destroy();
       }
     };

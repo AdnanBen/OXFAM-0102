@@ -6,30 +6,114 @@ on:
 
 # Workflow template from https://docs.github.com/en/actions/publishing-packages/publishing-docker-images#publishing-images-to-github-packages
 jobs:
-  test:
-    name: Test microservices
+  build:
+    name: Build microservices
     runs-on: ubuntu-latest
     permissions:
       contents: read
     strategy:
       matrix:
-        microservice: ["forum", "reports", "resources"]
+        microservice:
+          [
+            "auth",
+            "chat",
+            "forum",
+            "reports",
+            "resources",
+            "trends",
+            "survivor-frontend",
+          ]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - uses: dorny/paths-filter@v2
+        id: filter
+        with:
+          filters: |
+            microservice_changed:
+              - './${{ matrix.microservice }}/**'
+
+      - name: Log in to the GitHub Container registry
+        if: steps.filter.outputs.microservice_changed == 'true'
+        uses: docker/login-action@f054a8b539a109f9f41c372932f1ae047eff08c9
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Extract metadata (tags, labels) for Docker
+        id: meta
+        uses: docker/metadata-action@98669ae865ea3cffbcbaa878cf57c20bbf1c6c38
+        with:
+          images: ghcr.io/${{ github.repository }}/${{ matrix.microservice }}
+
+      - name: Build Docker image
+        uses: docker/build-push-action@ad44023a93711e3deb337508980b4b5e9bcdc5dc
+        with:
+          context: ./${{ matrix.microservice }}
+          load: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+
+  test:
+    name: Test microservices
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    strategy:
+      matrix:
+        microservice: ["forum", "reports", "resources", "auth"]
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
         with:
           node-version: 18
 
+      - uses: dorny/paths-filter@v2
+        id: filter
+        with:
+          filters: |
+            microservice_changed:
+              - './${{ matrix.microservice }}/**'
+
       - name: Install dependencies
+        if: steps.filter.outputs.microservice_changed == 'true'
         working-directory: ./${{ matrix.microservice }}
         run: npm install
 
       - name: Run tests
+        if: steps.filter.outputs.microservice_changed == 'true'
         working-directory: ./${{ matrix.microservice }}
         run: npm run test
 
-  build:
-    name: Build microservices
+  test_e2e:
+    name: Test microservices end-to-end
+    needs: test
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 18
+
+      - name: Start Docker containers
+        run: ./run-e2e.sh
+
+      - name: Install dependencies
+        working-directory: ./survivor-frontend
+        run: npm install
+
+      - name: Run E2E tests
+        working-directory: ./survivor-frontend
+        run: npm run test:e2e
+
+  push:
+    name: Push Docker images
+    needs: test_e2e
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -72,7 +156,7 @@ jobs:
         with:
           images: ghcr.io/${{ github.repository }}/${{ matrix.microservice }}
 
-      - name: Build and push Docker image
+      - name: Build Docker image
         if: steps.filter.outputs.microservice_changed == 'true'
         uses: docker/build-push-action@ad44023a93711e3deb337508980b4b5e9bcdc5dc
         with:

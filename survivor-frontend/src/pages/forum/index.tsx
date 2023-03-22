@@ -3,7 +3,7 @@ import { GetServerSideProps, type NextPage } from "next";
 import Head from "next/head";
 import Link from "next/link";
 import { Button, Message } from "rsuite";
-import { env } from "../../env/env.mjs";
+import { env } from "../../env/env";
 import { getServerAuthSession } from "../../server/auth";
 import requireSSRTransition from "../../server/requireSSRTransition";
 import styles from "../../styles/Forum.module.css";
@@ -17,12 +17,12 @@ export type PostType = {
 
 export const Post = ({ post }: { post: PostType }) => {
   return (
-    <Link href={`/forum/${post.id}`} className={styles.post_link} replace>
+    <Link href={`/forum/${post.id}`} className={styles.post_link} replace data-testid="post-link">
       <div className={styles.post}>
         <p className={styles.post_id}>{post.id}</p>
-        <p className={styles.post_title}>{post.title}</p>
-        <p className={styles.post_tag}>{post.tag}</p>
-        <p className={styles.post_date}>
+        <p className={styles.post_title} data-testid="post-title">{post.title}</p>
+        <p className={styles.post_tag} data-testid="post-tag">{post.tag}</p>
+        <p className={styles.post_date} data-testid="post-date">
           {new Date(post.created).toUTCString()}
         </p>
       </div>
@@ -82,7 +82,12 @@ const Feed: NextPage<FeedProps> = ({ boards }) => {
         <h2>
           <Trans>Forum</Trans>
 
-          <Link href="/forum/new" className={styles.createPostBtn} replace>
+          <Link
+            href="/forum/new"
+            className={styles.createPostBtn}
+            replace
+            data-testid="forum-create-link"
+          >
             <Button appearance="primary" size="sm">
               <Trans>Create new post?</Trans>
             </Button>
@@ -102,6 +107,7 @@ const Feed: NextPage<FeedProps> = ({ boards }) => {
                   href={`/forum/board?boardId=${b.id}`}
                   replace
                   className={styles.board_wrapper}
+                  data-testid="forum-boards-link"
                 >
                   <div>
                     <div className={styles.board_button}>{b.name}</div>
@@ -111,14 +117,18 @@ const Feed: NextPage<FeedProps> = ({ boards }) => {
                 </Link>
               );
             })}
-            {!boards?.length && <Trans>There are no boards yet.</Trans>}
+            {!boards?.length && (
+              <div >
+                <Trans>There are no boards yet.</Trans>
+              </div>
+            )}
           </>
         ) : (
-          <Message type="error">
-            <Trans>
-              There was an error loading the boards. Please try again later.
-            </Trans>
-          </Message>
+            <Message type="error">
+              <Trans>
+                There was an error loading the boards. Please try again later.
+              </Trans>
+            </Message>
         )}
       </main>
     </>
