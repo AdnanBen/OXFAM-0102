@@ -3,7 +3,7 @@ import { signIn } from "next-auth/react";
 import Head from "next/head";
 import { Button } from "rsuite";
 
-const Home: NextPage = () => {
+const Login: NextPage = () => {
   return (
     <>
       <Head>
@@ -17,6 +17,7 @@ const Home: NextPage = () => {
           appearance="ghost"
           style={{ margin: "auto", display: "block" }}
           onClick={() => signIn("azure-ad-b2c")}
+          data-testid="login-button"
         >
           Login as moderator/administrator
         </Button>
@@ -25,4 +26,4 @@ const Home: NextPage = () => {
   );
 };
 
-export default Home;
+export default Login;
