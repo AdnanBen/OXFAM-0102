@@ -39,7 +39,7 @@ function FormPage(data: Values) {
     };
 
     const response = await fetch(
-      "/api/reports/completereports/create",
+      "/api/reports/completereports/",
       requestOptions
     );
     await response.json();
@@ -72,10 +72,7 @@ function FormPage(data: Values) {
       situation: raw,
     };
 
-    const response = fetch(
-      "/api/reports/incompletereports/create",
-      requestOptions
-    );
+    const response = fetch("/api/reports/incompletereports/", requestOptions);
   }
 
   useEffect(() => {
@@ -137,7 +134,10 @@ function FormPage(data: Values) {
 
                 <br />
 
-                <div className={styles.button_container} data-testid="submit-report-btn">
+                <div
+                  className={styles.button_container}
+                  data-testid="submit-report-btn"
+                >
                   <Button type="submit" appearance="primary">
                     <Trans>Submit</Trans>
                   </Button>

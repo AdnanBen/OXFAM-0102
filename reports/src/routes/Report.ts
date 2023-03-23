@@ -3,11 +3,11 @@ import controller from "../controllers/Report";
 
 const router = express.Router();
 
-router.post("/create", controller.createReport);
+router.post("/", controller.createReport);
 
-router.get("/get/:reportId", controller.getReport);
-router.get("/getall", controller.getAll);
+router.get("/:reportId", controller.getReport);
+router.get("/", controller.getAll);
 
-router.delete("/delete/:reportId", controller.deleteReport);
+router.delete("/:reportId", controller.deleteReport);
 
 export default router;

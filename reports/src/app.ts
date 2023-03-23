@@ -7,22 +7,23 @@ import { config } from "./config/config";
 import reportRoutes from "./routes/Report";
 import incompleteReportRoutes from "./routes/IncompleteReport";
 
-appInsights.setup(process.env.APPLICATIONINSIGHTS_CONNECTION_STRING)
-.setAutoDependencyCorrelation(true)
-.setAutoCollectRequests(true)
-.setAutoCollectPerformance(true, true)
-.setAutoCollectExceptions(true)
-.setAutoCollectDependencies(true)
-.setAutoCollectConsole(true, true)
-.setUseDiskRetryCaching(true)
-.setAutoCollectPreAggregatedMetrics(true)
-.setSendLiveMetrics(false)
-.setAutoCollectHeartbeat(false)
-.setAutoCollectIncomingRequestAzureFunctions(true)
-.setInternalLogging(true, true)
-.setDistributedTracingMode(appInsights.DistributedTracingModes.AI_AND_W3C)
-.enableWebInstrumentation(false)
-.start();
+appInsights
+  .setup(process.env.APPLICATIONINSIGHTS_CONNECTION_STRING)
+  .setAutoDependencyCorrelation(true)
+  .setAutoCollectRequests(true)
+  .setAutoCollectPerformance(true, true)
+  .setAutoCollectExceptions(true)
+  .setAutoCollectDependencies(true)
+  .setAutoCollectConsole(true, true)
+  .setUseDiskRetryCaching(true)
+  .setAutoCollectPreAggregatedMetrics(true)
+  .setSendLiveMetrics(false)
+  .setAutoCollectHeartbeat(false)
+  .setAutoCollectIncomingRequestAzureFunctions(true)
+  .setInternalLogging(true, true)
+  .setDistributedTracingMode(appInsights.DistributedTracingModes.AI_AND_W3C)
+  .enableWebInstrumentation(false)
+  .start();
 
 const app = express();
 const port = config.server.port;
