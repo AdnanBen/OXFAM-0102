@@ -38,9 +38,10 @@ function consumeIncompleteReportData(msg: any) {
   incompleteReportController.createIncompleteReport(msg.content);
 }
 
-function consumeResourceViewsData(msg: any) {
+function consumeResourceViewsData(this: any, msg: any) {
   console.log("Received", msg.content);
   resourceViewController.createResourceView(msg.content);
+  this.channel.ack(msg);
 }
 
 async function listen() {
