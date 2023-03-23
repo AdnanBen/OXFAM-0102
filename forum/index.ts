@@ -15,7 +15,8 @@ function catchErrors(fn) {
 }
 
 dotenv.config();
-appInsights.setup(process.env.APPLICATIONINSIGHTS_CONNECTION_STRING)
+if (process.env.NODE_ENV === 'production') {
+  appInsights.setup(process.env.APPLICATIONINSIGHTS_CONNECTION_STRING)
 .setAutoDependencyCorrelation(true)
 .setAutoCollectRequests(true)
 .setAutoCollectPerformance(true, true)
@@ -31,6 +32,7 @@ appInsights.setup(process.env.APPLICATIONINSIGHTS_CONNECTION_STRING)
 .setDistributedTracingMode(appInsights.DistributedTracingModes.AI_AND_W3C)
 .enableWebInstrumentation(false)
 .start();
+}
 
 const app = express();
 
