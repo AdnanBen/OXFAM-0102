@@ -17,6 +17,7 @@ const createIncompleteReport = (body: string) => {
 };
 
 const getAll = (req: Request, res: Response, next: NextFunction) => {
+  console.log("here");
   return IncompleteReport.find()
     .then((incompleteReports) => res.status(201).json({ incompleteReports }))
     .catch((error) => res.status(500).json({ error }));
@@ -24,4 +25,5 @@ const getAll = (req: Request, res: Response, next: NextFunction) => {
 
 export default {
   createIncompleteReport,
+  getAll,
 };

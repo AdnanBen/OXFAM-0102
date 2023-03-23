@@ -6,9 +6,9 @@ export default function Report() {
   const [incompleteReports, setIncompleteReports] = useState({});
 
   useEffect(() => {
-    fetch("/api/trends/incompletereports")
+    fetch("/api/trends/incompletereports/getall")
       .then((response) => response.json())
-      .then((json) => setIncompleteReports(json));
+      .then((json) => setIncompleteReports(json.incompleteReports));
   }, []);
 
   return (
@@ -26,18 +26,17 @@ export default function Report() {
             <th>Report ID</th>
             <th>Question 1</th>
             <th>Question 2</th>
-            <th>Question 3</th>
           </tr>
         </thead>
         <tbody>
           {Object.values(incompleteReports).map((x) => {
+            let data = x.info;
+            let arr = data.split(";");
             return (
               <tr>
-                <td>{x.report_id}</td>
-                {x.report_data.map((y) => {
-                  const keys = Object.keys(y);
-                  return <td>{y[keys[0]]}</td>;
-                })}
+                <td>{x._id}</td>
+                <td>{arr[0].split(":")[1]}</td>
+                <td>{arr[1].split(":")[1]}</td>
               </tr>
             );
           })}

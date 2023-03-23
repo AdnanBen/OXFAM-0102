@@ -69,7 +69,7 @@ function FormPage(data: Values) {
     var requestOptions = {
       method: "POST",
       headers: myHeaders,
-      situation: raw,
+      body: raw,
     };
 
     const response = fetch("/api/reports/incompletereports/", requestOptions);

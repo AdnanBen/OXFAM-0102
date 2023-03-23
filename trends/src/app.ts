@@ -8,11 +8,11 @@ import { config } from "./config/config";
 
 import incompleteReportController from "./controllers/IncompleteReport";
 import resourceViewController from "./controllers/ResourceView";
-import incompleteReportRoutes from "./routes/IncompleteReport";
+import IncompleteReportRoutes from "./routes/IncompleteReport";
 import resourceViewRoutes from "./routes/ResourceView";
 
 const app = express();
-const port = config.server.port;
+const port = 8006;
 
 app.use(express.json());
 app.use(cors());
@@ -20,6 +20,8 @@ app.use(cors());
 app.get("/", (req: Request, res: Response) => {
   res.send("Hello World!");
 });
+
+app.use("/trends/incompletereports", IncompleteReportRoutes);
 
 mongoose
   .connect(config.mongo.url, { retryWrites: true, w: "majority" })
@@ -33,9 +35,10 @@ mongoose
 
 app.use(express.json());
 
-function consumeIncompleteReportData(msg: any) {
+function consumeIncompleteReportData(this: any, msg: any) {
   console.log("Received %s", msg.content);
   incompleteReportController.createIncompleteReport(msg.content);
+  this.channel.ack(msg);
 }
 
 function consumeResourceViewsData(this: any, msg: any) {
@@ -114,7 +117,7 @@ app.get("/incompletereports", (req, res) => {
   res.json(data);
 });
 
-app.get("/popularresources", (req, res) => {
+app.get("/trends/popularresources", (req, res) => {
   const data = [
     {
       resource_id: "1",
@@ -142,41 +145,6 @@ app.get("/popularresources", (req, res) => {
       views_in_last_week: "400",
       views_in_last_month: "600",
       views_all_time: "5000",
-    },
-  ];
-  res.json(data);
-});
-
-app.get("/reportkeywords", (req, res) => {
-  const data = [
-    {
-      word: "exampleword0",
-      frequency: "1611",
-    },
-
-    {
-      word: "exampleword1",
-      frequency: "2334",
-    },
-
-    {
-      word: "exampleword2",
-      frequency: "5",
-    },
-
-    {
-      word: "exampleword3",
-      frequency: "40210",
-    },
-
-    {
-      word: "exampleword4",
-      frequency: "2020",
-    },
-
-    {
-      word: "exampleword5",
-      frequency: "3",
     },
   ];
   res.json(data);
