@@ -4,7 +4,9 @@ import amqplib from "amqplib";
 import Article from "../models/Article";
 
 const publishOnQueue = async (queueName: string, msg: string) => {
-  const connection = await amqplib.connect(`amqp://${process.env.RABBITMQ_HOSTNAME}`);
+  const connection = await amqplib.connect(
+    `amqp://${process.env.RABBITMQ_HOSTNAME}`
+  );
   const channel = await connection.createChannel();
   await channel.assertQueue(queueName, { durable: false });
   channel.sendToQueue(queueName, Buffer.from(msg));
@@ -111,15 +113,19 @@ const deleteArticle = (req: Request, res: Response, next: NextFunction) => {
 
 const recordView = (req: Request, res: Response, next: NextFunction) => {
   const articleId = req.params.articleId;
+  const time = Date.now();
   if (!mongoose.Types.ObjectId.isValid(articleId ?? "")) {
     return res
       .status(400)
       .json({ error: true, message: "Invalid ID provided" });
   }
 
-  publishOnQueue("resource_views", JSON.stringify({resourceId: articleId}));
-  return res.status(201).json({ error:false });
-}
+  publishOnQueue(
+    "resource_views",
+    JSON.stringify({ resourceId: articleId, timestamp: time })
+  );
+  return res.status(201).json({ error: false });
+};
 
 export default {
   createArticle,
