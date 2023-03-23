@@ -21,17 +21,11 @@ const getAll = (req: Request, res: Response, next: NextFunction) => {
     .catch((error) => res.status(500).json({ error }));
 };
 
-const incrementCount = (
-  data: { [key: string]: number },
-  resourceId: string
+const getResourceViews = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
 ) => {
-  if (!data[resourceId]) {
-    data[resourceId] = 0;
-  }
-  data[resourceId] += 1;
-};
-
-const getTrends = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const now = new Date();
     const oneDayAgo = new Date(now.getTime() - 24 * 60 * 60 * 1000);
@@ -45,27 +39,42 @@ const getTrends = async (req: Request, res: Response, next: NextFunction) => {
       timestamp: { $gte: oneDayAgo },
     });
 
-    const allTimeData: { [key: string]: number } = {};
-    const weeklyData: { [key: string]: number } = {};
-    const dailyData: { [key: string]: number } = {};
+    const dataMap: { [key: string]: { [key: string]: number } } = {};
+
+    const incrementCount = (
+      data: { [key: string]: { [key: string]: number } },
+      resourceId: string,
+      key: string
+    ) => {
+      if (!data[resourceId]) {
+        data[resourceId] = {
+          views_in_last_day: 0,
+          views_in_last_week: 0,
+          views_all_time: 0,
+        };
+      }
+      data[resourceId][key] += 1;
+    };
 
     allTimeTrends.forEach((element) => {
-      incrementCount(allTimeData, element.resourceId);
+      incrementCount(dataMap, element.resourceId, "views_all_time");
     });
 
     weeklyTrends.forEach((element) => {
-      incrementCount(weeklyData, element.resourceId);
+      incrementCount(dataMap, element.resourceId, "views_in_last_week");
     });
 
     dailyTrends.forEach((element) => {
-      incrementCount(dailyData, element.resourceId);
+      incrementCount(dataMap, element.resourceId, "views_in_last_day");
     });
+    const data = Object.entries(dataMap).map(([resource_id, views]) => ({
+      resource_id,
+      views_in_last_day: views.views_in_last_day,
+      views_in_last_week: views.views_in_last_week,
+      views_all_time: views.views_all_time,
+    }));
 
-    return res.status(201).json({
-      allTime: allTimeData,
-      weekly: weeklyData,
-      daily: dailyData,
-    });
+    return res.status(201).json(data);
   } catch (error) {
     console.log(error);
   }
@@ -73,5 +82,5 @@ const getTrends = async (req: Request, res: Response, next: NextFunction) => {
 
 export default {
   createResourceView,
-  getTrends,
+  getResourceViews,
 };

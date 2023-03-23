@@ -4,5 +4,5 @@ import controller from "../controllers/ResourceView";
 const router = express.Router();
 
 router.post("/", controller.createResourceView);
-router.get("/", controller.getTrends);
+router.get("/", controller.getResourceViews);
 export default router;
