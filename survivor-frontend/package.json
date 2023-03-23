@@ -1,5 +1,4 @@
 {
-
 	"name": "survivor-frontend",
 	"version": "0.1.0",
 	"private": true,
@@ -16,6 +15,7 @@
 		"@babel/core": "^7.21.0",
 		"@lingui/core": "^3.17.2",
 		"@lingui/react": "^3.17.2",
+		"@marsidev/react-turnstile": "^0.1.0",
 		"@microsoft/applicationinsights-web": "^2.8.11",
 		"@popperjs/core": "^2.11.6",
 		"@tanstack/react-query": "^4.20.0",
@@ -65,5 +65,4 @@
 	"ct3aMetadata": {
 		"initVersion": "7.4.1"
 	}
-
 }
