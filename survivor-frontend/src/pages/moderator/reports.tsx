@@ -10,7 +10,7 @@ export default function ReportsView() {
   const [reports, setReports] = useState({});
 
   useEffect(() => {
-    fetch("/api/moderators/reports/completereports/getall")
+    fetch("/api/moderators/reports/completereports/")
       .then((response) => response.json())
       .then((json) => setReports(json));
   }, []);

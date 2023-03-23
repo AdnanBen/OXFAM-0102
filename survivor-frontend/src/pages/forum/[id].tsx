@@ -4,13 +4,15 @@ import { GetServerSideProps, type NextPage } from "next";
 import { useState } from "react";
 import { Button, IconButton, Input, Loader, Message, Modal } from "rsuite";
 import sanitizeHTML from "sanitize-html";
-import { env } from "../../env/env.mjs";
+import { env } from "../../env/env";
 import { getServerAuthSession } from "../../server/auth";
 import requireSSRTransition from "../../server/requireSSRTransition";
 import styles from "../../styles/Forum.module.css";
 import { fetchJsonApi } from "../../utils/helpers";
 import useRouterRefresh from "../../utils/useRouterRefresh";
 import useToaster from "../../utils/useToaster";
+import { Turnstile } from "@marsidev/react-turnstile";
+import { useRef } from 'react'
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   // Only allow access through the homepage, not directly
@@ -38,12 +40,23 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 const Post: NextPage = ({ post }) => {
   const toaster = useToaster();
   const [refresh, isRefresing] = useRouterRefresh(post);
+  const [cftokennewcomment, setcftokennewcomment] = useState();
+  const [cftokenreportpost, setcftokenreportpost] = useState();
+  const [cftokenreportcomment, setcftokenreportcomment] = useState();
   const [showCommentDialog, setShowCommentDialog] = useState(false);
   const [replyToComment, setReplyToComment] = useState(null);
+  const newcommentref = useRef(null);
+  const reportcommentref = useRef(null);
+  const reportpostref = useRef(null);
+  const [reportcommentclicked, setreportcommentclicked] = useState(false);
+  const [reportpostclicked, setreportpostclicked] = useState(false);
+  const [newcommentclicked, setnewcommentclicked] = useState(false);
 
   const reportPost = async () => {
     await fetchJsonApi(`/api/forum/posts/${post.id}/flags`, {
       method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({cftoken: cftokenreportpost, validated: reportpostclicked}),
     })
       .then(() => {
         toaster.push(
@@ -62,11 +75,16 @@ const Post: NextPage = ({ post }) => {
           </Message>
         );
       });
+    // Remove turnstile widget after first validation and set a state variable to ensure we aren't doing any extra CAPTCHA validations unneccesarily
+    reportpostref.current?.remove();
+    setreportpostclicked(true);
   };
 
   const reportComment = async (commentId: string) => {
     await fetchJsonApi(`/api/forum/comments/${commentId}/flags`, {
       method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({cftoken: cftokenreportcomment, validated: reportcommentclicked}),
     })
       .then(() => {
         toaster.push(
@@ -85,22 +103,28 @@ const Post: NextPage = ({ post }) => {
           </Message>
         );
       });
+    reportcommentref.current?.remove();
+    setreportcommentclicked(true);
   };
 
   const renderComments = (comments) => {
+    // If there are comments to render the report post button does not play nicely with turnstile so we forcibly remove and rerender it to ensure it works
+    reportpostref.current?.remove();
+    reportpostref.current?.render();
+    
     return (
       <div>
         {comments.map((c) => {
           return (
             <>
-              <div className={styles.commentWrapper} key={`comment-${c.id}`}>
+              <div className={styles.commentWrapper} key={`comment-${c.id}`} data-testid="comment-body">
                 {c.parent_comment && (
                   <div className={styles.parentComment}>
-                    <i>
+                    <i  data-testid="parent-comment-date">
                       <Trans comment="e.g., on [date]">on</Trans>{" "}
                       {new Date(c.parent_comment.created).toUTCString()}
                     </i>
-                    <p>{c.parent_comment.body}</p>
+                    <p data-testid="parent-comment-body">{c.parent_comment.body}</p>
                   </div>
                 )}
                 {c.body}{" "}
@@ -113,14 +137,17 @@ const Post: NextPage = ({ post }) => {
                 >
                   ↲
                 </span>
+                <Turnstile ref={reportcommentref} siteKey='0x4AAAAAAADFU0upW0ILDjJG' onSuccess={(cftokenreportcomment) => setcftokenreportcomment(cftokenreportcomment)}/>
                 <IconButton
                   className={styles.reportBtn}
+                  disabled={!cftokenreportcomment}
                   icon={<RemindOutlineIcon />}
                   style={{ float: "right" }}
                   appearance="ghost"
                   size="xs"
                   color="red"
                   onClick={() => reportComment(c.id)}
+                  data-testid="report-comment-btn"
                 >
                   Report comment?
                 </IconButton>
@@ -147,20 +174,21 @@ const Post: NextPage = ({ post }) => {
                   const formData = new FormData(e.currentTarget);
                   const data = { body: formData.get("body") };
                   if (replyToComment) data.parentCommentId = replyToComment;
-
+                  console.log("")
                   const res = await fetch(
                     `/api/forum/posts/${post.id}/comments`,
                     {
                       method: "POST",
                       headers: { "Content-Type": "application/json" },
-                      body: JSON.stringify(data),
+                      body: JSON.stringify({...data, cftoken: cftokennewcomment, validated: newcommentclicked}),
                     }
                   ).then((res) => res.json());
-
                   if (!res.error) {
                     setShowCommentDialog(false);
                     setReplyToComment(null);
                     refresh();
+                    setnewcommentclicked(true);
+                    newcommentref.current?.remove();
                   }
                 }}
               >
@@ -174,7 +202,8 @@ const Post: NextPage = ({ post }) => {
                   />
                 </label>
                 <br />
-                <Button type="submit" appearance="primary">
+                <Turnstile ref={newcommentref} siteKey='0x4AAAAAAADFU0upW0ILDjJG' onSuccess={(cftokennewcomment) => setcftokennewcomment(cftokennewcomment)}/>
+                <Button type="submit" appearance="primary" disabled={!cftokennewcomment}>
                   <Trans>Post comment</Trans>
                 </Button>
               </form>
@@ -186,14 +215,16 @@ const Post: NextPage = ({ post }) => {
       {post ? (
         <>
           <div className={styles.postHeader}>
-            <h2>{post.title}</h2>
+            <h2 data-testid = "post-title" >{post.title}</h2>
           </div>
           <div className={styles.postHeaderInfo}>
-            <i className={styles.timestamp}>
+            <i className={styles.timestamp} data-testid = "post-date">
               {new Date(post.created).toUTCString()}
             </i>
+            <Turnstile ref={reportpostref} siteKey='0x4AAAAAAADFU0upW0ILDjJG' onSuccess={(cftokenreportpost) => setcftokenreportpost(cftokenreportpost)}/>
             <IconButton
               className={styles.reportBtn}
+              disabled={!cftokenreportpost}
               icon={<RemindOutlineIcon />}
               appearance="ghost"
               size="xs"
@@ -203,10 +234,11 @@ const Post: NextPage = ({ post }) => {
               Report post?
             </IconButton>
           </div>
-          <h3>{post.tag}</h3>
+          <h3 data-testid="post-tag">{post.tag}</h3>
           <p
             dangerouslySetInnerHTML={{ __html: sanitizeHTML(post.body) }}
             className={styles.body}
+            data-testid="post-body"
           />
 
           <div className={styles.commentsWrapper}>
@@ -217,6 +249,7 @@ const Post: NextPage = ({ post }) => {
                 size="sm"
                 className={styles.addCommentBtn}
                 onClick={() => setShowCommentDialog(true)}
+                data-testid="add-comment-button"
               >
                 <Trans>add comment?</Trans>
               </Button>

@@ -3,5 +3,5 @@ import controller from "../controllers/IncompleteReport";
 
 const router = express.Router();
 
-router.post("/create", controller.createIncompleteReport);
+router.post("/", controller.createIncompleteReport);
 export default router;

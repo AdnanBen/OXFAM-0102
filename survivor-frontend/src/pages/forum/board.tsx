@@ -2,7 +2,7 @@ import { Trans } from "@lingui/macro";
 import { GetServerSideProps, type NextPage } from "next";
 import Link from "next/link";
 import { Message } from "rsuite";
-import { env } from "../../env/env.mjs";
+import { env } from "../../env/env";
 import requireSSRTransition from "../../server/requireSSRTransition";
 import { Post, PostType } from "./index";
 import styles from "../../styles/Forum.module.css";
@@ -50,13 +50,13 @@ type BoardProps = {
 const Board: NextPage<BoardProps> = ({ posts, boardName }) => {
   return (
     <main>
-      <h2 className={styles.boardHeader}>Forum: {boardName}</h2>
+      <h2 className={styles.boardHeader} data-testid="board-name">Forum: {boardName}</h2>
       {posts ? (
         <>
           {posts?.map((p) => (
             <Post post={p} />
           ))}
-          {!posts?.length && <Trans>There are no posts yet.</Trans>}
+          {!posts?.length && <Trans><div data-testid="boards-no-posts">There are no posts yet.</div></Trans>}
         </>
       ) : (
         <Message type="error">
