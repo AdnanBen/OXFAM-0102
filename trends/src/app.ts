@@ -21,7 +21,7 @@ app.get("/", (req: Request, res: Response) => {
   res.send("Hello World!");
 });
 
-app.use("/trends/incompletereports", IncompleteReportRoutes);
+app.use("/incompletereports", IncompleteReportRoutes);
 
 mongoose
   .connect(config.mongo.url, { retryWrites: true, w: "majority" })

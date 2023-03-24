@@ -25,7 +25,7 @@ export default function BarItem() {
   const [popularResources, setPopularResources] = useState({});
 
   useEffect(() => {
-    fetch("/api/trends/popularresources")
+    fetch("/api/trends/resourceViews")
       .then((response) => response.json())
       .then((json) => setPopularResources(json));
   }, []);

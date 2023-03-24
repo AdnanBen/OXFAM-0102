@@ -39,7 +39,7 @@ function FormPage(data: Values) {
     };
 
     const response = await fetch(
-      "/api/reports/completereports/",
+      "/api/reports/completereports",
       requestOptions
     );
     await response.json();
@@ -72,7 +72,7 @@ function FormPage(data: Values) {
       body: raw,
     };
 
-    const response = fetch("/api/reports/incompletereports/", requestOptions);
+    const response = fetch("/api/reports/incompletereports", requestOptions);
   }
 
   useEffect(() => {

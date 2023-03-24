@@ -6,6 +6,6 @@ export const config = {
     url: process.env.MONGO_URL!,
   },
   server: {
-    port: process.env.PORT,
+    port: +process.env.PORT!,
   },
 };

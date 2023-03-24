@@ -10,6 +10,7 @@ const createResourceView = (body: string) => {
   const resourceView = new ResourceView({
     _id: new mongoose.Types.ObjectId(),
     resourceId,
+    timestamp: new Date(timestamp).toISOString(),
   });
 
   return resourceView.save();

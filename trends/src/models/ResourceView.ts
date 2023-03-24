@@ -17,6 +17,6 @@ const ResourceViewSchema: Schema = new Schema(
 );
 
 export default mongoose.model<IResourceViewModel>(
-  "IncompleteReport",
+  "ResourceView",
   ResourceViewSchema
 );
