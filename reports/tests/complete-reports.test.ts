@@ -43,7 +43,7 @@ describe("GET /reports/completereports", () => {
 
 describe("GET /reports/completereports/:id", () => {
   test("rejects invalid IDs", async () => {
-    await request.get("/reports/completereports/get/1").expect(400);
+    await request.get("/reports/completereports/1").expect(400);
   });
 
   test("returns 404 when report does not exist", async () => {
