@@ -8,7 +8,7 @@ const request = supertest(app);
 describe("GET /reports/completereports", () => {
   test("returns no reports when none exist", async () => {
     await request
-      .get("/reports/completereports/getall")
+      .get("/reports/completereports")
       .expect(200)
       .then((res) => {
         expect(res.body).toEqual({ error: false, reports: [] });
@@ -24,7 +24,7 @@ describe("GET /reports/completereports", () => {
     });
 
     await request
-      .get("/reports/completereports/getall")
+      .get("/reports/completereports")
       .expect(200)
       .then((res) => {
         expect(res.body).toEqual({
@@ -48,7 +48,7 @@ describe("GET /reports/completereports/:id", () => {
 
   test("returns 404 when report does not exist", async () => {
     await request
-      .get(`/reports/completereports/get/${new mongoose.Types.ObjectId()}`)
+      .get(`/reports/completereports/${new mongoose.Types.ObjectId()}`)
       .expect(404);
   });
 
@@ -61,7 +61,7 @@ describe("GET /reports/completereports/:id", () => {
     });
 
     await request
-      .get(`/reports/completereports/get/${id.toString()}`)
+      .get(`/reports/completereports/${id.toString()}`)
       .expect(200)
       .then((res) => {
         expect(res.body).toEqual({
@@ -78,16 +78,16 @@ describe("GET /reports/completereports/:id", () => {
 
 describe("POST /reports/completereports", () => {
   test("rejects empty fields", async () => {
-    await request.post("/reports/completereports/create").expect(400);
+    await request.post("/reports/completereports").expect(400);
     await request
-      .post("/reports/completereports/create")
+      .post("/reports/completereports")
       .send({
         name: "Test",
         situation: "",
       })
       .expect(400);
     await request
-      .post("/reports/completereports/create")
+      .post("/reports/completereports")
       .send({
         name: "Test",
       })
@@ -96,7 +96,7 @@ describe("POST /reports/completereports", () => {
 
   test("creates valid report", async () => {
     await request
-      .post("/reports/completereports/create")
+      .post("/reports/completereports")
       .send({
         name: "Test",
         situation: "Test",
@@ -112,14 +112,12 @@ describe("POST /reports/completereports", () => {
 
 describe("DELETE /reports/completereports/:id", () => {
   test("rejects invalid IDs", async () => {
-    await request.delete("/reports/completereports/delete/1").expect(400);
+    await request.delete("/reports/completereports/1").expect(400);
   });
 
   test("returns 404 when report does not exist", async () => {
     await request
-      .delete(
-        `/reports/completereports/delete/${new mongoose.Types.ObjectId()}`
-      )
+      .delete(`/reports/completereports/${new mongoose.Types.ObjectId()}`)
       .expect(404);
   });
 
@@ -131,7 +129,7 @@ describe("DELETE /reports/completereports/:id", () => {
       situation: "Test",
     });
 
-    await request.delete(`/reports/completereports/delete/${id}`).expect(200);
+    await request.delete(`/reports/completereports/${id}`).expect(200);
     const report = await Report.findById(id);
     expect(report).toBeNull();
   });
