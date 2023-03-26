@@ -28,3 +28,4 @@ services:
       DATABASE_NAME: resources
       MONGO_URL: mongodb://USER:PASS@mongo:27017/resources
       PORT: 3000
+      NODE_ENV: test

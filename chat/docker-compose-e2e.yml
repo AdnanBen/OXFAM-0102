@@ -6,3 +6,4 @@ services:
     restart: unless-stopped
     environment:
       PORT: 3000
+      NODE_ENV: test

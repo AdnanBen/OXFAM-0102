@@ -10,11 +10,9 @@ const port = process.env.PORT;
 
 app.use(express.json());
 
-if (process.env.NODE_ENV !== "test") {
-  app.listen(port, () => {
-    return console.log(`Express is listening at http://localhost:${port}`);
-  });
-}
+app.listen(port, () => {
+  return console.log(`Express is listening at http://localhost:${port}`);
+});
 
 mongoose
   .connect(process.env.MONGO_URL!, { retryWrites: true, w: "majority" })

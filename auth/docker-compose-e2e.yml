@@ -15,6 +15,7 @@ services:
       MONGO_URL: mongodb://USER:PASS@mongo:27017/auth
       PORT: 3000
       BASE_URL: http://localhost
+      NODE_ENV: test
     ports:
       - ${E2E_DB_PORT}:27017
 

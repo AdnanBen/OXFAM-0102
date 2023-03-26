@@ -10,5 +10,6 @@ services:
     SSR_HOST: "http://host.docker.internal"
     NEXTAUTH_SECRET: secret
     NEXTAUTH_URL: "http://localhost"
+    NODE_ENV: test
    extra_hosts:
      - "host.docker.internal:host-gateway"

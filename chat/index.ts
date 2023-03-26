@@ -7,23 +7,24 @@ import dotenv from "dotenv";
 import { PeerServer } from "peer";
 
 dotenv.config();
-if (process.env.NODE_ENV === 'production') {
-  appInsights.setup(process.env.APPLICATIONINSIGHTS_CONNECTION_STRING)
-.setAutoDependencyCorrelation(true)
-.setAutoCollectRequests(true)
-.setAutoCollectPerformance(true, true)
-.setAutoCollectExceptions(true)
-.setAutoCollectDependencies(true)
-.setAutoCollectConsole(true, true)
-.setUseDiskRetryCaching(true)
-.setAutoCollectPreAggregatedMetrics(true)
-.setSendLiveMetrics(false)
-.setAutoCollectHeartbeat(false)
-.setAutoCollectIncomingRequestAzureFunctions(true)
-.setInternalLogging(true, true)
-.setDistributedTracingMode(appInsights.DistributedTracingModes.AI_AND_W3C)
-.enableWebInstrumentation(false)
-.start();
+if (process.env.NODE_ENV === "production") {
+  appInsights
+    .setup(process.env.APPLICATIONINSIGHTS_CONNECTION_STRING)
+    .setAutoDependencyCorrelation(true)
+    .setAutoCollectRequests(true)
+    .setAutoCollectPerformance(true, true)
+    .setAutoCollectExceptions(true)
+    .setAutoCollectDependencies(true)
+    .setAutoCollectConsole(true, true)
+    .setUseDiskRetryCaching(true)
+    .setAutoCollectPreAggregatedMetrics(true)
+    .setSendLiveMetrics(false)
+    .setAutoCollectHeartbeat(false)
+    .setAutoCollectIncomingRequestAzureFunctions(true)
+    .setInternalLogging(true, true)
+    .setDistributedTracingMode(appInsights.DistributedTracingModes.AI_AND_W3C)
+    .enableWebInstrumentation(false)
+    .start();
 }
 
 const app = express();

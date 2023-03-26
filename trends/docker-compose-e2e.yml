@@ -32,5 +32,6 @@ services:
       DATABASE_URL: mongo
       DATABASE_PORT: 27017
       PORT: 3000
+      NODE_ENV: test
     ports:
       - ${E2E_DB_PORT}:27017

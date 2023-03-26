@@ -30,11 +30,9 @@ if (process.env.NODE_ENV === "production") {
 const app = express();
 const port = config.server.port;
 
-if (process.env.NODE_ENV !== "test") {
-  app.listen(port, "0.0.0.0", () => {
-    return console.log(`Express is listening at http://localhost:${port}`);
-  });
-}
+app.listen(port, "0.0.0.0", () => {
+  return console.log(`Express is listening at http://localhost:${port}`);
+});
 
 mongoose
   .connect(config.mongo.url, { retryWrites: true, w: "majority" })

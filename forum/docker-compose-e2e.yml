@@ -12,6 +12,7 @@ services:
       DATABASE_NAME: forum
       DATABASE_URL: "postgresql://USER:PASS@postgres:5432/forum"
       PORT: 3000
+      NODE_ENV: test
 
   postgres:
     image: 'postgres:15-alpine'
