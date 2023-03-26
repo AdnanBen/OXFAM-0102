@@ -10,7 +10,7 @@ const createResourceView = (body: string) => {
   const resourceView = new ResourceView({
     _id: new mongoose.Types.ObjectId(),
     resourceId,
-    timestamp: new Date(timestamp).toISOString(),
+    timestamp: new Date(timestamp),
   });
 
   return resourceView.save();
@@ -40,10 +40,10 @@ const getResourceViews = async (
       timestamp: { $gte: oneDayAgo },
     });
 
-    const dataMap: { [key: string]: { [key: string]: number } } = {};
+    const dataMap: { [resourceId: string]: { [key: string]: number } } = {};
 
     const incrementCount = (
-      data: { [key: string]: { [key: string]: number } },
+      data: { [resourceId: string]: { [key: string]: number } },
       resourceId: string,
       key: string
     ) => {
@@ -75,7 +75,7 @@ const getResourceViews = async (
       views_all_time: views.views_all_time,
     }));
 
-    return res.status(201).json(data);
+    return res.status(200).json(data);
   } catch (error) {
     console.log(error);
   }

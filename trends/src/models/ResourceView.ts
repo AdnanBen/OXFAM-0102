@@ -9,7 +9,7 @@ export interface IResourceViewModel extends IResourceView, Document {}
 const ResourceViewSchema: Schema = new Schema(
   {
     resourceId: { type: String, required: true },
-    timestamp: { type: String, required: true },
+    timestamp: { type: Number, required: true },
   },
   {
     versionKey: false,
