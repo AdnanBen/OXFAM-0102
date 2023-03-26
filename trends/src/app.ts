@@ -17,10 +17,6 @@ const port = config.server.port;
 app.use(express.json());
 app.use(cors());
 
-app.get("/", (req: Request, res: Response) => {
-  res.send("Hello World!");
-});
-
 app.use("/incompletereports", IncompleteReportRoutes);
 
 mongoose
