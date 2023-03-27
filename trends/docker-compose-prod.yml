@@ -27,7 +27,7 @@ services:
     depends_on:
       - mongo
     image: ghcr.io/adnanben/oxfam-0102/trends:main
-    env_file: ./.env
+    env_file: ./.env.local
 
 volumes:
   rabbitmq:

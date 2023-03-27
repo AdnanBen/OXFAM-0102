@@ -6,7 +6,7 @@ services:
     depends_on:
       - postgres
     restart: unless-stopped
-    env_file: .env
+    env_file: .env.local
 
   postgres:
     image: 'postgres:15-alpine'

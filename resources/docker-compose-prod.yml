@@ -19,4 +19,4 @@ services:
     depends_on:
       - mongo
     image: ghcr.io/adnanben/oxfam-0102/resources:main
-    env_file: ./.env
+    env_file: ./.env.local

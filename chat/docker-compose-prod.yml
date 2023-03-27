@@ -4,4 +4,4 @@ services:
   api:
     image: ghcr.io/adnanben/oxfam-0102/chat:main
     restart: unless-stopped
-    env_file: .env
+    env_file: .env.local

@@ -3,6 +3,6 @@ version: '3.8'
 services:
  web:
    image: ghcr.io/adnanben/oxfam-0102/survivor-frontend:main
-   env_file: .env
+   env_file: .env.local
    extra_hosts:
      - "host.docker.internal:host-gateway"
