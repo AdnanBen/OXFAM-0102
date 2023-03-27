@@ -1,6 +1,7 @@
 import { Trans } from "@lingui/macro";
 import { GetServerSideProps, type NextPage } from "next";
 import dynamic from "next/dynamic";
+import getConfig from "next/config";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import "react-quill/dist/quill.snow.css";
@@ -9,7 +10,9 @@ import { env } from "../../env/env";
 import { getServerAuthSession } from "../../server/auth";
 import requireSSRTransition from "../../server/requireSSRTransition";
 import { BoardType } from "./index";
-import { Turnstile } from '@marsidev/react-turnstile'
+import { Turnstile } from "@marsidev/react-turnstile";
+
+const { publicRuntimeConfig } = getConfig();
 
 const QuillNoSSRWrapper = dynamic(import("react-quill"), {
   ssr: false,
@@ -60,11 +63,9 @@ type NewPostProps = {
   boards: BoardType[];
 };
 
-
-
 const NewPost: NextPage<NewPostProps> = ({ boards }) => {
   const router = useRouter();
-  const [cftoken, setcftoken] = useState()
+  const [cftoken, setcftoken] = useState();
   const [formData, setFormData] = useState({
     title: "",
     board_id: null,
@@ -77,7 +78,6 @@ const NewPost: NextPage<NewPostProps> = ({ boards }) => {
 
       {/* TODO: Add something to show that the forum is submitted  */}
       <Form
-        
         formValue={formData}
         onChange={(v) => setFormData(v)}
         onSubmit={(valid, e) => {
@@ -85,7 +85,7 @@ const NewPost: NextPage<NewPostProps> = ({ boards }) => {
           fetch("/api/forum/posts", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({...formData, cftoken: cftoken}),
+            body: JSON.stringify({ ...formData, cftoken: cftoken }),
           })
             .then((res) => res.json())
             .then((res) => {
@@ -142,7 +142,12 @@ const NewPost: NextPage<NewPostProps> = ({ boards }) => {
             </Trans>
           </Form.HelpText>
         </Form.Group>
-        <Turnstile siteKey='0x4AAAAAAADFU0upW0ILDjJG' onSuccess={setcftoken}/>
+        {publicRuntimeConfig.NODE_ENV === "production" && (
+          <Turnstile
+            siteKey="0x4AAAAAAADFU0upW0ILDjJG"
+            onSuccess={setcftoken}
+          />
+        )}
         <Form.Group>
           <Button type="submit" appearance="primary">
             <Trans>Submit New Post</Trans>

@@ -13,8 +13,8 @@ function catchErrors(fn) {
   };
 }
 
-dotenv.config();
 if (process.env.NODE_ENV === "production") {
+  dotenv.config();
   appInsights
     .setup(process.env.APPLICATIONINSIGHTS_CONNECTION_STRING)
     .setAutoDependencyCorrelation(true)
@@ -393,8 +393,8 @@ app.delete(
   })
 );
 
-const port = process.env.PORT ?? 3000;
-app.listen(+port, "0.0.0.0", () => {
+const port = typeof process.env.PORT === "undefined" ? 3000 : +process.env.PORT;
+app.listen(port, "0.0.0.0", () => {
   console.log(`⚡️[forum]: Server is running at http://localhost:${port}`);
 });
 

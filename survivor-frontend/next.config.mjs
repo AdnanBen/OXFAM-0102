@@ -1,9 +1,5 @@
 // @ts-check
 
-/**
- * Run `build` or `dev` with `SKIP_ENV_VALIDATION` to skip env validation.
- * This is especially useful for Docker builds.
- */
 !process.env.SKIP_ENV_VALIDATION && (await import("./src/env/env.mjs"));
 
 /** @type {import("next").NextConfig} */
@@ -21,6 +17,9 @@ const config = {
   i18n: {
     locales: ["en", "ny"],
     defaultLocale: "en",
+  },
+  publicRuntimeConfig: {
+    NODE_ENV: process.env.NODE_ENV,
   },
 };
 export default config;

@@ -5,8 +5,6 @@ import Report from "../models/Report";
 const createReport = (req: Request, res: Response, next: NextFunction) => {
   const { name, gender, situation, category } = req.body;
 
-  console.log(req.body);
-
   if (!name || !situation) {
     return res
       .status(400)

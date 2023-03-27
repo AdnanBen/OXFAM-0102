@@ -46,8 +46,6 @@ mongoose
     console.log("Not Connected", err);
   });
 
-app.use(express.json());
-
 app.use("/reports/completereports", reportRoutes);
 app.use("/reports/incompletereports", incompleteReportRoutes);
 
