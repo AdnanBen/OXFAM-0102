@@ -1,9 +1,12 @@
 import type { GetServerSidePropsContext } from "next";
+import crypto from "crypto";
 import {
   DefaultSession,
   getServerSession,
   type NextAuthOptions,
 } from "next-auth";
+import jose from "jose";
+import { JWT } from "next-auth/jwt/types.js";
 import AzureADB2CProvider from "next-auth/providers/azure-ad-b2c";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { env } from "../env/env.mjs";
@@ -103,6 +106,25 @@ export const authOptions: NextAuthOptions = {
         token.isModerator) as boolean;
       session.user.isAdmin = token.isAdmin as boolean;
       return session;
+    },
+  },
+  jwt: {
+    async encode(params: { token: JWT; secret: string; maxAge: number }) {
+      const secretKey = crypto.createSecretKey(params.secret, "utf-8");
+      const secondsSinceEpoch = Math.round(Date.now() / 1000);
+      const jwt = await new jose.SignJWT(params.token)
+        .setProtectedHeader({ alg: "HS256" })
+        .setIssuedAt()
+        .setJti(crypto.randomUUID())
+        .setExpirationTime(secondsSinceEpoch + params.maxAge)
+        .sign(secretKey);
+
+      return jwt;
+    },
+    async decode(params: { token: string; secret: string }) {
+      const secretKey = crypto.createSecretKey(params.secret, "utf-8");
+      const { payload } = await jose.jwtVerify(params.token, secretKey);
+      return payload ?? null;
     },
   },
 };

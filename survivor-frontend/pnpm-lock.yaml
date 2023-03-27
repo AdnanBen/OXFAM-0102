@@ -28,6 +28,7 @@ specifiers:
   jest: ^29.5.0
   jest-environment-jsdom: ^29.5.0
   jest-environment-node: ^29.5.0
+  jose: ^4.13.1
   mongodb: ^5.1.0
   next: 13.1.6
   next-auth: ^4.19.0
@@ -60,6 +61,7 @@ dependencies:
   '@tanstack/react-query': 4.24.4_biqbaboplfbrettd7655fr4n2y
   chart.js: 4.2.1
   formik: 2.2.9_react@18.2.0
+  jose: 4.13.1
   next: 13.1.6_kkcfeymwl5j7dlmofmanydspyi
   next-auth: 4.19.2_3vryta7zmbcsw4rrqf4axjqggm
   peerjs: 1.4.7
@@ -4250,8 +4252,8 @@ packages:
       - ts-node
     dev: true
 
-  /jose/4.11.2:
-    resolution: {integrity: sha512-njj0VL2TsIxCtgzhO+9RRobBvws4oYyCM8TpvoUQwl/MbIM3NFJRR9+e6x0sS5xXaP1t6OCBkaBME98OV9zU5A==}
+  /jose/4.13.1:
+    resolution: {integrity: sha512-MSJQC5vXco5Br38mzaQKiq9mwt7lwj2eXpgpRyQYNHYt2lq1PjkWa7DLXX0WVcQLE9HhMh3jPiufS7fhJf+CLQ==}
     dev: false
 
   /js-sdsl/4.3.0:
@@ -4682,7 +4684,7 @@ packages:
       '@babel/runtime': 7.21.0
       '@panva/hkdf': 1.0.2
       cookie: 0.5.0
-      jose: 4.11.2
+      jose: 4.13.1
       next: 13.1.6_kkcfeymwl5j7dlmofmanydspyi
       oauth: 0.9.15
       openid-client: 5.3.4
@@ -4880,7 +4882,7 @@ packages:
   /openid-client/5.3.4:
     resolution: {integrity: sha512-yx1m3JMg8jMLhnl8T8uBcmVEbTG14Feh7HeT61AXlBwrM+jyaC9VUtIl/sEkE3tiGGD8f76tS2lMbYK5+CkR9Q==}
     dependencies:
-      jose: 4.11.2
+      jose: 4.13.1
       lru-cache: 6.0.0
       object-hash: 2.2.0
       oidc-token-hash: 5.0.1
