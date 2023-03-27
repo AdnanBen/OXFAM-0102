@@ -144,10 +144,12 @@ const acceptPendingRegistration = async (
   next: NextFunction
 ) => {
   const { token } = req.params;
+  if (!token) return res.status(404).send();
+
   const registration = (await PendingRegistration.findOne({
     token: { $eq: hash(token) },
   })) as any;
-  if (!registration) return res.status(404);
+  if (!registration) return res.status(404).send();
 
   try {
     const accessToken = await getAzureGraphAccessToken();

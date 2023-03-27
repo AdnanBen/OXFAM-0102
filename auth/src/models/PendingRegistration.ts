@@ -4,7 +4,7 @@ export interface IPendingRegistrationModel extends Document {}
 
 const PendingRegistrationSchema: Schema = new Schema(
   {
-    email: { type: String, unique: true },
+    email: { type: String, unique: true, required: true },
   },
   {
     versionKey: false,

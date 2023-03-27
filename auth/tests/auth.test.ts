@@ -2,13 +2,15 @@ import { describe, expect, test, beforeEach, jest } from "@jest/globals";
 import mongoose from "mongoose";
 import supertest from "supertest";
 import { app } from "../src/app";
+import { createHash } from "crypto";
 import PendingRegistration from "../src/models/PendingRegistration";
+
+const hash = (str: string) => createHash("md5").update(str).digest("hex");
 
 const request = supertest(app);
 describe("POST /pendingRegistrations", () => {
   const ORIGINAL_ENV = {...process.env};
   beforeEach(() => {
-    jest.resetModules();
     process.env = {...ORIGINAL_ENV};
   });
 
@@ -48,8 +50,8 @@ describe("POST /pendingRegistrations", () => {
 
     const pendingRegistrations = await PendingRegistration.find();
     expect(pendingRegistrations.length).toEqual(1);
-    expect(articles[0].email).toEqual("foo@bar.com");
-    expect(articles[0].token).toBeTruthy();
+    expect(pendingRegistrations[0].email).toEqual("foo@bar.com");
+    expect(pendingRegistrations[0].token).toBeTruthy();
   });
 
   test("requires email in body", async () => {
@@ -82,9 +84,10 @@ describe("POST /pendingRegistrations/approve", () => {
       .expect(404)
   });
 
-  test("requires valid token in URL", async () => {
+  test("successfully approves new user", async () => {
     const mockFetch = jest.fn(() =>
       Promise.resolve({
+        ok: true,
         json: () => Promise.resolve({ access_token: 'foo' }),
       })
     );
@@ -93,7 +96,8 @@ describe("POST /pendingRegistrations/approve", () => {
     const id = new mongoose.Types.ObjectId();
     await PendingRegistration.create({
       _id: id,
-      email: "foo@bar.com"
+      email: "foo@bar.com",
+      token: hash("foo")
     });
 
     await request
