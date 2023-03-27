@@ -142,7 +142,7 @@ const NewPost: NextPage<NewPostProps> = ({ boards }) => {
             </Trans>
           </Form.HelpText>
         </Form.Group>
-        {publicRuntimeConfig.NODE_ENV === "production" && (
+        {process.env.NEXT_PUBLIC_NODE_ENV === "production" && (
           <Turnstile
             siteKey="0x4AAAAAAADFU0upW0ILDjJG"
             onSuccess={setcftoken}

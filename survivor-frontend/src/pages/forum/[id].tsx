@@ -152,7 +152,7 @@ const Post: NextPage = ({ post }) => {
                 >
                   ↲
                 </span>
-                {publicRuntimeConfig.NODE_ENV === "production" && (
+                {process.env.NEXT_PUBLIC_NODE_ENV === "production" && (
                   <Turnstile
                     ref={reportcommentref}
                     siteKey="0x4AAAAAAADFU0upW0ILDjJG"
@@ -163,7 +163,10 @@ const Post: NextPage = ({ post }) => {
                 )}
                 <IconButton
                   className={styles.reportBtn}
-                  disabled={!cftokenreportcomment}
+                  disabled={
+                    process.env.NEXT_PUBLIC_NODE_ENV === "production" &&
+                    !cftokenreportcomment
+                  }
                   icon={<RemindOutlineIcon />}
                   style={{ float: "right" }}
                   appearance="ghost"
@@ -229,7 +232,8 @@ const Post: NextPage = ({ post }) => {
                   />
                 </label>
                 <br />
-                {publicRuntimeConfig.NODE_ENV === "production" && (
+                {process.env.NEXT_PUBLIC_NODE_ENV}
+                {process.env.NEXT_PUBLIC_NODE_ENV === "production" && (
                   <Turnstile
                     ref={newcommentref}
                     siteKey="0x4AAAAAAADFU0upW0ILDjJG"
@@ -241,7 +245,10 @@ const Post: NextPage = ({ post }) => {
                 <Button
                   type="submit"
                   appearance="primary"
-                  disabled={!cftokennewcomment}
+                  disabled={
+                    process.env.NEXT_PUBLIC_NODE_ENV === "production" &&
+                    !cftokennewcomment
+                  }
                 >
                   <Trans>Post comment</Trans>
                 </Button>
@@ -260,7 +267,7 @@ const Post: NextPage = ({ post }) => {
             <i className={styles.timestamp} data-testid="post-date">
               {new Date(post.created).toUTCString()}
             </i>
-            {publicRuntimeConfig.NODE_ENV === "production" && (
+            {process.env.NEXT_PUBLIC_NODE_ENV === "production" && (
               <Turnstile
                 ref={reportpostref}
                 siteKey="0x4AAAAAAADFU0upW0ILDjJG"
@@ -271,7 +278,10 @@ const Post: NextPage = ({ post }) => {
             )}
             <IconButton
               className={styles.reportBtn}
-              disabled={!cftokenreportpost}
+              disabled={
+                process.env.NEXT_PUBLIC_NODE_ENV === "production" &&
+                !cftokenreportpost
+              }
               icon={<RemindOutlineIcon />}
               appearance="ghost"
               size="xs"

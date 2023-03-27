@@ -5,11 +5,11 @@ services:
    build: .
    environment:
     NEXT_PUBLIC_PANIC_URL_PATH: /l.html
+    NEXT_PUBLIC_NODE_ENV: test
     PORT: 3000
     NODE_ENV: test
     SSR_HOST: "http://host.docker.internal"
     NEXTAUTH_SECRET: secret
     NEXTAUTH_URL: "http://localhost"
-    NODE_ENV: test
    extra_hosts:
      - "host.docker.internal:host-gateway"
