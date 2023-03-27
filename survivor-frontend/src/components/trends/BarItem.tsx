@@ -48,13 +48,13 @@ export default function BarItem() {
                 },
               }}
               data={{
-                labels: ["Last week", "Last month", "All time"],
+                labels: ["Last day", "Last week", "All time"],
                 datasets: [
                   {
                     label: "Number of views",
                     data: [
+                      x.views_in_last_day,
                       x.views_in_last_week,
-                      x.views_in_last_month,
                       x.views_all_time,
                     ],
                     backgroundColor: "#44841a",
