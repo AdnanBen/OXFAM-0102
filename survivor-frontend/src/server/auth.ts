@@ -8,8 +8,6 @@ import AzureADB2CProvider from "next-auth/providers/azure-ad-b2c";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { env } from "../env/env.mjs";
 
-
-
 async function getAzureGraphAccessToken() {
   const params = new URLSearchParams({
     client_id: env.AZURE_AD_B2C_CLIENT_ID,
@@ -101,7 +99,8 @@ export const authOptions: NextAuthOptions = {
       return token;
     },
     session({ session, token }) {
-      session.user.isModerator = token.isModerator as boolean;
+      session.user.isModerator = (token.isAdmin ||
+        token.isModerator) as boolean;
       session.user.isAdmin = token.isAdmin as boolean;
       return session;
     },

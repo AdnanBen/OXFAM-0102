@@ -70,15 +70,32 @@ const Header = () => {
 
           {!!session && (
             <>
-              <Link
-                href="/moderator"
-                className={
-                  router.pathname.startsWith("/moderator") ? styles.active : ""
-                }
-                replace
-              >
-                <Trans>Moderator</Trans>
-              </Link>
+              {session.user.isModerator && (
+                <Link
+                  href="/moderator"
+                  className={
+                    router.pathname.startsWith("/moderator")
+                      ? styles.active
+                      : ""
+                  }
+                  replace
+                >
+                  <Trans>Moderator</Trans>
+                </Link>
+              )}
+
+              {session.user.isAdmin && (
+                <Link
+                  href="/admin"
+                  className={
+                    router.pathname.startsWith("/admin") ? styles.active : ""
+                  }
+                  replace
+                >
+                  <Trans>Admin</Trans>
+                </Link>
+              )}
+
               <a className={styles.authLink} onClick={() => signOut()}>
                 <Trans>Sign out</Trans>
               </a>
