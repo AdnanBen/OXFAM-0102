@@ -7,10 +7,11 @@ The `reports` microservice is used to facilitate reports of abuse by survivors.
 This is an [Express](https://expressjs.com/) API connecting to a [MongoDB](https://www.mongodb.com/) database.
 
 ## Public endpoints
+
 ### POST
 
 - `POST /reports/completereports/` -- creates a new report with the JSON request body of `title`, `body`
-- `POST /reports/incompletereports/` --  creates a new incomplete report datum with the JSON request body of `title`, `body`
+- `POST /reports/incompletereports/` -- creates a new incomplete report datum with the JSON request body of `title`, `body`
 
 ## Moderator endpoints
 
@@ -22,8 +23,25 @@ This is an [Express](https://expressjs.com/) API connecting to a [MongoDB](https
 ### DELETE
 
 - `DELETE /moderator/reports/completereports/:reportId` -- deletes the given report `reportId`.
+
 ## Tests
 
 The API exposed by this microservice is unit-tested using [Jest](https://jestjs.io/).
 
 To sufficiently test the functionality, the database is not mocked, but an in-memory MongoDB instance is used through [`mongodb-memory-server`](https://github.com/nodkz/mongodb-memory-server), and the database is truncated (cleared) after every test so that each test is independent.
+
+To run the tests:
+
+1. Install dependencies
+
+   ```bash
+   cd reports
+   pnpm install
+   ```
+
+2. Run the tests
+
+   ```bash
+   cd reports
+   pnpm test
+   ```

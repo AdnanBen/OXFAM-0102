@@ -9,7 +9,8 @@
 		"start": "next start",
 		"i18n:extract": "cross-env NODE_ENV=development lingui extract",
 		"i18n:compile": "lingui compile",
-		"test:e2e": "jest --testPathPattern=tests/end-to-end --coverage --runInBand"
+		"test:e2e": "jest --testPathPattern=tests/end-to-end --coverage --runInBand",
+		"test:frontend": "jest --testPathPattern=tests/end-frontend --coverage --runInBand"
 	},
 	"dependencies": {
 		"@babel/core": "^7.21.0",

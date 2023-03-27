@@ -42,6 +42,22 @@ The API exposed by this microservice is unit-tested using [Jest](https://jestjs.
 
 To sufficiently test the functionality, the database is not mocked, but a test instance is spun up in a Docker container and thrown away afterwards. A unique PostgreSQL schema is used per test file, and the database is truncated (cleared) after every test so that each test is independent.
 
+To run the tests:
+
+1. Install dependencies
+
+   ```bash
+   cd forum
+   pnpm install
+   ```
+
+2. Run the tests -- this command will also spin up the required PostgreSQL container
+
+   ```bash
+   cd forum
+   pnpm test
+   ```
+
 ## Cloudflare Turnstile
 
 To protect the forum from bots we deployed a CAPTCHA using Cloudflare's Turnstile technology. All of the above listed POST actions are protected by the CAPTCHA. The CAPTCHA is currently configured to use the invisible mode in the Turnstile dashboard so there is minimal impact on the user experience. The library that we used to implement the Turnstile CAPTCHA can be found [here](https://github.com/marsidev/react-turnstile).

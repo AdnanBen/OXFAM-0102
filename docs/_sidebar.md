@@ -7,4 +7,5 @@
   - [Reports](./microservice-reports.md)
   - [Resources](./microservice-resources.md)
   - [Frontend](./microservice-frontend.md)
+- [End-to-end tests](./e2e-testing.md)
 - [Security & Privacy](./security-privacy.md)

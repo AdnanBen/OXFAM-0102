@@ -27,3 +27,25 @@ This microservice exposes 2 endpoints:
   This is the endpoint that must be called when a pending account should be approved. This endpoint will create a User object in the Azure AD B2C tenant using the [Graph API](https://learn.microsoft.com/en-us/azure/active-directory-b2c/microsoft-graph-operations) and the user details stored previously. On success, an email is sent to the corresponding user's email address confirming their approval.
 
 [NextAuth.js](https://next-auth.js.org/) is used to connect to the Azure AD B2C tenant using the
+
+## Tests
+
+The API exposed by this microservice is unit-tested using [Jest](https://jestjs.io/).
+
+To sufficiently test the functionality, the MongoDB database is mocked in-memory using [`mongodb-memory-server`](https://github.com/nodkz/mongodb-memory-server), which provides a unique URL for the in-memory database for every test suite. Thus, they can run in parallel, as the setup script connects to the unique database per test suite, and drops the database for every test to ensure independence of tests.
+
+To run the tests:
+
+1. Install dependencies
+
+   ```bash
+   cd auth
+   pnpm install
+   ```
+
+2. Run the tests
+
+   ```bash
+   cd auth
+   pnpm test
+   ```
