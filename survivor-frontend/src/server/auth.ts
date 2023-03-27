@@ -5,7 +5,7 @@ import {
   getServerSession,
   type NextAuthOptions,
 } from "next-auth";
-import jose from "jose";
+import * as jose from "jose";
 import { JWT } from "next-auth/jwt/types.js";
 import AzureADB2CProvider from "next-auth/providers/azure-ad-b2c";
 import CredentialsProvider from "next-auth/providers/credentials";
