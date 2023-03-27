@@ -11,6 +11,9 @@ import styles from "../../styles/ModeratorResources.module.css";
 import { fetchJsonApi } from "../../utils/helpers";
 import { useRouter } from "next/router";
 
+export const getServerSideProps: GetServerSideProps = (context) =>
+  requireAuth(context, "moderator");
+
 function AdminDashboard() {
   const router = useRouter();
   const [values, setValues] = useState({

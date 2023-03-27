@@ -3,6 +3,9 @@ import { useEffect, useState } from "react";
 import { requireAuth } from "../../server/requireAuth";
 import styles from "../../styles/ReportModerator.module.css";
 
+export const getServerSideProps: GetServerSideProps = (context) =>
+  requireAuth(context, "moderator");
+
 export default function ReportsView() {
   const [reports, setReports] = useState({});
 
