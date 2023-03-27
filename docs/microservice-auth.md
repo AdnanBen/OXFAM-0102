@@ -28,6 +28,12 @@ This microservice exposes 2 endpoints:
 
 [NextAuth.js](https://next-auth.js.org/) is used to connect to the Azure AD B2C tenant using the
 
+## Underlying authentication model: JWTs
+We use JSON Web Tokens for authentication, which are a way of transmitting information that can later be verified with access to a shared secret key. The sender signs the JWT (which is structured as two sets of JSON objects, a header and a body). This signature is unique to the JWT and its contents. If anything in the JWT were to change, so would the signature. For someone to verify that the contents of the JWT are correct, they can use the secret key to compute the signature of the JWT and compare it to the signature included in the JWT. If they match, they can can trust the JWT's contents and that they have not been tampered with.
+In our JWT, we include standard claims such as when the JWT was issued (iat), an expiration time (exp) and the ID of the user (sub). Most importantly, we include the role of the user (moderator or admin) so that the correct access to resources can be given.
+
+For more about JWTs and claims, see the official JWT RFC: https://www.rfc-editor.org/rfc/rfc7519
+
 ## Tests
 
 The API exposed by this microservice is unit-tested using [Jest](https://jestjs.io/).
