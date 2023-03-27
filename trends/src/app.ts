@@ -44,7 +44,7 @@ function consumeResourceViewsData(this: any, msg: any) {
 }
 
 async function listen() {
-  const conn = await amqplib.connect("amqp://localhost");
+  const conn = await amqplib.connect(`amqp://${process.env.RABBITMQ_HOSTNAME}`);
   const channel = await conn.createChannel();
 
   // Declare the queues you want to consume from
