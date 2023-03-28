@@ -4,7 +4,7 @@ Oxfam Survivors Community is a safe-space for survivors to discuss and share the
 
 The platform uses a microservice architecture to enable appropriate scaling of features based on their popularity. Each microservice is described below, with a link to further documentation.
 
-<img src="https://github.com/adnanben/oxfam-0102/blob/main/.github/images/architecture.png?raw=true" width="80%></img>
+<img src="https://github.com/adnanben/oxfam-0102/blob/main/.github/images/architecture.png?raw=true" width="80%"></img>
 
 ## Documentation
 

@@ -19,7 +19,7 @@ Each test suite is responsible for connecting to, disconnecting from, and cleari
 1. Start the Docker containers
 
    ```bash
-   ./rune-e2e.sh
+   ./run-e2e.sh
    ```
 
 2. Install dependencies
