@@ -11,13 +11,13 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   const redirectNoDirectAccess = requireSSRTransition(context);
   if (redirectNoDirectAccess) return redirectNoDirectAccess;
 
-  const boards = await fetchSSR(`/api/forum/boards`).then((res) => res.boards);
+  const boards = await fetchSSR(`/api/forum/boards`).then((res) => res?.boards);
   const board = boards.find((b: any) => b.id === +context.query.boardId!);
   if (!board) return { notFound: true };
 
   const posts = await fetchSSR(
     `/api/forum/posts?board_id=${context.query.boardId}`
-  ).then((res) => res.posts);
+  ).then((res) => res?.posts);
 
   return {
     props: {

@@ -19,7 +19,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   if (redirectNoDirectAccess) return redirectNoDirectAccess;
 
   const post = await fetchSSR(`/api/forum/posts/${context.query.id}`).then(
-    (res) => res.post
+    (res) => res?.post
   );
 
   return {

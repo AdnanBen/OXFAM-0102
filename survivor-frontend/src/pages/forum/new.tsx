@@ -40,7 +40,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   const redirectNoDirectAccess = requireSSRTransition(context);
   if (redirectNoDirectAccess) return redirectNoDirectAccess;
 
-  const boards = await fetchSSR(`/api/forum/boards`).then((res) => res.boards);
+  const boards = await fetchSSR(`/api/forum/boards`).then((res) => res?.boards);
   return {
     props: {
       session: await getServerAuthSession(context),

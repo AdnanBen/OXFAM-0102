@@ -18,7 +18,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 
   const article = await fetchSSR(
     `/api/resources/${context.query.resourceId}`
-  ).then((res) => res.article);
+  ).then((res) => res?.article);
 
   return {
     props: {
