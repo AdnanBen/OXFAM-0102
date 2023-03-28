@@ -14,7 +14,9 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   const redirectNoDirectAccess = requireSSRTransition(context);
   if (redirectNoDirectAccess) return redirectNoDirectAccess;
 
-  const articles = await fetchSSR(`/api/resources`).then((res) => res?.articles);
+  const articles = await fetchSSR(`/api/resources`).then(
+    (res) => res?.articles
+  );
   return {
     props: {
       session: await getServerAuthSession(context),
@@ -32,15 +34,8 @@ function ResourceHome({ articles }) {
     );
 
     return filteredArticles.map((article: Article) => (
-      <Link
-        href={`/resources/${article._id}`}
-        key={article._id}
-        replace
-        data-testid="article-link"
-      >
-        <div className={styles.articleAnchor} data-testid="article-title">
-          {article.title}
-        </div>
+      <Link href={`/resources/${article._id}`} key={article._id} replace>
+        <div className={styles.articleAnchor}>{article.title}</div>
       </Link>
     ));
   };
@@ -61,14 +56,7 @@ function ResourceHome({ articles }) {
               <Panel
                 collapsible
                 defaultExpanded
-                header={
-                  <div
-                    className={styles.header}
-                    data-testid="resources-categories"
-                  >
-                    {category}
-                  </div>
-                }
+                header={<div className={styles.header}>{category}</div>}
                 bordered
                 className={styles.resourceCategory}
               >

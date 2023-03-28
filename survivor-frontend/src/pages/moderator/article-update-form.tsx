@@ -36,7 +36,7 @@ const modules = {
 export const getServerSideProps: GetServerSideProps = (context) =>
   requireAuth(context, "moderator");
 
-export default function ArticleSubmissionForm() {
+export default function ArticleUpdateForm() {
   const router = useRouter();
 
   const [error, setError] = useState("");

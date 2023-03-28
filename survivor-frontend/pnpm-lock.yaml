@@ -11,6 +11,7 @@ specifiers:
   '@marsidev/react-turnstile': ^0.1.0
   '@microsoft/applicationinsights-web': ^2.8.11
   '@popperjs/core': ^2.11.6
+  '@rsuite/icons': ^1.0.2
   '@tanstack/react-query': ^4.20.0
   '@testing-library/jest-dom': ^5.16.5
   '@testing-library/react': ^14.0.0
@@ -61,6 +62,7 @@ dependencies:
   '@marsidev/react-turnstile': 0.1.0_biqbaboplfbrettd7655fr4n2y
   '@microsoft/applicationinsights-web': 2.8.11_tslib@2.5.0
   '@popperjs/core': 2.11.6
+  '@rsuite/icons': 1.0.2_biqbaboplfbrettd7655fr4n2y
   '@tanstack/react-query': 4.24.4_biqbaboplfbrettd7655fr4n2y
   chart.js: 4.2.1
   formik: 2.2.9_react@18.2.0

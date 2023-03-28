@@ -1,25 +1,11 @@
-import React from "react";
-import { render, screen } from "@testing-library/react";
-import { jest, describe, expect, it } from "@jest/globals";
+import { describe, expect, it } from "@jest/globals";
 import "@testing-library/jest-dom";
+import { render, screen } from "@testing-library/react";
 import Post from "../../src/pages/forum/[id]";
 import { ReactTestingLibraryProvider } from "./helpers";
-import useRouterRefresh from "../../src/utils/useRouterRefresh";
-jest.mock("../../src/server/auth", () => ({}));
-jest.mock("../../src/utils/useRouterRefresh");
 
-describe("Forum Testing", () => {
-  beforeEach(() => {
-    useRouterRefresh.mockReturnValue("");
-  });
-
-
-  afterAll(() => {
-    jest.resetModules();
-    jest.resetAllMocks();
-  });
-
-  it("Should render post and its properties correctly.", () => {
+describe("Forum Post", () => {
+  it("renders post and its properties correctly", async () => {
     const postMock = {
       id: 1,
       title: "post title",
@@ -32,18 +18,13 @@ describe("Forum Testing", () => {
       wrapper: ReactTestingLibraryProvider,
     });
 
-    const postTitle = screen.getByTestId("post-title");
-    const postDate = screen.getByTestId("post-date");
-    const postTag = screen.getByTestId("post-tag");
-    const postBody = screen.getByTestId("post-body");
-
-    expect(postTitle).toHaveTextContent("post title");
-    expect(postDate).toHaveTextContent("Wed, 15 Mar 2023 22:23:47 GMT");
-    expect(postTag).toHaveTextContent("tag 1");
-    expect(postBody).toHaveTextContent("Post body");
+    await screen.findByText("post title");
+    await screen.findByText("Wed, 15 Mar 2023 22:23:47 GMT");
+    await screen.findByText("tag 1");
+    await screen.findByText("Post body");
   });
 
-  it("Should render comments correctly.", () => {
+  it("renders comments correctly", async () => {
     const postMock = {
       id: 1,
       title: "post title",
@@ -65,16 +46,12 @@ describe("Forum Testing", () => {
       wrapper: ReactTestingLibraryProvider,
     });
 
-    const commentBody = screen.getByTestId("comment-body");
-    const parenCommentDate = screen.getByTestId("parent-comment-date");
-    const parenCommentBody = screen.getByTestId("parent-comment-body");
-
-    expect(commentBody).toHaveTextContent(/comment body/);
-    expect(parenCommentDate).toHaveTextContent("on Wed, 15 Mar 2023 22:23:47 GMT");
-    expect(parenCommentBody).toHaveTextContent("parent comment body");
+    expect(screen.getAllByText(/comment body/)).toHaveLength(2);
+    await screen.findByText("on Wed, 15 Mar 2023 22:23:47 GMT");
+    await screen.findByText("parent comment body");
   });
 
-  it("Should render the report and add comment button.", () => {
+  it("renders the report and add comment buttons", async () => {
     const postMock = {
       id: 1,
       title: "post title",
@@ -96,10 +73,7 @@ describe("Forum Testing", () => {
       wrapper: ReactTestingLibraryProvider,
     });
 
-    const reportCommentButton = screen.getByTestId("report-comment-btn");
-    const addCommentButton = screen.getByTestId("add-comment-button");
-
-    expect(addCommentButton).toHaveTextContent("add comment?");
-    expect(reportCommentButton).toHaveTextContent("Report comment?");
+    await screen.findByText("add comment?");
+    await screen.findByText("Report comment?");
   });
 });

@@ -12,6 +12,7 @@ module.exports = {
       moduleNameMapper: {
         "\\.css$": "identity-obj-proxy",
       },
+      resetMocks: true,
     },
   ],
   testTimeout: 10000,

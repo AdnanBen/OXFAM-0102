@@ -3,7 +3,7 @@
 We run all tests (as described in each individual microservice page on the left) in GitHub Actions as a Continuous Integration pipeline consisting of:
 
 1. Building Docker images for all microservices
-2. Running microservice API unit tests for all microservices
+2. Running microservice API unit tests for all microservices and frontend component tests
 3. Running the full end-to-end testing suite
 4. Pushing the Docker images to the GitHub Container Registry.
 

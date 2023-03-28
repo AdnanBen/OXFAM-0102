@@ -19,7 +19,7 @@ const Home: NextPage = () => {
       </Head>
 
       <main className={styles.container}>
-        <p className={styles.intro} data-testid="home-description">
+        <p className={styles.intro}>
           <Trans>
             A safe-space for survivors to discuss and share their experiences of
             abuse, and get support.
@@ -27,10 +27,10 @@ const Home: NextPage = () => {
         </p>
 
         <div className={styles.links}>
-          <Link href="/forum" className={styles.link} replace data-testId="forum-link">
+          <Link href="/forum" className={styles.link} replace>
             <Panel
               header={
-                <span className={styles.linkHeader} data-testid="forum-title">
+                <span className={styles.linkHeader}>
                   <PublicOpinionIcon className={styles.icon} />
                   <Trans>Forum </Trans>
                 </span>
@@ -39,7 +39,7 @@ const Home: NextPage = () => {
               shaded
               style={{ width: "100%" }}
             >
-              <span className={styles.linkText} data-testid="forum-description">
+              <span className={styles.linkText}>
                 <Trans>
                   Safely discuss your concerns and receive feedback from the
                   community.
@@ -47,10 +47,10 @@ const Home: NextPage = () => {
               </span>
             </Panel>
           </Link>
-          <Link href="/chat" className={styles.link} replace data-testId="chat-link">
+          <Link href="/chat" className={styles.link} replace>
             <Panel
               header={
-                <span className={styles.linkHeader} data-testid="chat-title">
+                <span className={styles.linkHeader}>
                   <MessageIcon className={styles.icon} />
                   Chat
                 </span>
@@ -59,17 +59,17 @@ const Home: NextPage = () => {
               shaded
               style={{ width: "100%" }}
             >
-              <span className={styles.linkText} data-testid="chat-description">
+              <span className={styles.linkText}>
                 <Trans>
                   Chat individually with trained moderators for advice.
                 </Trans>
               </span>
             </Panel>
           </Link>
-          <Link href="/resources" className={styles.link} replace data-testId="resources-link">
+          <Link href="/resources" className={styles.link} replace>
             <Panel
               header={
-                <span className={styles.linkHeader} data-testid="resources-title">
+                <span className={styles.linkHeader}>
                   <DetailIcon className={styles.icon} />
                   Resources
                 </span>
@@ -78,7 +78,7 @@ const Home: NextPage = () => {
               shaded
               style={{ width: "100%" }}
             >
-              <span className={styles.linkText} data-testid="resources-description">
+              <span className={styles.linkText}>
                 <Trans>
                   Find free self-help and educational resources to help manage
                   and recover from abuse.
@@ -86,10 +86,10 @@ const Home: NextPage = () => {
               </span>
             </Panel>
           </Link>
-          <Link href="/report" className={styles.link} replace data-testId="report-link">
+          <Link href="/report" className={styles.link} replace>
             <Panel
               header={
-                <span className={styles.linkHeader} data-testid="report-title">
+                <span className={styles.linkHeader}>
                   <RemindOutlineIcon className={styles.icon} />
                   Report
                 </span>
@@ -98,7 +98,7 @@ const Home: NextPage = () => {
               shaded
               style={{ width: "100%" }}
             >
-              <span className={styles.linkText} data-testid="report-description">
+              <span className={styles.linkText}>
                 <Trans>
                   Report severe abuse to receive help from trained responders.
                 </Trans>

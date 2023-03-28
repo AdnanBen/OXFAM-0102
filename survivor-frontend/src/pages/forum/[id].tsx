@@ -116,20 +116,14 @@ const Post: NextPage = ({ post }) => {
         {comments.map((c) => {
           return (
             <>
-              <div
-                className={styles.commentWrapper}
-                key={`comment-${c.id}`}
-                data-testid="comment-body"
-              >
+              <div className={styles.commentWrapper} key={`comment-${c.id}`}>
                 {c.parent_comment && (
                   <div className={styles.parentComment}>
-                    <i data-testid="parent-comment-date">
+                    <i>
                       <Trans comment="e.g., on [date]">on</Trans>{" "}
                       {new Date(c.parent_comment.created).toUTCString()}
                     </i>
-                    <p data-testid="parent-comment-body">
-                      {c.parent_comment.body}
-                    </p>
+                    <p>{c.parent_comment.body}</p>
                   </div>
                 )}
                 {c.body}{" "}
@@ -163,7 +157,6 @@ const Post: NextPage = ({ post }) => {
                   size="xs"
                   color="red"
                   onClick={() => reportComment(c.id)}
-                  data-testid="report-comment-btn"
                 >
                   Report comment?
                 </IconButton>
@@ -251,10 +244,10 @@ const Post: NextPage = ({ post }) => {
       {post ? (
         <>
           <div className={styles.postHeader}>
-            <h2 data-testid="post-title">{post.title}</h2>
+            <h2>{post.title}</h2>
           </div>
           <div className={styles.postHeaderInfo}>
-            <i className={styles.timestamp} data-testid="post-date">
+            <i className={styles.timestamp}>
               {new Date(post.created).toUTCString()}
             </i>
             {process.env.NEXT_PUBLIC_NODE_ENV === "production" && (
@@ -281,11 +274,10 @@ const Post: NextPage = ({ post }) => {
               Report post?
             </IconButton>
           </div>
-          <h3 data-testid="post-tag">{post.tag}</h3>
+          <h3>{post.tag}</h3>
           <p
             dangerouslySetInnerHTML={{ __html: sanitizeHTML(post.body) }}
             className={styles.body}
-            data-testid="post-body"
           />
 
           <div className={styles.commentsWrapper}>
@@ -296,7 +288,6 @@ const Post: NextPage = ({ post }) => {
                 size="sm"
                 className={styles.addCommentBtn}
                 onClick={() => setShowCommentDialog(true)}
-                data-testid="add-comment-button"
               >
                 <Trans>add comment?</Trans>
               </Button>

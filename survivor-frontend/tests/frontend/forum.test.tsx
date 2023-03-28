@@ -1,74 +1,47 @@
-import React from "react";
-import { render, screen } from "@testing-library/react";
-import { jest, describe, expect, it } from "@jest/globals";
+import { describe, expect, it } from "@jest/globals";
 import "@testing-library/jest-dom";
+import { render, screen } from "@testing-library/react";
 import Feed from "../../src/pages/forum";
 import { ReactTestingLibraryProvider } from "./helpers";
 
-jest.mock("../../src/server/auth", () => ({}));
+describe("Forum", () => {
+  it("should render create post button", async () => {
+    render(<Feed boards={[]} />, {
+      wrapper: ReactTestingLibraryProvider,
+    });
 
-describe("Forum Testing", () => {
-
-  afterAll(() => {
-    jest.resetModules();
-    jest.resetAllMocks();
+    const btn = await screen.findByText("Create new post?");
+    expect((btn.parentElement as HTMLAnchorElement).href).toMatch(
+      /\/forum\/new/
+    );
   });
 
-  it("Should render create post button correctly.", () => {
+  it("renders forum boards correctly", async () => {
     const boardsMock = [
-      {
-        id: 1,
-        name: "board 1",
-        description: "board 1 desp",
-      },
-      {
-        id: 2,
-        name: "board 2",
-        description: "board 2 desp",
-      },
+      { id: 1, name: "board 1", description: "board 1 desc" },
+      { id: 2, name: "board 2", description: "board 2 desc" },
     ];
     render(<Feed boards={boardsMock} />, {
       wrapper: ReactTestingLibraryProvider,
     });
 
-    const forumCreateLink = screen.getByTestId("forum-create-link");
+    const board1 = await screen.findByText("board 1");
+    await screen.findByText("board 1 desc");
+    expect(
+      (board1.parentElement?.parentElement as HTMLAnchorElement).href
+    ).toMatch(/\/forum\/board\?boardId=1/);
 
-    expect(forumCreateLink).toHaveAttribute("href", "/forum/new");
-    expect(forumCreateLink).toHaveTextContent("Create new post");
+    const board2 = await screen.findByText("board 2");
+    await screen.findByText("board 2 desc");
+    expect(
+      (board2.parentElement?.parentElement as HTMLAnchorElement).href
+    ).toMatch(/\/forum\/board\?boardId=2/);
   });
 
-  it("Should render forum boards correctly.", () => {
-    const boardsMock = [
-      {
-        id: 1,
-        name: "board 1",
-        description: "board 1 desp",
-      },
-      {
-        id: 2,
-        name: "board 2",
-        description: "board 2 desp",
-      },
-    ];
-    render(<Feed boards={boardsMock} />, {
+  it("renders error when there are no boards", async () => {
+    render(<Feed boards={[]} />, {
       wrapper: ReactTestingLibraryProvider,
     });
-
-    const forumBoards = screen.queryAllByTestId("forum-boards-link");
-
-    expect(forumBoards[0]).toHaveAttribute("href", "/forum/board?boardId=1");
-    expect(forumBoards[0]).toHaveTextContent(/board 1/);
-    expect(forumBoards[0]).toHaveTextContent(/board 1 desp/);
-    expect(forumBoards[1]).toHaveAttribute("href", "/forum/board?boardId=2");
-    expect(forumBoards[1]).toHaveTextContent(/board 2 desp/);
+    await screen.findByText("There are no boards yet.");
   });
-
-  it("Should render error when there are no boards", () => {
-    const boardsMock = [];
-    render(<Feed boards={boardsMock} />, {
-      wrapper: ReactTestingLibraryProvider,
-    });
-    expect(screen.findByText("There are no boards yet")).toBeDefined();
-  });
-
 });

@@ -35,9 +35,7 @@ type BoardProps = {
 const Board: NextPage<BoardProps> = ({ posts, boardName }) => {
   return (
     <main>
-      <h2 className={styles.boardHeader} data-testid="board-name">
-        Forum: {boardName}
-      </h2>
+      <h2 className={styles.boardHeader}>Forum: {boardName}</h2>
       {posts ? (
         <>
           {posts?.map((p) => (
@@ -45,7 +43,7 @@ const Board: NextPage<BoardProps> = ({ posts, boardName }) => {
           ))}
           {!posts?.length && (
             <Trans>
-              <div data-testid="boards-no-posts">There are no posts yet.</div>
+              <div>There are no posts yet.</div>
             </Trans>
           )}
         </>

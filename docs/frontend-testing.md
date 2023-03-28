@@ -19,5 +19,5 @@ We use the [React Testing Library](https://testing-library.com/docs/react-testin
 
    ```bash
    cd survivor-frontend
-   pnpm test:frontend
+   pnpm test
    ```

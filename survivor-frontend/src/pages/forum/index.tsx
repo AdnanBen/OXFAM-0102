@@ -17,21 +17,12 @@ export type PostType = {
 
 export const Post = ({ post }: { post: PostType }) => {
   return (
-    <Link
-      href={`/forum/${post.id}`}
-      className={styles.post_link}
-      replace
-      data-testid="post-link"
-    >
+    <Link href={`/forum/${post.id}`} className={styles.post_link} replace>
       <div className={styles.post}>
         <p className={styles.post_id}>{post.id}</p>
-        <p className={styles.post_title} data-testid="post-title">
-          {post.title}
-        </p>
-        <p className={styles.post_tag} data-testid="post-tag">
-          {post.tag}
-        </p>
-        <p className={styles.post_date} data-testid="post-date">
+        <p className={styles.post_title}>{post.title}</p>
+        <p className={styles.post_tag}>{post.tag}</p>
+        <p className={styles.post_date}>
           {new Date(post.created).toUTCString()}
         </p>
       </div>
@@ -78,12 +69,7 @@ const Feed: NextPage<FeedProps> = ({ boards }) => {
         <h2>
           <Trans>Forum</Trans>
 
-          <Link
-            href="/forum/new"
-            className={styles.createPostBtn}
-            replace
-            data-testid="forum-create-link"
-          >
+          <Link href="/forum/new" className={styles.createPostBtn} replace>
             <Button appearance="primary" size="sm">
               <Trans>Create new post?</Trans>
             </Button>
@@ -103,7 +89,6 @@ const Feed: NextPage<FeedProps> = ({ boards }) => {
                   href={`/forum/board?boardId=${b.id}`}
                   replace
                   className={styles.board_wrapper}
-                  data-testid="forum-boards-link"
                 >
                   <div>
                     <div className={styles.board_button}>{b.name}</div>

@@ -17,7 +17,6 @@ const Login: NextPage = () => {
           appearance="ghost"
           style={{ margin: "auto", display: "block" }}
           onClick={() => signIn("azure-ad-b2c")}
-          data-testid="login-button"
         >
           Login as moderator/administrator
         </Button>

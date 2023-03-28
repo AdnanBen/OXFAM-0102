@@ -94,9 +94,6 @@ export default function ArticleSubmissionForm() {
             Save new Resource
           </Button>
         </Form.Group>
-
-        <br />
-        <p>{formData.body}</p>
       </Form>
     </main>
   );

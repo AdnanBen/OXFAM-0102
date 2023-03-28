@@ -64,7 +64,8 @@ jobs:
       contents: read
     strategy:
       matrix:
-        microservice: ["forum", "reports", "resources", "auth"]
+        microservice:
+          ["forum", "reports", "resources", "auth", "survivor-frontend"]
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3

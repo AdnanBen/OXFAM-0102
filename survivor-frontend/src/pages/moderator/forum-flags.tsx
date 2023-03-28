@@ -91,7 +91,7 @@ const ActionsCell = ({ rowData, type, toaster, mutate, ...props }: any) => (
   </Table.Cell>
 );
 
-export default function ReportsView() {
+export default function ForumFlags() {
   const toaster = useToaster();
 
   const {
