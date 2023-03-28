@@ -29,6 +29,7 @@ Please see the below pages:
 
 - [Frontend tests](./frontend-testing.md)
 - [End-to-end tests](./e2e-testing.md)
+- [Local development](./local-development.md)
 - [Continuous Integration and Deployment](./continuous-integration-deployment.md)
 - [Logging](./logging.md)
 - [Security & Privacy](./security-privacy.md)
