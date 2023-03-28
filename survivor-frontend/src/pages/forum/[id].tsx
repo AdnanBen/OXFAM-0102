@@ -1,36 +1,26 @@
 import { t, Trans } from "@lingui/macro";
+import { Turnstile } from "@marsidev/react-turnstile";
 import RemindOutlineIcon from "@rsuite/icons/RemindOutline";
 import { GetServerSideProps, type NextPage } from "next";
-import { useState } from "react";
-import getConfig from "next/config";
+import { useRef, useState } from "react";
 import { Button, IconButton, Input, Loader, Message, Modal } from "rsuite";
 import sanitizeHTML from "sanitize-html";
-import { env } from "../../env/env";
 import { getServerAuthSession } from "../../server/auth";
+import fetchSSR from "../../server/fetchSSR";
 import requireSSRTransition from "../../server/requireSSRTransition";
 import styles from "../../styles/Forum.module.css";
 import { fetchJsonApi } from "../../utils/helpers";
 import useRouterRefresh from "../../utils/useRouterRefresh";
 import useToaster from "../../utils/useToaster";
-import { Turnstile } from "@marsidev/react-turnstile";
-import { useRef } from "react";
-
-const { publicRuntimeConfig } = getConfig();
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   // Only allow access through the homepage, not directly
   const redirectNoDirectAccess = requireSSRTransition(context);
   if (redirectNoDirectAccess) return redirectNoDirectAccess;
 
-  const post = await fetch(
-    `${env.SSR_HOST}/api/forum/posts/${context.query.id}`
-  )
-    .then((res) => res.json())
-    .then((res) => res.post)
-    .catch((err) => {
-      console.error("error fetching post", err);
-      return null;
-    });
+  const post = await fetchSSR(`/api/forum/posts/${context.query.id}`).then(
+    (res) => res.post
+  );
 
   return {
     props: {

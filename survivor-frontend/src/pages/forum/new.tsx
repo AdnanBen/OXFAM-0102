@@ -1,18 +1,15 @@
 import { Trans } from "@lingui/macro";
+import { Turnstile } from "@marsidev/react-turnstile";
 import { GetServerSideProps, type NextPage } from "next";
 import dynamic from "next/dynamic";
-import getConfig from "next/config";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import "react-quill/dist/quill.snow.css";
 import { Button, Form, SelectPicker } from "rsuite";
-import { env } from "../../env/env";
 import { getServerAuthSession } from "../../server/auth";
+import fetchSSR from "../../server/fetchSSR";
 import requireSSRTransition from "../../server/requireSSRTransition";
 import { BoardType } from "./index";
-import { Turnstile } from "@marsidev/react-turnstile";
-
-const { publicRuntimeConfig } = getConfig();
 
 const QuillNoSSRWrapper = dynamic(import("react-quill"), {
   ssr: false,
@@ -43,14 +40,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   const redirectNoDirectAccess = requireSSRTransition(context);
   if (redirectNoDirectAccess) return redirectNoDirectAccess;
 
-  const boards = await fetch(`${env.SSR_HOST}/api/forum/boards`)
-    .then((res) => res.json())
-    .then((res) => res.boards)
-    .catch((err) => {
-      console.error("error fetching boards", err);
-      return null;
-    });
-
+  const boards = await fetchSSR(`/api/forum/boards`).then((res) => res.boards);
   return {
     props: {
       session: await getServerAuthSession(context),

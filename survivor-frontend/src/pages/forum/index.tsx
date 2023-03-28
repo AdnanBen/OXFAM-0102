@@ -3,8 +3,8 @@ import { GetServerSideProps, type NextPage } from "next";
 import Head from "next/head";
 import Link from "next/link";
 import { Button, Message } from "rsuite";
-import { env } from "../../env/env";
 import { getServerAuthSession } from "../../server/auth";
+import fetchSSR from "../../server/fetchSSR";
 import requireSSRTransition from "../../server/requireSSRTransition";
 import styles from "../../styles/Forum.module.css";
 
@@ -17,11 +17,20 @@ export type PostType = {
 
 export const Post = ({ post }: { post: PostType }) => {
   return (
-    <Link href={`/forum/${post.id}`} className={styles.post_link} replace data-testid="post-link">
+    <Link
+      href={`/forum/${post.id}`}
+      className={styles.post_link}
+      replace
+      data-testid="post-link"
+    >
       <div className={styles.post}>
         <p className={styles.post_id}>{post.id}</p>
-        <p className={styles.post_title} data-testid="post-title">{post.title}</p>
-        <p className={styles.post_tag} data-testid="post-tag">{post.tag}</p>
+        <p className={styles.post_title} data-testid="post-title">
+          {post.title}
+        </p>
+        <p className={styles.post_tag} data-testid="post-tag">
+          {post.tag}
+        </p>
         <p className={styles.post_date} data-testid="post-date">
           {new Date(post.created).toUTCString()}
         </p>
@@ -35,21 +44,8 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   const redirectNoDirectAccess = requireSSRTransition(context);
   if (redirectNoDirectAccess) return redirectNoDirectAccess;
 
-  const posts = await fetch(`${env.SSR_HOST}/api/forum/posts`)
-    .then((res) => res.json())
-    .then((res) => res.posts)
-    .catch((err) => {
-      console.error("error fetching posts", err);
-      return null;
-    });
-
-  const boards = await fetch(`${env.SSR_HOST}/api/forum/boards`)
-    .then((res) => res.json())
-    .then((res) => res.boards)
-    .catch((err) => {
-      console.error("error fetching boards", err);
-      return null;
-    });
+  const posts = await fetchSSR(`/api/forum/posts`).then((res) => res.posts);
+  const boards = await fetchSSR(`/api/forum/boards`).then((res) => res.boards);
 
   return {
     props: {
@@ -118,17 +114,17 @@ const Feed: NextPage<FeedProps> = ({ boards }) => {
               );
             })}
             {!boards?.length && (
-              <div >
+              <div>
                 <Trans>There are no boards yet.</Trans>
               </div>
             )}
           </>
         ) : (
-            <Message type="error">
-              <Trans>
-                There was an error loading the boards. Please try again later.
-              </Trans>
-            </Message>
+          <Message type="error">
+            <Trans>
+              There was an error loading the boards. Please try again later.
+            </Trans>
+          </Message>
         )}
       </main>
     </>

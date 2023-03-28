@@ -3,11 +3,11 @@ import { Trans } from "@lingui/macro";
 import { GetServerSideProps } from "next";
 import { Message } from "rsuite";
 import sanitizeHTML from "sanitize-html";
-import { env } from "../../env/env";
 import { getServerAuthSession } from "../../server/auth";
 import { fetchJsonApi } from "../../utils/helpers";
 import requireSSRTransition from "../../server/requireSSRTransition";
 import styles from "../../styles/ArticlePage.module.css";
+import fetchSSR from "../../server/fetchSSR";
 
 const ARTICLE_VIEW_TIMER_SECONDS = 10;
 
@@ -16,15 +16,9 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   const redirectNoDirectAccess = requireSSRTransition(context);
   if (redirectNoDirectAccess) return redirectNoDirectAccess;
 
-  const article = await fetch(
-    `${env.SSR_HOST}/api/resources/${context.query.resourceId}`
-  )
-    .then((res) => res.json())
-    .then((res) => res.article)
-    .catch((err) => {
-      console.error("error fetching resource", err);
-      return null;
-    });
+  const article = await fetchSSR(
+    `/api/resources/${context.query.resourceId}`
+  ).then((res) => res.article);
 
   return {
     props: {
@@ -39,13 +33,13 @@ export default function ArticlePage({ article }) {
     fetchJsonApi(`/api/resources/${article._id}/view`, {
       method: "POST",
     }).catch((err) => {
-      console.log('Failed to record view', err);
+      console.log("Failed to record view", err);
     });
-  }
+  };
 
   useEffect(() => {
-    const timeout = setTimeout(handleView, ARTICLE_VIEW_TIMER_SECONDS*1000)
-    return () => clearTimeout(timeout)
+    const timeout = setTimeout(handleView, ARTICLE_VIEW_TIMER_SECONDS * 1000);
+    return () => clearTimeout(timeout);
   }, []);
 
   if (article) {

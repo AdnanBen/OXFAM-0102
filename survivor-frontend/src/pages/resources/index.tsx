@@ -4,8 +4,8 @@ import Head from "next/head";
 import Link from "next/link";
 import { Message, Panel } from "rsuite";
 import { Article } from "../../articles-interfaces";
-import { env } from "../../env/env";
 import { getServerAuthSession } from "../../server/auth";
+import fetchSSR from "../../server/fetchSSR";
 import requireSSRTransition from "../../server/requireSSRTransition";
 import styles from "../../styles/Resources.module.css";
 
@@ -14,14 +14,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   const redirectNoDirectAccess = requireSSRTransition(context);
   if (redirectNoDirectAccess) return redirectNoDirectAccess;
 
-  const articles = await fetch(`${env.SSR_HOST}/api/resources`)
-    .then((res) => res.json())
-    .then((res) => res.articles)
-    .catch((err) => {
-      console.error("error fetching resources", err);
-      return null;
-    });
-
+  const articles = await fetchSSR(`/api/resources`).then((res) => res.articles);
   return {
     props: {
       session: await getServerAuthSession(context),
@@ -39,8 +32,15 @@ function ResourceHome({ articles }) {
     );
 
     return filteredArticles.map((article: Article) => (
-      <Link href={`/resources/${article._id}`} key={article._id} replace data-testid="article-link">
-        <div className={styles.articleAnchor} data-testid="article-title">{article.title}</div>
+      <Link
+        href={`/resources/${article._id}`}
+        key={article._id}
+        replace
+        data-testid="article-link"
+      >
+        <div className={styles.articleAnchor} data-testid="article-title">
+          {article.title}
+        </div>
       </Link>
     ));
   };
@@ -61,7 +61,14 @@ function ResourceHome({ articles }) {
               <Panel
                 collapsible
                 defaultExpanded
-                header={<div className={styles.header} data-testid="resources-categories">{category}</div>}
+                header={
+                  <div
+                    className={styles.header}
+                    data-testid="resources-categories"
+                  >
+                    {category}
+                  </div>
+                }
                 bordered
                 className={styles.resourceCategory}
               >

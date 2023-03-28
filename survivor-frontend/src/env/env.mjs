@@ -26,6 +26,7 @@ const server = z.object({
   AZURE_AD_SERVER_TENANT_ID: z.string(),
   AZURE_AD_B2C_USER_EXTENSION_APP_ID: z.string(),
   SSR_HOST: z.string(),
+  SSR_SECRET_KEY: z.string(),
 });
 
 /**
@@ -56,6 +57,7 @@ const processEnv = {
     process.env.AZURE_AD_B2C_USER_EXTENSION_APP_ID,
   SSR_HOST: process.env.SSR_HOST,
   NEXT_PUBLIC_PANIC_URL_PATH: process.env.NEXT_PUBLIC_PANIC_URL_PATH,
+  SSR_SECRET_KEY: process.env.SSR_SECRET_KEY,
 };
 
 // Don't touch the part below
