@@ -11,6 +11,8 @@ If anything fails in a step, the following steps are immediately failed also.
 
 ?> Only microservices that have changed in a given commit are tested/pushed. This speeds up the pipeline, and prevents the same code but slightly different Docker images from being uploaded, speeding up deployment when it comes to it.
 
+<img src="https://github.com/adnanben/oxfam-0102/blob/main/.github/images/ci.png?raw=true" width="80%"></img>
+
 ## Continuous Deployment
 
 After all steps in the Continuous Integration pipeline complete successfully, our Continuous Deployment workflow runs which:
