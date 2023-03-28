@@ -5,7 +5,7 @@ import bodyParser from "body-parser";
 import sanitizeHTML from "sanitize-html";
 
 import prisma from "./db";
-import { APIError, requirecaptcha } from "./helpers";
+import { APIError, requireCaptcha } from "./helpers";
 
 function catchErrors(fn) {
   return function (req, res, next) {
@@ -61,7 +61,7 @@ app.use((err: Error, req: Request, res: Response, next: any) => {
 app.post(
   "/posts",
   catchErrors(async (req: Request, res: Response) => {
-    requirecaptcha(req);
+    await requireCaptcha(req);
 
     // Don't allow any HTML for Title
     const title = sanitizeHTML(req.body.title ?? "", {
@@ -151,7 +151,7 @@ app.get(
 app.post(
   "/posts/:postId/flags",
   catchErrors(async (req: Request, res: Response) => {
-    requirecaptcha(req);
+    await requireCaptcha(req);
 
     const { postId } = req.params;
 
@@ -179,7 +179,7 @@ app.post(
 app.post(
   "/posts/:postId/comments",
   catchErrors(async (req: Request, res: Response) => {
-    requirecaptcha(req);
+    await requireCaptcha(req);
 
     const { postId } = req.params;
     const post = await prisma.post.findFirst({ where: { id: +postId } });
@@ -211,7 +211,7 @@ app.post(
 app.post(
   "/comments/:commentId/flags",
   catchErrors(async (req: Request, res: Response) => {
-    requirecaptcha(req);
+    await requireCaptcha(req);
 
     const { commentId } = req.params;
 
