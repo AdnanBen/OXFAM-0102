@@ -8,5 +8,6 @@
   - [Resources](./microservice-resources.md)
   - [Frontend](./microservice-frontend.md)
 - [End-to-end tests](./e2e-testing.md)
+- [Continuous Integration and Deployment](./continuous-integration-deployment.md)
 - [Logging](./logging.md)
 - [Security & Privacy](./security-privacy.md)
