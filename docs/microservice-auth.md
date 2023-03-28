@@ -26,7 +26,7 @@ This microservice exposes 2 endpoints:
 
   This is the endpoint that must be called when a pending account should be approved. This endpoint will create a User object in the Azure AD B2C tenant using the [Graph API](https://learn.microsoft.com/en-us/azure/active-directory-b2c/microsoft-graph-operations) and the user details stored previously. On success, an email is sent to the corresponding user's email address confirming their approval.
 
-[NextAuth.js](https://next-auth.js.org/) is used to connect to the Azure AD B2C tenant using the
+[NextAuth.js](https://next-auth.js.org/) is used to connect to the Azure AD B2C tenant using OAuth.
 
 ## Underlying authentication model: JWTs
 We use JSON Web Tokens for authentication, which are a way of transmitting information that can later be verified with access to a shared secret key. The sender signs the JWT (which is structured as two sets of JSON objects, a header and a body). This signature is unique to the JWT and its contents. If anything in the JWT were to change, so would the signature. For someone to verify that the contents of the JWT are correct, they can use the secret key to compute the signature of the JWT and compare it to the signature included in the JWT. If they match, they can can trust the JWT's contents and that they have not been tampered with.
