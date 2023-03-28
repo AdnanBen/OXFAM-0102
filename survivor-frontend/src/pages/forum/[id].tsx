@@ -56,7 +56,7 @@ const Post: NextPage = ({ post }) => {
     })
       .then(() => {
         toaster.push(
-          <Message type="success" closable>
+          <Message type="success" closable duration={2000}>
             <Trans>The post was reported successfully.</Trans>
           </Message>
         );
@@ -64,7 +64,7 @@ const Post: NextPage = ({ post }) => {
       .catch((err) => {
         console.log(err);
         toaster.push(
-          <Message type="error" duration={0} closable>
+          <Message type="error" duration={2000} closable>
             <Trans>
               There was an error reporting the post. Please try again later.
             </Trans>
@@ -87,7 +87,7 @@ const Post: NextPage = ({ post }) => {
     })
       .then(() => {
         toaster.push(
-          <Message type="success" closable>
+          <Message type="success" closable duration={2000}>
             <Trans>The comment was reported successfully.</Trans>
           </Message>
         );
@@ -95,7 +95,7 @@ const Post: NextPage = ({ post }) => {
       .catch((err) => {
         console.log(err);
         toaster.push(
-          <Message type="error" duration={0} closable>
+          <Message type="error" duration={2000} closable>
             <Trans>
               There was an error reporting the comment. Please try again later.
             </Trans>

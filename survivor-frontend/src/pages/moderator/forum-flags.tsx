@@ -42,7 +42,7 @@ const ActionsCell = ({ rowData, type, toaster, mutate, ...props }: any) => (
           await fn(rowData.id)
             .then(() => {
               toaster.push(
-                <Message type="success" closable>
+                <Message type="success" closable duration={2000}>
                   The content was successfully deleted.
                 </Message>
               );
@@ -50,7 +50,7 @@ const ActionsCell = ({ rowData, type, toaster, mutate, ...props }: any) => (
             })
             .catch((err) =>
               toaster.push(
-                <Message type="error" closable duration={0}>
+                <Message type="error" closable duration={2000}>
                   There was an error deleting the content. Please try again
                   later or contact the administrator if the issue persists.
                 </Message>
@@ -69,7 +69,7 @@ const ActionsCell = ({ rowData, type, toaster, mutate, ...props }: any) => (
           await fn(rowData.id)
             .then(() => {
               toaster.push(
-                <Message type="success" closable>
+                <Message type="success" closable duration={2000}>
                   The flags were successfully dismissed.
                 </Message>
               );
@@ -77,7 +77,7 @@ const ActionsCell = ({ rowData, type, toaster, mutate, ...props }: any) => (
             })
             .catch((err) =>
               toaster.push(
-                <Message type="error" closable duration={0}>
+                <Message type="error" closable duration={2000}>
                   There was an error dismissing the flags. Please try again
                   later or contact the administrator if the issue persists.
                 </Message>

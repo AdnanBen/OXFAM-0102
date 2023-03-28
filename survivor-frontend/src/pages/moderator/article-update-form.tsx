@@ -56,7 +56,7 @@ export default function ArticleUpdateForm() {
       method: "PATCH",
       body: JSON.stringify(formData),
       headers: { "Content-Type": "application/json" },
-    });
+    }).then(() => router.replace("/moderator/resources"));
   };
 
   const loadArticle = (id: string) => {
@@ -114,9 +114,6 @@ export default function ArticleUpdateForm() {
             Update Resource
           </Button>
         </Form.Group>
-
-        <br />
-        <p>{formData.body}</p>
       </Form>
     </main>
   );

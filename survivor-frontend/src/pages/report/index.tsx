@@ -3,10 +3,11 @@ import { Formik, Field, Form, FormikHelpers } from "formik";
 import { useRouter } from "next/router";
 import { useEffect, useRef } from "react";
 import { FormikProps } from "formik";
+import useToaster from "../../utils/useToaster";
 
 import Head from "next/head";
 import { t, Trans } from "@lingui/macro";
-import { Button } from "rsuite";
+import { Button, Message } from "rsuite";
 import requireSSRTransition from "../../server/requireSSRTransition";
 import { GetServerSideProps } from "next";
 import styles from "../../styles/Report.module.css";
@@ -24,6 +25,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 };
 
 function FormPage(data: Values) {
+  const toaster = useToaster();
   const router = useRouter();
 
   async function submitForm(data: any) {
@@ -38,10 +40,25 @@ function FormPage(data: Values) {
       body: raw,
     };
 
-    const response = await fetch(
-      "/api/reports/completereports",
-      requestOptions
-    );
+    const response = await fetch("/api/reports/completereports", requestOptions)
+      .then(() => {
+        toaster.push(
+          <Message type="success" closable duration={2000}>
+            <Trans>Your report was submitted successfully.</Trans>
+          </Message>
+        );
+      })
+      .catch((err) => {
+        console.log(err);
+        toaster.push(
+          <Message type="error" duration={2000} closable>
+            <Trans>
+              There was an error submitting your report. Please try again later.
+            </Trans>
+          </Message>
+        );
+      });
+
     await response.json();
   }
 

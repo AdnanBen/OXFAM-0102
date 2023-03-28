@@ -111,7 +111,7 @@ const Header = () => {
           className={styles.backButton}
           onClick={handleBack}
         >
-          ⮪ Back
+          ← Back
         </Button>
       )}
     </nav>
