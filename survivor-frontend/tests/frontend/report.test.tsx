@@ -1,6 +1,6 @@
 import React from "react";
 import { render, screen } from "@testing-library/react";
-import { jest, describe, expect, it } from "@jest/globals";
+import { jest, describe, afterAll, expect, it } from "@jest/globals";
 import "@testing-library/jest-dom";
 import FormPage from "../../src/pages/report";
 import { ReactTestingLibraryProvider } from "./helpers";
@@ -17,16 +17,15 @@ jest.mock("next/router", () => ({
 }));
 
 describe("Report Testing", () => {
-    afterAll(() => {
-        jest.resetModules();
-        jest.resetAllMocks();
-      });
-  it("Should render the header, inputs and submit button.", () => {
+  afterAll(() => {
+    jest.resetModules();
+    jest.resetAllMocks();
+  });
 
-    render(
-      <FormPage name="mock name" situation="mock situation" />,
-      { wrapper: ReactTestingLibraryProvider }
-    );
+  it("Should render the header, inputs and submit button.", () => {
+    render(<FormPage name="mock name" situation="mock situation" />, {
+      wrapper: ReactTestingLibraryProvider,
+    });
 
     const reportNameInput = screen.getByTestId("report-name-input");
     const reportSituationInput = screen.getByTestId("report-situation-input");

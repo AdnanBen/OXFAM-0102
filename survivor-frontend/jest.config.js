@@ -2,13 +2,13 @@
 module.exports = {
   projects: [
     {
-      // setupFilesAfterEnv: ["<rootDir>/tests/end-to-end/setup.ts"],
       testEnvironment: "<rootDir>/tests/end-to-end/environment.ts",
       testMatch: ["<rootDir>/tests/end-to-end/**/*.test.ts"],
     },
     {
+      setupFilesAfterEnv: ["<rootDir>/tests/frontend/setup.ts"],
       testMatch: ["<rootDir>/tests/frontend/**/*.test.tsx"],
-      testEnvironment: 'jsdom',
+      testEnvironment: "jsdom",
       moduleNameMapper: {
         "\\.css$": "identity-obj-proxy",
       },
