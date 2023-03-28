@@ -7,6 +7,7 @@
   - [Reports](./microservice-reports.md)
   - [Resources](./microservice-resources.md)
   - [Frontend](./microservice-frontend.md)
+- [Frontend tests](./frontend-testing.md)
 - [End-to-end tests](./e2e-testing.md)
 - [Continuous Integration and Deployment](./continuous-integration-deployment.md)
 - [Logging](./logging.md)

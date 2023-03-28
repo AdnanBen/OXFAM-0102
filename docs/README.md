@@ -27,6 +27,7 @@ Please see the below pages:
   - [Frontend](./microservice-frontend.md)
     for providing the web-app frontend for both survivors and moderators.
 
+- [Frontend tests](./frontend-testing.md)
 - [End-to-end tests](./e2e-testing.md)
 - [Continuous Integration and Deployment](./continuous-integration-deployment.md)
 - [Logging](./logging.md)
