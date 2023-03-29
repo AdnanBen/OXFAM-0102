@@ -132,6 +132,7 @@ app.get(
       select: {
         comments: {
           select: { id: true, parent_comment: true, body: true, created: true },
+          where: { deleted: false },
         },
         body: true,
         id: true,
