@@ -10,6 +10,9 @@ export class APIError extends Error {
 }
 
 export async function requireCaptcha(req) {
+  // TODO: re-enable CAPTCHA
+  return true;
+
   if (!req.body.validated && process.env.NODE_ENV === "production") {
     const endpoint =
       "https://challenges.cloudflare.com/turnstile/v0/siteverify";
