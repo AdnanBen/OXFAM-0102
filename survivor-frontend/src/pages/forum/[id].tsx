@@ -51,7 +51,7 @@ const Post: NextPage = ({ post }) => {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         cftoken: cftokenreportpost,
-        validated: reportpostclicked,
+        // validated: reportpostclicked,
       }),
     })
       .then(() => {
@@ -82,7 +82,7 @@ const Post: NextPage = ({ post }) => {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         cftoken: cftokenreportcomment,
-        validated: reportcommentclicked,
+        // validated: reportcommentclicked,
       }),
     })
       .then(() => {
@@ -192,7 +192,7 @@ const Post: NextPage = ({ post }) => {
                       body: JSON.stringify({
                         ...data,
                         cftoken: cftokennewcomment,
-                        validated: newcommentclicked,
+                        // validated: newcommentclicked,
                       }),
                     }
                   ).then((res) => res.json());
