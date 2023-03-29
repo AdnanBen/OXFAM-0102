@@ -23,6 +23,7 @@ const Chat = ({
     setMessages((old) => {
       return { messages: [...old.messages, payload] };
     });
+    setInputValue("");
   };
 
   useEffect(() => {
@@ -64,6 +65,11 @@ const Chat = ({
           <input
             value={inputValue}
             onChange={(e) => setInputValue(e.target.value)}
+            onKeyUp={(event) => {
+              if (event.key === "Enter") {
+                sendNewMessage(inputValue);
+              }
+            }}
           />
           <button
             className={styles.send_button}
