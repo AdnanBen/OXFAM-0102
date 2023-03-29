@@ -4,7 +4,7 @@ import {
   beforeEach,
   describe,
   expect,
-  test
+  test,
 } from "@jest/globals";
 import { MongoClient } from "mongodb";
 import { getDocument, queries } from "pptr-testing-library";
@@ -75,7 +75,7 @@ describe("reports", () => {
     expect(reports[0]!.situation).toEqual("Test Situation");
 
     // Clicking back button should go back to root homepage
-    const backBtn = await findByText(document, "⮪ Back");
+    const backBtn = await findByText(document, "← Back");
     await backBtn.click();
     await findByText(document, "A safe-space for survivors", { exact: false });
   });

@@ -40,7 +40,7 @@ describe("home page", () => {
     });
     expect(errorMessages).toHaveLength(0);
 
-    const backBtn = await findByText(document, "⮪ Back");
+    const backBtn = await findByText(document, "← Back");
     await backBtn.click();
 
     // Should go back to homepage after clicking Back
@@ -62,7 +62,7 @@ describe("home page", () => {
     });
     expect(errorMessages).toHaveLength(0);
 
-    const backBtn = await findByText(document, "⮪ Back");
+    const backBtn = await findByText(document, "← Back");
     await backBtn.click();
 
     // Should go back to homepage after clicking Back
@@ -79,7 +79,7 @@ describe("home page", () => {
     });
     expect(errorMessages).toHaveLength(0);
 
-    const backBtn = await findByText(document, "⮪ Back");
+    const backBtn = await findByText(document, "← Back");
     await backBtn.click();
 
     // Should go back to homepage after clicking Back
@@ -98,7 +98,7 @@ describe("home page", () => {
     });
     expect(errorMessages).toHaveLength(0);
 
-    const backBtn = await findByText(document, "⮪ Back");
+    const backBtn = await findByText(document, "← Back");
     await backBtn.click();
 
     // Should go back to homepage after clicking Back

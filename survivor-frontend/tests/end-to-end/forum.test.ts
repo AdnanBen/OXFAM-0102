@@ -59,7 +59,7 @@ describe("forum", () => {
     await findByText(document, "There are no posts yet.");
 
     // Clicking back button should go back to main forum, not root homepage
-    const backBtn = await findByText(document, "⮪ Back");
+    const backBtn = await findByText(document, "← Back");
     await backBtn.click();
     await findByText(document, "Create new post?");
   });

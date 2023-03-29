@@ -51,7 +51,7 @@ describe("resources", () => {
     });
 
     // Go back and re-visit page, to refresh resources (SSR)
-    const backBtn = await findByText(document, "⮪ Back");
+    const backBtn = await findByText(document, "← Back");
     await backBtn.click();
     const resourceBtns = await queryAllByText(document, "Resources");
     await resourceBtns[0]!.evaluate((e) => e.click());

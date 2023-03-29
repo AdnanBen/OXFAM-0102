@@ -31,7 +31,7 @@ describe("home page", () => {
 
     await findByText(document, "Moderator Dashboard");
 
-    const backBtn = await findByText(document, "⮪ Back");
+    const backBtn = await findByText(document, "← Back");
     await backBtn.click();
 
     // Should go back to homepage after clicking Back
