@@ -84,3 +84,7 @@ a:active {
 .rs-panel .rs-icon {
   color: white !important;
 }
+
+.rs-toast-container {
+  pointer-events: all;
+}
