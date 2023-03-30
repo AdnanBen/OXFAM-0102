@@ -24,6 +24,8 @@ Please see the below pages:
     for enabling survivors to complete self-reports of abuse to receive appropriate help.
   - [Resources](./microservice-resources.md)
     for providing the resources functionality and moderator actions.
+  - [Resources](./microservice-trendss.md)
+    for collecting and persisting statistics across all the services.
   - [Frontend](./microservice-frontend.md)
     for providing the web-app frontend for both survivors and moderators.
 
