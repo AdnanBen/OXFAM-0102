@@ -29,8 +29,8 @@ const getResourceViews = async (
 ) => {
   try {
     const now = new Date();
-    const oneDayAgo = new Date(now.getTime() - 24 * 60 * 60 * 1000);
     const oneWeekAgo = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
+    const oneDayAgo = new Date(now.getTime() - 24 * 60 * 60 * 1000);
 
     const allTimeTrends = await ResourceView.find();
     const weeklyTrends = await ResourceView.find({
