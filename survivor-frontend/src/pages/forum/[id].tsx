@@ -41,9 +41,6 @@ const Post: NextPage = ({ post }) => {
   const newcommentref = useRef(null);
   const reportcommentref = useRef(null);
   const reportpostref = useRef(null);
-  const [reportcommentclicked, setreportcommentclicked] = useState(false);
-  const [reportpostclicked, setreportpostclicked] = useState(false);
-  const [newcommentclicked, setnewcommentclicked] = useState(false);
 
   const reportPost = async () => {
     await fetchJsonApi(`/api/forum/posts/${post.id}/flags`, {
@@ -51,7 +48,6 @@ const Post: NextPage = ({ post }) => {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         cftoken: cftokenreportpost,
-        // validated: reportpostclicked,
       }),
     })
       .then(() => {
@@ -71,9 +67,7 @@ const Post: NextPage = ({ post }) => {
           </Message>
         );
       });
-    // Remove turnstile widget after first validation and set a state variable to ensure we aren't doing any extra CAPTCHA validations unneccesarily
-    reportpostref.current?.remove();
-    setreportpostclicked(true);
+    reportpostref.current?.reset();
   };
 
   const reportComment = async (commentId: string) => {
@@ -82,7 +76,6 @@ const Post: NextPage = ({ post }) => {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         cftoken: cftokenreportcomment,
-        // validated: reportcommentclicked,
       }),
     })
       .then(() => {
@@ -102,8 +95,7 @@ const Post: NextPage = ({ post }) => {
           </Message>
         );
       });
-    reportcommentref.current?.remove();
-    setreportcommentclicked(true);
+    reportcommentref.current?.reset();
   };
 
   const renderComments = (comments) => {
@@ -192,7 +184,6 @@ const Post: NextPage = ({ post }) => {
                       body: JSON.stringify({
                         ...data,
                         cftoken: cftokennewcomment,
-                        // validated: newcommentclicked,
                       }),
                     }
                   ).then((res) => res.json());
@@ -200,7 +191,6 @@ const Post: NextPage = ({ post }) => {
                     setShowCommentDialog(false);
                     setReplyToComment(null);
                     refresh();
-                    setnewcommentclicked(true);
                     newcommentref.current?.remove();
                   }
                 }}
@@ -254,7 +244,7 @@ const Post: NextPage = ({ post }) => {
               <Turnstile
                 ref={reportpostref}
                 siteKey="0x4AAAAAAADFU0upW0ILDjJG"
-                onSuccess={(cftokenreportpost) =>
+                onSuccess={cftokenreportpost =>
                   setcftokenreportpost(cftokenreportpost)
                 }
               />
