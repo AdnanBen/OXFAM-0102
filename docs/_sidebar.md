@@ -6,6 +6,7 @@
   - [Gateway](./microservice-gateway.md)
   - [Reports](./microservice-reports.md)
   - [Resources](./microservice-resources.md)
+  - [Trends](./microservice-trends.md)
   - [Frontend](./microservice-frontend.md)
 - [Frontend tests](./frontend-testing.md)
 - [End-to-end tests](./e2e-testing.md)
